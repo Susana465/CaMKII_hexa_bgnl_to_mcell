@@ -1,0 +1,78 @@
+begin model
+
+begin parameters
+  	Ca_i 10000 # Initial number of Ca molecules/cell
+	CaM_i 2000  # Initial number of CaM molecules/cell
+	CaMKII_i 2000  # Initial number of CaMKII molecules/cell
+
+    NA_um3 6.022e8 # Avogadro's number mutiplied by 1e-15 since we are using volume units of microns(^-3)
+
+    # R1 to R4:  
+ 	kon_CaCaM 1e+6/NA_um3   # Bimolecular rate constant for CaM-Ca binding (1/# 1/s)
+	koff_1Ca 1.928   # Unimolecular rate constant for CaM_Ca unbinding (1/s)
+	koff_2Ca 1.937
+	koff_3Ca 7.476
+	koff_4Ca 25.783
+
+    # CaMKII flicker active/inactive
+    kon_camkii_act 2e+4
+	koff_camkii_inact 1e+7
+end parameters
+
+begin molecule types
+  Ca()
+  PP1()
+  CaM(ca~0~1~2~3~4,camkii)
+  CaMKII(cam,T286~0~P,nmdar,active~0~1,l,r,c)
+end molecule types
+
+begin compartments
+end compartments
+
+begin species
+Ca() Ca_i
+CaM(ca~0,camkii) CaM_i
+# CaMKII hexamer: CaMKII_i
+CaMKII(cam,T286~0,nmdar,active~0,l!6,r!1,c).CaMKII(cam,T286~0,nmdar,active~0,l!1,r!2,c).CaMKII(cam,T286~0,nmdar,active~0,l!2,r!3,c).CaMKII(cam,T286~0,nmdar,active~0,l!3,r!4,c).CaMKII(cam,T286~0,nmdar,active~0,l!4,r!5,c).CaMKII(cam,T286~0,nmdar,active~0,l!5,r!6,c) CaMKII_i
+end species
+
+begin observables
+end observables
+
+begin functions
+end functions
+
+begin reaction rules
+# Ca binds to CaM progresively
+#1  Ca + CaM < - > CaM_Ca1
+	CaM(ca~0,camkii) + Ca() <-> CaM(ca~1,camkii) kon_CaCaM, koff_1Ca
+#2  Ca + CaM_Ca1 < - > CaM_Ca2
+ 	CaM(ca~1,camkii) + Ca() <-> CaM(ca~2,camkii) kon_CaCaM, koff_2Ca
+#3  Ca + CaM_Ca2 < - > CaM_Ca3
+	CaM(ca~2,camkii) + Ca() <-> CaM(ca~3,camkii) kon_CaCaM, koff_3Ca
+#4  Ca + CaM_Ca3 < - > CaM_Ca4
+	CaM(ca~3,camkii) + Ca() <-> CaM(ca~4,camkii) kon_CaCaM, koff_4Ca
+
+# Saturated CaM_Ca4 binds to CaMKII ring
+#5.1 CaMKII + CaM_Ca4 < - > CaMKII_CaM
+	CaM(ca~4,camkii) + CaMKII(cam,T286~0,nmdar,active~1) <-> CaM(ca~4,camkii!1).CaMKII(cam!1,T286~0,nmdar,active~1) kon_cam_ca4_camkii, koff_cam_ca4_camkii
+
+# CaMKII subunits can flicker between active or inactive. (CaM binds to active CaMKII only)
+ 	CaMKII(cam,T286~0,nmdar,active~0) <-> CaMKII(cam,T286~0,nmdar,active~1) kon_camkii_act, koff_camkii_inact
+end reaction rules
+
+begin observables
+  	Molecules CaM_free CaM(ca~0,camkii)
+	Molecules CaM_Ca1 CaM(ca~1,camkii)
+	Molecules CaM_Ca2 CaM(ca~2,camkii)
+	Molecules CaM_Ca3 CaM(ca~3,camkii)
+	Molecules CaM_Ca4 CaM(ca~4,camkii)
+
+    Molecules CaMKII_inactive CaMKII(cam,T286~0,active~0)
+	Molecules CaMKII_active CaMKII(T286~0,active~1)
+end observables
+
+
+end model
+
+simulate({method=>"ssa",t_end=>10,n_steps=>100000})
