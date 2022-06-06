@@ -75,4 +75,4 @@ end observables
 
 end model
 
-simulate({method=>"ssa",t_end=>10,n_steps=>100000})
+simulate({method=>"ssa",t_end=>1e3,n_steps=>100000})
