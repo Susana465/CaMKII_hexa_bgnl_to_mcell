@@ -21,6 +21,9 @@ begin parameters
     # CaMKII flicker active/inactive
     kon_camkii_act 2e+4
 	koff_camkii_inact 1e+7
+
+	# CaMKII phosphorylation
+	k_pCaM4 = 0.96 #1/s #ref ordyan
 end parameters
 
 begin molecule types
@@ -66,10 +69,17 @@ begin reaction rules
 
 # Saturated CaM_Ca4 binds to CaMKII ring
 #5.1 CaMKII + CaM_Ca4 < - > CaMKII_CaM
+### DOCKED NEEDS TO BE ADDED OR NOT?
 	CaM(ca~4,camkii) + CaMKII(cam,T286~0,nmdar,active~1) <-> CaM(ca~4,camkii!1).CaMKII(cam!1,T286~0,nmdar,active~1) kon_cam_ca4_camkii, koff_cam_ca4_camkii
 
 # CaMKII subunits can flicker between active or inactive. (CaM binds to active CaMKII only)
  	CaMKII(cam,T286~0,nmdar,active~0) <-> CaMKII(cam,T286~0,nmdar,active~1) kon_camkii_act, koff_camkii_inact
+
+# CaMKII phosphorylation
+# When CaMKII_CaM, neighbpuring subunit if bould to CaM can P
+	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) k_pCaM4
+# When CaMKII_CaM_P, can phosphorylate neighbouring subunit
+  	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) k_pCaM4	
 end reaction rules
 
 begin observables
@@ -81,9 +91,10 @@ begin observables
 
     Molecules CaMKII_inactive CaMKII(cam,T286~0,active~0)
 	Molecules CaMKII_active CaMKII(T286~0,active~1)
+	Molecules CaMKII_P CaMKII(T286~P)
 end observables
 
 
 end model
 
-simulate({method=>"ssa",t_end=>1e3,n_steps=>100000})
+simulate({method=>"ssa",t_end=>1e3,n_steps=>1000})
