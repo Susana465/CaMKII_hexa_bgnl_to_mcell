@@ -27,7 +27,7 @@ begin molecule types
   Ca()
   PP1()
   CaM(ca~0~1~2~3~4,camkii)
-  CaMKII(cam,T286~0~P,nmdar,active~0~1,l,r,c)
+  CaMKII(docked~y~n,active~0~1,T286~0~P,S306~0~P,cam,nmdar,l,r,c)
 end molecule types
 
 begin compartments
@@ -37,7 +37,14 @@ begin species
 Ca() Ca_i
 CaM(ca~0,camkii) CaM_i
 # CaMKII hexamer: CaMKII_i
-CaMKII(cam,T286~0,nmdar,active~0,l!6,r!1,c).CaMKII(cam,T286~0,nmdar,active~0,l!1,r!2,c).CaMKII(cam,T286~0,nmdar,active~0,l!2,r!3,c).CaMKII(cam,T286~0,nmdar,active~0,l!3,r!4,c).CaMKII(cam,T286~0,nmdar,active~0,l!4,r!5,c).CaMKII(cam,T286~0,nmdar,active~0,l!5,r!6,c) CaMKII_i
+CaMKII(cam,nmdar,T286~0,S306~0,active~0,docked~y,l!6,r!1,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,docked~y,l!1,r!2,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,docked~y,l!2,r!3,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,docked~y,l!3,r!4,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,docked~y,l!4,r!5,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,docked~y,l!5,r!6,c) CaMKII_i
+# CaMKII dodecamer as per Ordyan's model:
+# CaMKII(docked~y,active~0,r!1,l!6,c!13,T286~0,S306~0,nmdar,cam).CaMKII(docked~y,active~0,r!2,l!1,c!14,T286~0,S306~0,nmdar,cam).\
+# CaMKII(docked~y,active~0,r!3,l!2,c!15,T286~0,S306~0,nmdar,cam).CaMKII(docked~y,active~0,r!4,l!3,c!16,T286~0,S306~0,nmdar,cam).\
+# CaMKII(docked~y,active~0,r!5,l!4,c!17,T286~0,S306~0,nmdar,cam).CaMKII(docked~y,active~0,r!6,l!5,c!18,T286~0,S306~0,nmdar,cam).\
+# CaMKII(docked~y,active~0,r!7,l!12,c!13,T286~0,S306~0,nmdar,cam).CaMKII(docked~y,active~0,r!8,l!7,c!14,T286~0,S306~0,nmdar,cam).\
+# CaMKII(docked~y,active~0,r!9,l!8,c!15,T286~0,S306~0,nmdar,cam).CaMKII(docked~y,active~0,r!10,l!9,c!16,T286~0,S306~0,nmdar,cam).\
+# CaMKII(docked~y,active~0,r!11,l!10,c!17,T286~0,S306~0,nmdar,cam).CaMKII(docked~y,active~0,r!12,l!11,c!18,T286~0,S306~0,nmdar,cam) CaMKII_i
 end species
 
 begin observables
