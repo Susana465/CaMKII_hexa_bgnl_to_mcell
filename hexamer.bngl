@@ -88,7 +88,7 @@ begin reaction rules
   	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) k_pCaM4	
 
 # CaMKII dephosphorylation
-	CaMKII(Y286~P) + PP1 -> CaMKII(Y286~0) + PP1 k_dephos_camkii_p
+	CaMKII(T286~P) + PP1 -> CaMKII(T286~0) + PP1 k_dephos_camkii_p
 end reaction rules
 
 begin observables
