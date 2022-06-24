@@ -1,9 +1,12 @@
 begin model
 
 begin parameters
-  	Ca_i 10000 # Initial number of Ca molecules/cell
-	CaM_i 2000  # Initial number of CaM molecules/cell
-	CaMKII_i 2000  # Initial number of CaMKII molecules/cell
+	# Initial number of Ca molecules/cell
+  	Ca_i 10000 
+	CaM_i 2000  
+	CaMKII_i 2000  
+	PP1_i 1000
+	NMDAR_i 400
 
     NA_um3 6.022e8 # Avogadro's number mutiplied by 1e-15 since we are using volume units of microns(^-3)
 
@@ -23,30 +26,38 @@ begin parameters
 	koff_camkii_inact 1e+7
 
 	# CaMKII phosphorylation
-	k_pCaM4 = 0.96 #1/s #ref ordyan #1e5 in monomer model for susana's diss
+	k_pCaM4 = 1e5 #0.96 #1/s #ref ordyan (1e5 in monomer model for susana's diss)
 
 	# Dephosphorylation ordyan
 	# k_cat = (31/1.25)/60 # where do these numbers come from?
 	# K_m = 11*(NA*V) #uM 
 
 	k_dephos_camkii_p 3e+3/NA_um3  # reaction number (8) on diss
+
+	# Units: volumes in um3
+	VolCP 0.50588 
+	VolPM 0.0307 # from volume of 0.505 r = 0.494 and area = 3.07um2 * 0.01um thickness. Assuming a thickness of 0.01 microns for the PM
 end parameters
+
+begin compartments
+ 	PM 2 VolPM #2Dimensions, surface compartment
+ 	CP 3 VolCP PM #3Dimensions and 1 microcubic in volume, volume compartment
+ 	# http://www.lehman.edu/academics/cmacs/documents/RuleBasedPrimer-2011.pdf
+end compartments
 
 begin molecule types
   Ca()
   PP1()
   CaM(ca~0~1~2~3~4,camkii)
   CaMKII(docked~y~n,active~0~1,T286~0~P,S306~0~P,cam,nmdar,l,r,c)
+  NMDAR(camkii)
 end molecule types
 
-begin compartments
-end compartments
-
 begin species
-Ca() Ca_i
-CaM(ca~0,camkii) CaM_i
+@CP:Ca() Ca_i
+@CP:CaM(ca~0,camkii) CaM_i
 # CaMKII hexamer: CaMKII_i
-CaMKII(cam,nmdar,T286~0,S306~0,active~0,docked~y,l!6,r!1,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,docked~y,l!1,r!2,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,docked~y,l!2,r!3,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,docked~y,l!3,r!4,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,docked~y,l!4,r!5,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,docked~y,l!5,r!6,c) CaMKII_i
+@CP:CaMKII(cam,nmdar,T286~0,S306~0,active~0,docked~y,l!6,r!1,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,docked~y,l!1,r!2,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,docked~y,l!2,r!3,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,docked~y,l!3,r!4,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,docked~y,l!4,r!5,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,docked~y,l!5,r!6,c) CaMKII_i
 # CaMKII dodecamer as per Ordyan's model:
 # CaMKII(docked~y,active~0,r!1,l!6,c!13,T286~0,S306~0,nmdar,cam).CaMKII(docked~y,active~0,r!2,l!1,c!14,T286~0,S306~0,nmdar,cam).\
 # CaMKII(docked~y,active~0,r!3,l!2,c!15,T286~0,S306~0,nmdar,cam).CaMKII(docked~y,active~0,r!4,l!3,c!16,T286~0,S306~0,nmdar,cam).\
@@ -54,13 +65,9 @@ CaMKII(cam,nmdar,T286~0,S306~0,active~0,docked~y,l!6,r!1,c).CaMKII(cam,nmdar,T28
 # CaMKII(docked~y,active~0,r!7,l!12,c!13,T286~0,S306~0,nmdar,cam).CaMKII(docked~y,active~0,r!8,l!7,c!14,T286~0,S306~0,nmdar,cam).\
 # CaMKII(docked~y,active~0,r!9,l!8,c!15,T286~0,S306~0,nmdar,cam).CaMKII(docked~y,active~0,r!10,l!9,c!16,T286~0,S306~0,nmdar,cam).\
 # CaMKII(docked~y,active~0,r!11,l!10,c!17,T286~0,S306~0,nmdar,cam).CaMKII(docked~y,active~0,r!12,l!11,c!18,T286~0,S306~0,nmdar,cam) CaMKII_i
+@CP:PP1() PP1_i
+@PM:NMDAR(camkii) NMDAR_i
 end species
-
-begin observables
-end observables
-
-begin functions
-end functions
 
 begin reaction rules
 # Ca binds to CaM progresively
@@ -82,7 +89,7 @@ begin reaction rules
  	CaMKII(cam,T286~0,nmdar,active~0) <-> CaMKII(cam,T286~0,nmdar,active~1) kon_camkii_act, koff_camkii_inact
 
 # CaMKII phosphorylation
-# When CaMKII_CaM, neighbpuring subunit if bould to CaM can P
+# When CaMKII_CaM, neighbouring subunit if bound to CaM can P
 	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) k_pCaM4
 # When CaMKII_CaM_P, can phosphorylate neighbouring subunit
   	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) k_pCaM4	
