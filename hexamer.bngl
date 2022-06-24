@@ -105,10 +105,12 @@ begin observables
 	Molecules CaM_Ca3 CaM(ca~3,camkii)
 	Molecules CaM_Ca4 CaM(ca~4,camkii)
 
+	Molecules PP1 PP1()
+
     Molecules CaMKII_inactive CaMKII(cam,T286~0,active~0)
-	Molecules CaMKII_ring_inactive CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!6,r!1,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!1,r!2,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!2,r!3,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!3,r!4,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!4,r!5,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!5,r!6,c)
+	#Molecules CaMKII_ring_inactive CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!6,r!1,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!1,r!2,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!2,r!3,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!3,r!4,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!4,r!5,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!5,r!6,c)
 	Molecules CaMKII_active CaMKII(T286~0,active~1)
-	Molecules CaMKII_ring_active CaMKII(active~1,l!6,r!1,c).CaMKII(active~1,l!1,r!2,c).CaMKII(active~1,l!2,r!3,c).CaMKII(active~1,l!3,r!4,c).CaMKII(active~1,l!4,r!5,c).CaMKII(active~1,l!5,r!6,c)
+	#Molecules CaMKII_ring_active CaMKII(active~1,l!6,r!1,c).CaMKII(active~1,l!1,r!2,c).CaMKII(active~1,l!2,r!3,c).CaMKII(active~1,l!3,r!4,c).CaMKII(active~1,l!4,r!5,c).CaMKII(active~1,l!5,r!6,c)
 	#Molecules CaMKII_active_pairs CaMKII(T286~0,active~1).CaMKII(T286~0,active~1)
 	Molecules CaMKII_P CaMKII(T286~P)
 end observables
@@ -116,4 +118,4 @@ end observables
 
 end model
 
-simulate({method=>"ssa",t_end=>1,n_steps=>1000})
+simulate({method=>"ssa",t_end=>5,n_steps=>1000})
