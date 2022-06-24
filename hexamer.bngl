@@ -34,6 +34,9 @@ begin parameters
 
 	k_dephos_camkii_p 3e+3/NA_um3  # reaction number (8) on diss
 
+	kon_9 2e+6/NA_um3
+	koff_9 0.03
+
 	# Units: volumes in um3
 	VolCP 0.50588 
 	VolPM 0.0307 # from volume of 0.505 r = 0.494 and area = 3.07um2 * 0.01um thickness. Assuming a thickness of 0.01 microns for the PM
@@ -89,13 +92,17 @@ begin reaction rules
  	CaMKII(cam,T286~0,nmdar,active~0) <-> CaMKII(cam,T286~0,nmdar,active~1) kon_camkii_act, koff_camkii_inact
 
 # CaMKII phosphorylation
-# When CaMKII_CaM, neighbouring subunit if bound to CaM can P
+# When CaMKII_CaM_Ca4, neighbouring subunit if bound to CaM can P
 	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) k_pCaM4
 # When CaMKII_CaM_P, can phosphorylate neighbouring subunit
   	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) k_pCaM4	
 
 # CaMKII dephosphorylation
 	CaMKII(T286~P) + PP1 -> CaMKII(T286~0) + PP1 k_dephos_camkii_p
+
+# CaMKII_P_Ca4 can bind to free NMDAR in the PM
+	CaMKII(T286~P,cam!2,nmdar).CaM(ca~4) + NMDAR(camkii) <-> CaMKII(T286~P,cam!2,nmdar!1).CaM(ca~4).NMDAR(camkii!1) kon_9,koff_9
+
 end reaction rules
 
 begin observables
@@ -113,6 +120,7 @@ begin observables
 	#Molecules CaMKII_ring_active CaMKII(active~1,l!6,r!1,c).CaMKII(active~1,l!1,r!2,c).CaMKII(active~1,l!2,r!3,c).CaMKII(active~1,l!3,r!4,c).CaMKII(active~1,l!4,r!5,c).CaMKII(active~1,l!5,r!6,c)
 	#Molecules CaMKII_active_pairs CaMKII(T286~0,active~1).CaMKII(T286~0,active~1)
 	Molecules CaMKII_P CaMKII(T286~P)
+	Molecules NMDAR_CaMKII_P_Ca4 CaMKII(T286~P,cam!2,nmdar!1).CaM(ca~4).NMDAR(camkii!1)
 end observables
 
 
