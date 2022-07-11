@@ -15,7 +15,7 @@ begin parameters
 	MCELL_REDEFINE_NA_um3 VOL_RXN # In MCell the units get multiplied by V_RXN so they stay the same
 
 	# number of iterations for MCell
-    ITERATIONS 1e2
+    ITERATIONS 1e6
 
 	# Initial number of Ca molecules/cell
   	Ca_i 10000 
@@ -130,6 +130,9 @@ end observables
 
 end model
 
-generate_network({overwrite=>1})
-writeSBML()  
-simulate({method=>"ssa",t_start=>0,t_end=>"ITERATIONS",n_steps=>1e-3})
+#generate_network({overwrite=>1})
+#writeSBML()  
+# Running for mcell:
+#simulate({method=>"ode",t_end=>"ITERATIONS",n_steps=>1e8})
+# Running only for bngl:
+simulate({method=>"ssa",t_end=>10,n_steps=>100})
