@@ -15,7 +15,7 @@ begin parameters
 	MCELL_REDEFINE_NA_um3 VOL_RXN # In MCell the units get multiplied by V_RXN so they stay the same
 
 	# number of iterations for MCell
-    ITERATIONS 1e6
+    ITERATIONS 10
 
 	# Initial number of Ca molecules/cell
   	Ca_i 10000 
@@ -31,7 +31,7 @@ begin parameters
 	koff_3Ca 7.476
 	koff_4Ca 25.783
 
-	# 5.1 CaMKII + CaM_Ca4 < - > CaMKII_CaM
+	# 5.1 CaMKII + CaM_Ca4 < - > CaMKII_CaM_Ca4
 	kon_cam_ca4_camkii 4.2e+6/NA_um3  
 	koff_cam_ca4_camkii 2.5e-4
 
@@ -41,6 +41,7 @@ begin parameters
 
 	# CaMKII phosphorylation
 	k_pCaM4 = 1e5/NA_um3 #0.96 #1/s #ref ordyan (1e5 in monomer model for susana's diss)
+	k_pCaM4_P = 1e6/NA_um3 # added different phosphorylation rxn rate to avoid duplication warning when running bngl
 
 	# Dephosphorylation ordyan
 	# k_cat = (31/1.25)/60 # where do these numbers come from?
@@ -95,18 +96,19 @@ begin reaction rules
 	CaM(ca~3,camkii) + Ca() <-> CaM(ca~4,camkii) kon_CaCaM, koff_4Ca
 
 # Saturated CaM_Ca4 binds to CaMKII ring
-# 5.1 CaMKII + CaM_Ca4 < - > CaMKII_CaM
+# 5.1 CaMKII + CaM_Ca4 < - > CaMKII_CaM 
+# This reaction will only start happening after flickering of CaMKII to active state (next reaction) happens. This is because CaMKII released into the system is initially active~0.
 # ## DOCKED NEEDS TO BE ADDED OR NOT?
-#	CaM(ca~4,camkii) + CaMKII(cam,T286~0,nmdar,active~1) <-> CaM(ca~4,camkii!1).CaMKII(cam!1,T286~0,nmdar,active~1) kon_cam_ca4_camkii, koff_cam_ca4_camkii
+	CaM(ca~4,camkii) + CaMKII(cam,T286~0,nmdar,active~1) <-> CaM(ca~4,camkii!1).CaMKII(cam!1,T286~0,nmdar,active~1) kon_cam_ca4_camkii, koff_cam_ca4_camkii
 
 # CaMKII subunits can flicker between active or inactive. (CaM binds to active CaMKII only)
-# 	CaMKII(cam,T286~0,nmdar,active~0) <-> CaMKII(cam,T286~0,nmdar,active~1) kon_camkii_act, koff_camkii_inact
+ 	CaMKII(cam,T286~0,nmdar,active~0) <-> CaMKII(cam,T286~0,nmdar,active~1) kon_camkii_act, koff_camkii_inact
 
 # CaMKII phosphorylation
-# When CaMKII_CaM, neighbouring subunit if bound to CaM can P
-#	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) k_pCaM4
+# When CaMKII_CaM, neighbouring subunit, if bound to CaM, can P
+	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) k_pCaM4
 # When CaMKII_CaM_P, can phosphorylate neighbouring subunit
-#  	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) k_pCaM4	
+  	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) k_pCaM4_P	
 
 # CaMKII dephosphorylation
 #	CaMKII(T286~P) + PP1 -> CaMKII(T286~0) + PP1 k_dephos_camkii_p 
@@ -118,21 +120,24 @@ begin observables
 	Molecules CaM_Ca2 CaM(ca~2,camkii)
 	Molecules CaM_Ca3 CaM(ca~3,camkii)
 	Molecules CaM_Ca4 CaM(ca~4,camkii)
+	Molecules CaMKII_CaM_Ca4 CaM(ca~4,camkii!1).CaMKII(cam!1,T286~0,nmdar,active~1)
+	Species CaMKII CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!6,r!1,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!1,r!2,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!2,r!3,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!3,r!4,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!4,r!5,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!5,r!6,c)
 
-#    Molecules CaMKII_inactive CaMKII(cam,T286~0,active~0)
+
+	#Molecules CaMKII_inactive CaMKII(cam,T286~0,active~0)
 	#Molecules CaMKII_ring_inactive CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!6,r!1,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!1,r!2,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!2,r!3,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!3,r!4,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!4,r!5,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!5,r!6,c)
 #	Molecules CaMKII_active CaMKII(T286~0,active~1)
 	#Molecules CaMKII_ring_active CaMKII(active~1,l!6,r!1,c).CaMKII(active~1,l!1,r!2,c).CaMKII(active~1,l!2,r!3,c).CaMKII(active~1,l!3,r!4,c).CaMKII(active~1,l!4,r!5,c).CaMKII(active~1,l!5,r!6,c)
 	#Molecules CaMKII_active_pairs CaMKII(T286~0,active~1).CaMKII(T286~0,active~1)
-#	Molecules CaMKII_P CaMKII(T286~P)
+	Molecules CaMKII_P CaMKII(T286~P)
 end observables
 
 
 end model
 
-#generate_network({overwrite=>1})
+generate_network({overwrite=>1}) #this command overwrites network everytime
 #writeSBML()  
 # Running for mcell:
-#simulate({method=>"ode",t_end=>"ITERATIONS",n_steps=>1e8})
+#simulate({method=>"ssa",t_start=>0,t_end=>"ITERATIONS",n_steps=>100})
 # Running only for bngl:
-simulate({method=>"ssa",t_end=>10,n_steps=>100})
+simulate({method=>"nf",t_end=>3,n_steps=>100})

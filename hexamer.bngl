@@ -101,8 +101,11 @@ begin reaction rules
 	CaMKII(T286~P) + PP1 -> CaMKII(T286~0) + PP1 k_dephos_camkii_p
 
 # CaMKII_P_Ca4 can bind to free NMDAR in the PM
-	CaMKII(l!1,T286~P,cam!2,nmdar).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) + NMDAR(camk) <-> CaMKII(l!1,T286~P,cam!2,nmdar!a).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+).NMDAR(camk!a) kon_9,koff_9
-
+	#CaMKII(l!1,T286~P,cam!2,nmdar).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) + NMDAR(camk) <-> CaMKII(l!1,T286~P,cam!2,nmdar!a).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+).NMDAR(camk!a) kon_9,koff_9
+	
+# CaMKII + NMDAR
+	CaMKII(nmdar,T286~P,active~1) + NMDAR(camk) <-> CaMKII(nmdar!1,T286~P,active~1).NMDAR(camk!1) kon_9,koff_9
+	
 end reaction rules
 
 begin observables
@@ -120,10 +123,11 @@ begin observables
 	#Molecules CaMKII_ring_active CaMKII(active~1,l!6,r!1,c).CaMKII(active~1,l!1,r!2,c).CaMKII(active~1,l!2,r!3,c).CaMKII(active~1,l!3,r!4,c).CaMKII(active~1,l!4,r!5,c).CaMKII(active~1,l!5,r!6,c)
 	#Molecules CaMKII_active_pairs CaMKII(T286~0,active~1).CaMKII(T286~0,active~1)
 	Molecules CaMKII_P CaMKII(T286~P)
-	Molecules NMDAR_CaMKII_P_Ca4 CaMKII(l!1,T286~P,cam!2,nmdar!a).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+).NMDAR(camk!a)
+	#Molecules NMDAR_CaMKII_P_Ca4 CaMKII(l!1,T286~P,cam!2,nmdar!a).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+).NMDAR(camk!a)
+	Molecules CaMKII_P_NMDAR CaMKII(nmdar!1,T286~P,active~1).NMDAR(camk!1)
 end observables
 
 
 end model
 
-simulate({method=>"ssa",t_end=>5,n_steps=>100})
+simulate({method=>"nf",t_end=>5,n_steps=>100})
