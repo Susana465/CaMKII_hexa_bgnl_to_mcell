@@ -135,9 +135,12 @@ end observables
 
 end model
 
-#generate_network({overwrite=>1}) #this command overwrites network everytime
+# generate_network({overwrite=>1}) #this command overwrites network everytime
 #writeSBML()  
 # Running for mcell:
 #simulate({method=>"ssa",t_start=>0,t_end=>"ITERATIONS",n_steps=>100})
 # Running only for bngl:
-#simulate({method=>"nf",t_end=>3,n_steps=>100})
+# left pp1 with 0, py file runs but only up to 0.01, why? ITERATIONS is what mcell reads
+# not sure why: if I make ITERATIONS in python file to 100, it stops running at 30 iterations with 
+# C:\mcell\rel\mcell\src4\count_buffer.cpp:94: MCell::CountBuffer::flush: Assertion `item.time == time && "Mismatch in gdat column times"' failed.
+# simulate({method=>"ssa",t_end=>3,n_steps=>1e3}) 
