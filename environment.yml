@@ -1,0 +1,5 @@
+name: camkii-project-env
+
+dependencies:
+  - python=3.9
+  - numpy==1.24.3
