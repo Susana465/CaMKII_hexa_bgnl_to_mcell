@@ -15,13 +15,13 @@ begin parameters
 	MCELL_REDEFINE_NA_um3 VOL_RXN # In MCell the units get multiplied by V_RXN so they stay the same
 
 	# number of iterations for MCell
-    ITERATIONS 10
+    ITERATIONS 3e5
 
 	# Initial number of Ca molecules/cell
   	Ca_i 10000 
 	CaM_i 2000  
 	CaMKII_i 2000  
-	PP1_i 1000
+	PP1_i 0
 	NMDAR_i 400
 
     # R1 to R4:  
@@ -126,7 +126,7 @@ begin observables
 
 	#Molecules CaMKII_inactive CaMKII(cam,T286~0,active~0)
 	#Molecules CaMKII_ring_inactive CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!6,r!1,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!1,r!2,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!2,r!3,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!3,r!4,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!4,r!5,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!5,r!6,c)
-#	Molecules CaMKII_active CaMKII(T286~0,active~1)
+    #Molecules CaMKII_active CaMKII(T286~0,active~1)
 	#Molecules CaMKII_ring_active CaMKII(active~1,l!6,r!1,c).CaMKII(active~1,l!1,r!2,c).CaMKII(active~1,l!2,r!3,c).CaMKII(active~1,l!3,r!4,c).CaMKII(active~1,l!4,r!5,c).CaMKII(active~1,l!5,r!6,c)
 	#Molecules CaMKII_active_pairs CaMKII(T286~0,active~1).CaMKII(T286~0,active~1)
 	Molecules CaMKII_P CaMKII(T286~P)
@@ -135,9 +135,9 @@ end observables
 
 end model
 
-generate_network({overwrite=>1}) #this command overwrites network everytime
+#generate_network({overwrite=>1}) #this command overwrites network everytime
 #writeSBML()  
 # Running for mcell:
 #simulate({method=>"ssa",t_start=>0,t_end=>"ITERATIONS",n_steps=>100})
 # Running only for bngl:
-simulate({method=>"nf",t_end=>3,n_steps=>100})
+#simulate({method=>"nf",t_end=>3,n_steps=>100})
