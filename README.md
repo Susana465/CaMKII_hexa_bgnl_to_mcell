@@ -37,7 +37,7 @@ With a virtual environment, it’s possible to retain all the information in our
 
 ### 3.1. If you have conda (the environment management system I use): 
 
-You can use the [configuration.yml](./environment.yml) file in this repo, and create an environment with the following command:
+You can use the [environment.yml](./environment.yml) file in this repo, and create an environment with the following command:
 
 ```
 conda env create --file environment.yml
