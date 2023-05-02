@@ -3,13 +3,13 @@
 In order to run the files in this repo, you will need a few requirements first:
 
 ## 1) Install  MCell/CellBlender v4.0.6 bundle with Blender 2.93
-- The CellBlender bundle containing MCell4 is available for download for different operating systems at the MCell.org website: https://mcell.org/download.html
+The CellBlender bundle containing MCell4 is available for download for different operating systems at the MCell.org website: https://mcell.org/download.html
 
-- As of 20230428 I used MCell/CellBlender v4.0.6 bundle with Blender 2.93, on Windows 10 to run this code.
+As of 20230428 I used MCell/CellBlender v4.0.6 bundle with Blender 2.93, on Windows 10 to run this code.
 
-- I use VS Code as my IDE (Integrated development environment), but you can use whichever IDE you prefer. 
+I use VS Code as my IDE (Integrated development environment), but you can use whichever IDE you prefer. 
 
-**>> To use MCell4 outside of Blender with Python 3.9, additional installation steps are required as described below:**
+-  To use MCell4 outside of Blender with Python 3.9, additional installation steps are required as described below:
 
 ## 2) Setting System Variable MCELL_PATH and adding Python 3.9 to PATH
 
@@ -27,41 +27,39 @@ import mcell as m
 ```
 This is specified in the [mcell_hexamer.py](./mcell_hexamer.py#L5) file. 
 
-**>> In order to set the System Variable MCELL_PATH, depeding on your Operating System, please follow the instructions here:**
-
-https://mcell.org/mcell4_documentation/installation.html#setting-system-variables
+- In order to set the System Variable MCELL_PATH, depeding on your Operating System, please follow the instructions here: https://mcell.org/mcell4_documentation/installation.html#setting-system-variables
 
 ## 3) Set up an environment
 
-In order to make sure we are both working with the same dependencies...
+In order to make sure we are both working with the same versions of python and dependencies required to run the python script in this repo, it will be useful to create an environment.
+
+With a virtual environment, it’s possible to retain all the information in our projects like the dependencies, so anyone else can duplicate the same environment we’re working with.
 
 ### 3.1. If you have conda (the environment management system I use): 
 
-You can use the configuration.yml file in this repo, and create an environment with the following command:
+You can use the [configuration.yml](./environment.yml) file in this repo, and create an environment with the following command:
 
 ```
 conda env create --file environment.yml
 ```
+Then activate the environment and run the [mcell_hexamer.py](./mcell_hexamer.py) file there.
 
+I have found [these carpentries](https://carpentries-incubator.github.io/introduction-to-conda-for-data-scientists/) quite helpful with queries regarding conda environments, if you need some guidance here. 
 ### 3.2. If you use a different environment manager:
 
-To install this you need to create an environment using 
+You will likely need to use the [requirements.txt](./requirements.txt) file instead. 
 
-i use conda, you could replace conda for venv
+The commands to create and activate an environment using virtualenv, pipenv, venv, pyenv, etc will be different depending on which one you use. 
 
-you need to have one of these installed in the machine you are working from
+As an example, if you were using [venv](https://docs.python.org/3/library/venv.html), then you would need to do something like this:
 
+```virtualenv my-env ``` to create your new environment (called 'my-env' here)
+
+```source my-env/bin/activate``` to enter the virtual environment
+
+```pip install -r requirements.txt``` to install the requirements in the current environment
+
+would this work?
 ```
-conda env create --file environment.yml
+venv create --name my-env python=3.9 --file requirements.txt
 ```
-or
-
-```
-conda create --name my-env python=3.9 --file requirements.txt
-```
-
-install mcell version xxx
-
-following instructions here:
-
-make you specify path 
