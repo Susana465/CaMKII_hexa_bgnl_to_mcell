@@ -7,6 +7,8 @@ The CellBlender bundle containing MCell4 is available for download for different
 
 As of 20230428 I used MCell/CellBlender v4.0.6 bundle with Blender 2.93, on Windows 10 to run this code.
 
+As of 20230501 MCell MacOS Download isn't compatible with "Apple Silicone" devices; it looks like MCell is incompatible with the latest Mac hardware, which uses Arm chips.
+
 I use VS Code as my IDE (Integrated development environment), but you can use whichever IDE you prefer. 
 
 -  To save time and computational power, I run MCell4 outside of Blender.
