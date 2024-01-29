@@ -113,7 +113,7 @@ begin reaction rules
   	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) k_pCaM4_P	
 
 # CaMKII dephosphorylation
-	CaMKII(T286~P) + PP1 -> CaMKII(T286~0) + PP1 k_dephos_camkii_p 
+#	CaMKII(T286~P) + PP1 -> CaMKII(T286~0) + PP1 k_dephos_camkii_p 
 end reaction rules
 
 begin observables
@@ -123,12 +123,12 @@ begin observables
 	Molecules CaM_Ca3 CaM(ca~3,camkii)
 	Molecules CaM_Ca4 CaM(ca~4,camkii)
 	Molecules CaMKII_CaM_Ca4 CaM(ca~4,camkii!1).CaMKII(cam!1,T286~0,nmdar,active~1)
-	Species CaMKII CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!6,r!1,c!13).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!1,r!2,c!14).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!2,r!3,c!15).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!3,r!4,c!16).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!4,r!5,c!17).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!5,r!6,c!18).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!12,r!7,c!13).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!7,r!8,c!14).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!8,r!9,c!15).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!9,r!10,c!16).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!10,r!11,c!17).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!11,r!12,c!18)
+	Species CaMKII CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!6,r!1,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!1,r!2,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!2,r!3,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!3,r!4,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!4,r!5,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!5,r!6,c)
 
 
-	# Molecules CaMKII_inactive CaMKII(cam,T286~0,active~0)
+	#Molecules CaMKII_inactive CaMKII(cam,T286~0,active~0)
 	#Molecules CaMKII_ring_inactive CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!6,r!1,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!1,r!2,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!2,r!3,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!3,r!4,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!4,r!5,c).CaMKII(cam,nmdar,T286~0,S306~0,active~0,l!5,r!6,c)
-    Molecules CaMKII_active CaMKII(T286~0,active~1)
+    #Molecules CaMKII_active CaMKII(T286~0,active~1)
 	#Molecules CaMKII_ring_active CaMKII(active~1,l!6,r!1,c).CaMKII(active~1,l!1,r!2,c).CaMKII(active~1,l!2,r!3,c).CaMKII(active~1,l!3,r!4,c).CaMKII(active~1,l!4,r!5,c).CaMKII(active~1,l!5,r!6,c)
 	#Molecules CaMKII_active_pairs CaMKII(T286~0,active~1).CaMKII(T286~0,active~1)
 	Molecules CaMKII_P CaMKII(T286~P)
