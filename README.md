@@ -133,3 +133,8 @@ Note: This output is obtained from running the model with:
 ITERATIONS = 3e3 (defined in [hexamer_20220624.bngl](./hexamer_20220624.bngl#L15))
 
 model.config.time_step = 1e-4 (defined in [mcell_hexamer.py](./mcell_hexamer.py#L52))
+
+## References
+
+Ordyan, Mariam, et al. "Interactions between calmodulin and neurogranin govern the dynamics of CaMKII as a leaky integrator." PLoS computational biology 16.7 (2020): e1008015.
+https://doi.org/10.1371/journal.pcbi.1008015
