@@ -15,14 +15,14 @@ begin parameters
 	MCELL_REDEFINE_NA_um3 VOL_RXN # In MCell the units get multiplied by V_RXN so they stay the same
 
 	# number of iterations for MCell
-    ITERATIONS 3e3
+    ITERATIONS 3e4
 
 	# Initial number of Ca molecules/cell
-  	Ca_i 10000 
-	CaM_i 2000  
-	CaMKII_i 2000  
+  	Ca_i 1000 
+	CaM_i 200
+	CaMKII_i 200  
 	PP1_i 0
-	NMDAR_i 400
+	NMDAR_i 40
 
     # R1 to R4:  
  	kon_CaCaM 1e+6/NA_um3   # Bimolecular rate constant for CaM-Ca binding (1/# 1/s)
@@ -40,7 +40,7 @@ begin parameters
 	koff_camkii_inact 1e+7
 
 	# CaMKII phosphorylation
-	k_pCaM4 = 1e5/NA_um3 #0.96 #1/s #ref ordyan (1e5 in monomer model for susana's diss)
+	k_pCaM4 = 5.7e8/NA_um3 #0.96 #1/s #ref ordyan (1e5 in monomer model for susana's diss)
 	k_pCaM4_P = 1e6/NA_um3 # added different phosphorylation rxn rate to avoid duplication warning when running bngl
 
 	# Dephosphorylation ordyan
@@ -140,7 +140,7 @@ end model
 generate_network({overwrite=>1}) #this command overwrites network everytime
 #writeSBML()  
 # Running for mcell:
-simulate({method=>"ssa",t_start=>0,t_end=>"ITERATIONS",n_steps=>100})
+simulate({method=>"ssa",t_start=>0,t_end=>"ITERATIONS",n_steps=>1000})
 # Running only for bngl:
 # left pp1 with 0, py file runs but only up to 0.01, why? ITERATIONS is what mcell reads
 # not sure why: if I make ITERATIONS in python file to 100, it stops running at 30 iterations with 

@@ -2,6 +2,11 @@ import os
 import sys
 import numpy as np
 
+# create a string name containing date to use for output files and folders
+from datetime import datetime
+current_datetime = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+str_current_datetime = str(current_datetime)
+
 MCELL_PATH = os.environ.get('MCELL_PATH', '')
 sys.path.append(os.path.join(MCELL_PATH, 'lib'))
 
@@ -10,7 +15,7 @@ import mcell as m
 print("Import of MCell was sucessful")
 
 viz_output = m.VizOutput(
-    './viz_data/seed_00002/Scene',
+    str_current_datetime+'./viz_data/seed_00002/Scene',
     every_n_timesteps= 100
     )
 
@@ -30,7 +35,7 @@ model.add_geometry_object(cp)
 
 model.load_bngl(
     'dodecamer.bngl', 
-    observables_path_or_file='out_dodecamer.gdat')
+    observables_path_or_file=str_current_datetime+'_out_dodecamer.gdat')
 
 #open bngl file and load the parameters into a dictionary
 param_dict = m.bngl_utils.load_bngl_parameters('dodecamer.bngl')
