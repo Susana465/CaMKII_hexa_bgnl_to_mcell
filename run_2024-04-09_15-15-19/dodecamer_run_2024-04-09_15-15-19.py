@@ -10,8 +10,7 @@ def save_run_iteration(folder_name, timestamp):
     
     # Generate the filename
     filename = f"{folder_name}/dodecamer_run_{timestamp}.py"
-    bngl_filename = f"{folder_name}/dodecamer.bngl"
-
+    
     # Save the content of the current python script into a timestamped filename
     with open(__file__, 'r') as f:
         content = f.read()
@@ -19,7 +18,7 @@ def save_run_iteration(folder_name, timestamp):
             new_f.write(content)
 
     # Copy the bngl file being used to the generated timestamped filename
-    with open("dodecamer.bngl", 'r') as src_file, open(bngl_filename, 'w') as dest_file:
+    with open("test_ABC.bngl", 'r') as src_file, open(bngl_filename, 'w') as dest_file:
         dest_file.write(src_file.read())
 
 # create a string name containing date to use for output files and folders
