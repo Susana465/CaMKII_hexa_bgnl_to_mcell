@@ -2,6 +2,7 @@ import os
 import sys
 import numpy as np
 from datetime import datetime
+import pandas as pd
 
 def save_run_iteration(folder_name, timestamp):
     # Create the folder if it doesn't exist
@@ -62,6 +63,16 @@ model.load_bngl(
 #open bngl file and load the parameters into a dictionary
 param_dict = m.bngl_utils.load_bngl_parameters('dodecamer.bngl')
 ITERATIONS = param_dict['ITERATIONS']
+
+# Convert dictionary to DataFrame
+df = pd.DataFrame.from_dict(param_dict, orient='index', columns=['Value'])
+
+# Add a column for parameter names if needed
+df['Parameter'] = df.index
+
+# Save DataFrame to CSV within the timestamped folder to know what parameters were used for the output data
+csv_filename = f"{run_folder}/{current_datetime}_parameters.csv"
+df.to_csv(csv_filename, index=False)
 
 # Specifies periodicity of visualization output
 for count in model.counts:

@@ -2,6 +2,7 @@ import os
 import sys
 import numpy as np
 from datetime import datetime
+import pandas as pd
 
 def save_run_iteration(folder_name, timestamp):
     # Create the folder if it doesn't exist
@@ -10,17 +11,22 @@ def save_run_iteration(folder_name, timestamp):
     
     # Generate the filename
     filename = f"{folder_name}/dodecamer_run_{timestamp}.py"
-    
-    # Save the content of the current script to the generated filename
+    bngl_filename = f"{folder_name}/dodecamer.bngl"
+
+    # Save the content of the current python script into a timestamped filename
     with open(__file__, 'r') as f:
         content = f.read()
         with open(filename, 'w') as new_f:
             new_f.write(content)
 
+    # Copy the bngl file being used to the generated timestamped filename
+    with open("dodecamer.bngl", 'r') as src_file, open(bngl_filename, 'w') as dest_file:
+        dest_file.write(src_file.read())
+
 # create a string name containing date to use for output files and folders
 current_datetime = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
-# Create the run folder
+# Create the timestamped run folder
 run_folder = f"run_{current_datetime}"
 os.makedirs(run_folder)
 
@@ -57,6 +63,16 @@ model.load_bngl(
 #open bngl file and load the parameters into a dictionary
 param_dict = m.bngl_utils.load_bngl_parameters('dodecamer.bngl')
 ITERATIONS = param_dict['ITERATIONS']
+
+# Convert dictionary to DataFrame
+df = pd.DataFrame.from_dict(param_dict, orient='index', columns=['Value'])
+
+# Add a column for parameter names if needed
+df['Parameter'] = df.index
+
+# Save DataFrame to CSV within the timestamped folder to know what parameters were used for the output data
+csv_filename = f"{run_folder}/{current_datetime}_parameters.csv"
+df.to_csv(csv_filename, index=False)
 
 # Specifies periodicity of visualization output
 for count in model.counts:
