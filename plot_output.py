@@ -1,3 +1,4 @@
+# run this script in the command line with $ python plot_output.py
 import os
 import numpy as np
 import matplotlib.pyplot as plt
