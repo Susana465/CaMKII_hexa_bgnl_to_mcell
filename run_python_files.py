@@ -1,3 +1,4 @@
+# Run this script in command line with $ python run_python_files.py
 import subprocess
 
 def run_script(script_path):
