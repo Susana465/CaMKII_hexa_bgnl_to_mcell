@@ -1,4 +1,3 @@
-# run this script in the command line with $ python plot_output.py
 # This script is to be run in command line as $ python plot_output.py
 import os
 import numpy as np
@@ -24,23 +23,27 @@ def plot_target_file(target_file):
         data = np.loadtxt(fname=target_filepath)
         data_new = np.delete(data, 0, 1)
 
-        plt.xlabel("Iterations")
-        plt.ylabel("Molecule count")
-        plt.title("Molecule counts through time")
-
-        plt.plot(data_new)
-
-        # Save the .png file using the name of the .gdat file
-        target_directory = os.path.dirname(target_filepath)
-        # extract the filename without extension from the target_filepath
-        target_filename_no_ext = os.path.splitext(os.path.basename(target_filepath))[0]
-        # use target_filename_no_ext to save the .png file using the same filename as the .gdat file but with a .png extension
-        plt.savefig(os.path.join(target_directory, f"{target_filename_no_ext}.png"), dpi=500)
-        plt.show()
-        # Notify the user about the saved .png file
-        print(f"Your plot has now been saved in {os.path.join(target_directory, f'{target_filename_no_ext}.png')}")
+        # Call the plot function
+        plot_data(data_new, target_filepath)
     else:
         print(f"File '{target_file}' not found in any directory containing 'run_'")
+
+def plot_data(data, target_filepath):
+    plt.xlabel("Iterations")
+    plt.ylabel("Molecule count")
+    plt.title("Molecule counts through time")
+
+    plt.plot(data)
+
+    # Save the .png file using the name of the .gdat file
+    target_directory = os.path.dirname(target_filepath)
+    # extract the filename without extension from the target_filepath
+    target_filename_no_ext = os.path.splitext(os.path.basename(target_filepath))[0]
+    # use target_filename_no_ext to save the .png file using the same filename as the .gdat file but with a .png extension
+    plt.savefig(os.path.join(target_directory, f"{target_filename_no_ext}.png"), dpi=500)
+    plt.show()
+    # Notify the user about the saved .png file
+    print(f"Your plot has now been saved in {os.path.join(target_directory, f'{target_filename_no_ext}.png')}")
 
 if __name__ == "__main__":
     target_file = input("Which .gdat file would you like to plot? ")
