@@ -18,7 +18,7 @@ begin parameters
     ITERATIONS 1.5e4
 
 	# Initial number of Ca molecules/cell
-  	Ca_i 10000
+  	Ca_i 1000
 	CaM_i 200
 	CaMKII_i 200  
 	PP1_i 0
