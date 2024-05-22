@@ -49,5 +49,5 @@ def plot_data(target_filepath):
     print(f"Your plot has been saved as {target_png_filepath}")
 
 if __name__ == "__main__":
-    target_file = input("Which .gdat file would you like to plot? ")
+    target_file = input("Which .gdat file would you like to plot? (add .gdat ending) ")
     plot_target_file(target_file)
