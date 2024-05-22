@@ -15,14 +15,14 @@ begin parameters
 	MCELL_REDEFINE_NA_um3 VOL_RXN # In MCell the units get multiplied by V_RXN so they stay the same
 
 	# number of iterations for MCell
-    ITERATIONS 1.5e4
+    ITERATIONS 3e4
 
 	# Initial number of Ca molecules/cell
   	Ca_i 10000
 	CaM_i 200
 	CaMKII_i 200  
-	PP1_i 0
-	NMDAR_i 40
+	PP1_i 100
+	NMDAR_i 300
 
     # R1 to R4:  
  	kon_CaCaM 1e+6/NA_um3   # Bimolecular rate constant for CaM-Ca binding (1/# 1/s)
@@ -52,6 +52,10 @@ begin parameters
 	# CaMKII_active (and unbound to CaM) binding to NMDARs
 	kon_CaMKII_NMDAR 3e5/NA_um3 #taken from 2nd_year PhD report
 	koff_CaMKII_NMDAR 0.284
+
+	# CaMKII_P (and unbound to CaM) binding to NMDARs
+	kon_CaMKII_P_NMDAR 2e6/NA_um3 #taken from 2nd_year PhD report
+	koff_CaMKII_P_NMDAR 0.03
 
 	# Units: volumes in um3
 	VolCP 0.50588 
@@ -121,6 +125,10 @@ begin reaction rules
 
 # CaMKII active can bind and unbind to NMDAR
 	CaMKII(active~1,cam,nmdar) + NMDAR(camkii) <-> CaMKII(active~1,cam,nmdar!1).NMDAR(camkii!1) kon_CaMKII_NMDAR, koff_CaMKII_NMDAR
+
+# CaMKII_P can bind and unbind to NMDAR ** q. does it matter if only one subunit is P, or should all subunits be P? how about active and P? look at notes from literature
+	CaMKII(T286~P,cam,nmdar) + NMDAR(camkii) <-> CaMKII(T286~P,cam,nmdar!1).NMDAR(camkii!1) kon_CaMKII_NMDAR, koff_CaMKII_NMDAR
+	
 end reaction rules
 
 begin observables
@@ -141,6 +149,7 @@ begin observables
 
 	Molecules NMDAR NMDAR(camkii)
 	Molecules NMDAR_CaMKII CaMKII(active~1,cam,nmdar!1).NMDAR(camkii!1)
+	Molecules NMDAR_CaMKII_P CaMKII(T286~P,cam,nmdar!1).NMDAR(camkii!1)
 end observables
 
 
