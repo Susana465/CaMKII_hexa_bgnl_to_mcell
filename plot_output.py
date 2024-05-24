@@ -31,8 +31,8 @@ def plot_data(target_filepath):
         header = f.readline().strip().split()[2:]
     
     plt.xlabel("Time")
-    plt.ylabel("Values")
-    plt.title("Data from .gdat file")
+    plt.ylabel("Molecule Count")
+    plt.title("Molecules interacting throughout time")
     
     for i, column in enumerate(data.T[1:], start=1):
         plt.plot(data[:, 0], column, label=header[i-1])

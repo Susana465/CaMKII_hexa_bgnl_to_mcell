@@ -111,29 +111,23 @@ begin reaction rules
 # ## DOCKED NEEDS TO BE ADDED OR NOT?
 	CaM(ca~4,camkii) + CaMKII(cam,T286~0,nmdar,active~1) <-> CaM(ca~4,camkii!1).CaMKII(cam!1,T286~0,nmdar,active~1) kon_cam_ca4_camkii, koff_cam_ca4_camkii
 
-# S306 -> isn't it a T? change
-# TO ADD: Calmodulin can bind to CaMKII if phosphorylated only if t306 is O, 112 line but with t306~0
-
 # CaMKII subunits can flicker between active or inactive. (CaM binds to active CaMKII only)
  	CaMKII(cam,T286~0,nmdar,active~0) <-> CaMKII(cam,T286~0,nmdar,active~1) kon_camkii_act, koff_camkii_inact
 
 # CaMKII phosphorylation
 # When CaMKII_CaM, neighbouring subunit, if bound to CaM, can P
-	#CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) k_pCaM4
+	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) k_pCaM4
 # When CaMKII_CaM_P, can phosphorylate neighbouring subunit
-  	#CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) k_pCaM4_P	
-
-	CaMKII(l!1,T286~0,active~1).CaMKII(r!1,active~1) -> CaMKII(l!1,T286~P,active~1).CaMKII(r!1,active~1) k_pCaM4 # what is the reaction rate?
+  	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) k_pCaM4_P	
 
 # CaMKII dephosphorylation
 	CaMKII(T286~P) + PP1 -> CaMKII(T286~0) + PP1 k_dephos_camkii_p 
 
-# CaMKII active can bind and unbind to NMDAR - calmodulin and nmdar receptor binding sites overlap? so binding of cam to camkii would prevent camkii binding to nmdars
+# CaMKII active can bind and unbind to NMDAR
 	CaMKII(active~1,cam,nmdar) + NMDAR(camkii) <-> CaMKII(active~1,cam,nmdar!1).NMDAR(camkii!1) kon_CaMKII_NMDAR, koff_CaMKII_NMDAR
 
-# what is needed is CaMKII to be active (not phosphorylated), only one subunit will be the requirement for this reaction. 
 # CaMKII_P can bind and unbind to NMDAR ** q. does it matter if only one subunit is P, or should all subunits be P? how about active and P? look at notes from literature
-	#CaMKII(T286~P,cam,nmdar) + NMDAR(camkii) <-> CaMKII(T286~P,cam,nmdar!1).NMDAR(camkii!1) kon_CaMKII_NMDAR, koff_CaMKII_NMDAR
+	CaMKII(T286~P,cam,nmdar) + NMDAR(camkii) <-> CaMKII(T286~P,cam,nmdar!1).NMDAR(camkii!1) kon_CaMKII_NMDAR, koff_CaMKII_NMDAR
 	
 end reaction rules
 
