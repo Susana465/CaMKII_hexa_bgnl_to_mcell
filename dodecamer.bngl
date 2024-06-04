@@ -111,8 +111,6 @@ begin reaction rules
 # ## DOCKED NEEDS TO BE ADDED OR NOT?
 	CaM(ca~4,camkii) + CaMKII(cam,T306~0,nmdar,active~1) <-> CaM(ca~4,camkii!1).CaMKII(cam!1,T306~0,nmdar,active~1) kon_cam_ca4_camkii, koff_cam_ca4_camkii
 
-# TO ADD: Calmodulin can bind to CaMKII if phosphorylated only if t306 is O, 112 line but with t306~0
-
 # CaMKII subunits can flicker between active or inactive. (CaM binds to active CaMKII only)
  	CaMKII(cam,T286~0,nmdar,active~0) <-> CaMKII(cam,T286~0,nmdar,active~1) kon_camkii_act, koff_camkii_inact
 
