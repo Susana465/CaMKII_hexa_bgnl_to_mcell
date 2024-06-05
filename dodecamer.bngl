@@ -47,7 +47,7 @@ begin parameters
 	# k_cat = (31/1.25)/60 # where do these numbers come from?
 	# K_m = 11*(NA*V) #uM 
 
-	k_dephos_camkii_p 2e1/NA_um3  # reaction number (8) on diss
+	k_dephos_camkii_p 2e1/NA_um3  # Pharris et al., number
 
 	# CaMKII_active (and unbound to CaM) binding to NMDARs
 	kon_CaMKII_NMDAR 3e5/NA_um3 #taken from 2nd_year PhD report
