@@ -31,17 +31,18 @@ begin parameters
 	koff_3Ca 7.476
 	koff_4Ca 25.783
 
-	# 5.1 CaMKII + CaM_Ca4 < - > CaMKII_CaM_Ca4
+	# 5.1 CaMKII + CaM_Ca4 < - > CaMKII_CaM_Ca4 (neeed to double check?)
 	kon_cam_ca4_camkii 4.2e+6/NA_um3  
 	koff_cam_ca4_camkii 2.5e-4
 
-    # CaMKII flicker active/inactive (from pharris?)
+    # CaMKII flicker active/inactive (from pharris et al.,)
     kon_camkii_act 2e+4
 	koff_camkii_inact 1e+7
 
 	# CaMKII phosphorylation
 	k_pCaM4 = 1e1/NA_um3 #0.96 #1/s #ref ordyan (1e5 in monomer model for susana's diss)
 	k_pCaM4_P = 1e1/NA_um3 # added different phosphorylation rxn rate to avoid duplication warning when running bngl
+	kon_T306_p 0.02 
 
 	# Dephosphorylation ordyan
 	# k_cat = (31/1.25)/60 # where do these numbers come from?
@@ -105,28 +106,37 @@ begin reaction rules
 #4  Ca + CaM_Ca3 < - > CaM_Ca4
 	CaM(ca~3,camkii) + Ca() <-> CaM(ca~4,camkii) kon_CaCaM, koff_4Ca
 
-# Saturated CaM_Ca4 binds to CaMKII ring, T306 needs to be unphosphorylated
-# 5.1 CaMKII + CaM_Ca4 < - > CaMKII_CaM 
-# This reaction will only start happening after flickering of CaMKII to active state (next reaction) happens. This is because CaMKII released into the system is initially active~0.
-# ## DOCKED NEEDS TO BE ADDED OR NOT?
-	CaM(ca~4,camkii) + CaMKII(cam,T306~0,nmdar,active~1) <-> CaM(ca~4,camkii!1).CaMKII(cam!1,T306~0,nmdar,active~1) kon_cam_ca4_camkii, koff_cam_ca4_camkii
-
-# CaMKII subunits can flicker between active or inactive. (CaM binds to active CaMKII only)
+# CaMKII subunits can flicker between active or inactive. (CaM binds to active CaMKII only, "once arm and hand are open")
  	CaMKII(cam,T286~0,nmdar,active~0) <-> CaMKII(cam,T286~0,nmdar,active~1) kon_camkii_act, koff_camkii_inact
 
-# CaMKII phosphorylation
+# 5.1 CaMKII + CaM_Ca4 < - > CaMKII_CaM 
+# Saturated CaM_Ca4 binds to CaMKII ring, T306 needs to be unphosphorylated
+# This reaction will only start happening after flickering of CaMKII to active state (next reaction) happens. This is because CaMKII released into the system is initially active~0.
+# ## DOCKED NEEDS TO BE ADDED OR NOT?
+	CaM(ca~4,camkii) + CaMKII(cam,T306~0,active~1) <-> CaM(ca~4,camkii!1).CaMKII(cam!1,T306~0,active~1) kon_cam_ca4_camkii, koff_cam_ca4_camkii
+
+# CaMKII T286 phosphorylation 
 # When CaMKII_CaM, neighbouring subunit, if bound to CaM, can P
 	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) k_pCaM4
+
 # When CaMKII_CaM_P, can phosphorylate neighbouring subunit
   	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) k_pCaM4_P	
 
-# If T286~P, a subunit may remain active even upon unbding of CaM
+# If T286~P, a subunit may remain active and phosphorylated even upon unbding of CaM
 	CaMKII(T286~P,cam!2,active~1).CaM(ca~4,camkii!2) -> CaMKII(T286~P,active~1) + CaM(ca~4,camkii) k_TBD
 
 # If two neighbouring subunits are active, one may autoP the other at T286
 	CaMKII(l!1,T286~0,active~1).CaMKII(r!1,active~1) -> CaMKII(l!1,T286~P,active~1).CaMKII(r!1,active~1) k_pCaM4 # what is the reaction rate?
 
-# CaMKII dephosphorylation. The presence of CaM would structurally impede PP action, so cam binding site needs to be free for PP desphosphorylation.
+# CaMKII T306 phosphorylation
+# If CaMKII_P (at T286) and unbound to CaM, it may auto_phosphorylate at T306, blocking subsequent rebinding of CaM
+	CaMKII(cam,T286~P,T306~0,active~1) -> CaMKII(cam,T286~P,T306~P,active~1) kon_T306_p
+# CaM binding to CaMKII with unphosphorylated T306 prevents phosphorylation of this residue
+# In other words, if CaMKII bound to CaM with t306~0, t306~p cannot happen. 
+
+# CaMKII dephosphorylation. 
+# The presence of CaM would structurally impede PP action, so cam binding site needs to be free for PP desphosphorylation.
+# This means that CaM binding protects CaMKII_P stateas PP1 cannot access it and dephospho otherwise.
 	CaMKII(T286~P,cam) + PP1 -> CaMKII(T286~0,cam) + PP1 k_dephos_camkii_p 
 
 # CaMKII active can bind and unbind to NMDAR - calmodulin and nmdar receptor binding sites overlap? so binding of cam to camkii would prevent camkii binding to nmdars
