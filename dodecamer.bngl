@@ -47,7 +47,7 @@ begin parameters
 	# k_cat = (31/1.25)/60 # where do these numbers come from?
 	# K_m = 11*(NA*V) #uM 
 
-	k_dephos_camkii_p 3e+3/NA_um3  # reaction number (8) on diss
+	k_dephos_camkii_p 2e1/NA_um3  # reaction number (8) on diss
 
 	# CaMKII_active (and unbound to CaM) binding to NMDARs
 	kon_CaMKII_NMDAR 3e5/NA_um3 #taken from 2nd_year PhD report
@@ -126,8 +126,8 @@ begin reaction rules
 # Added this reaction in discussion with Melanie but now can't see it make sense?
 	CaMKII(l!1,T286~0,active~1).CaMKII(r!1,active~1) -> CaMKII(l!1,T286~P,active~1).CaMKII(r!1,active~1) k_pCaM4 # what is the reaction rate?
 
-# CaMKII dephosphorylation
-	CaMKII(T286~P) + PP1 -> CaMKII(T286~0) + PP1 k_dephos_camkii_p 
+# CaMKII dephosphorylation. The presence of CaM would structurally impede PP action, so cam binding site needs to be free for PP desphosphorylation.
+	CaMKII(T286~P,cam) + PP1 -> CaMKII(T286~0,cam) + PP1 k_dephos_camkii_p 
 
 # CaMKII active can bind and unbind to NMDAR - calmodulin and nmdar receptor binding sites overlap? so binding of cam to camkii would prevent camkii binding to nmdars
 	CaMKII(active~1,cam,nmdar) + NMDAR(camkii) <-> CaMKII(active~1,cam,nmdar!1).NMDAR(camkii!1) kon_CaMKII_NMDAR, koff_CaMKII_NMDAR
