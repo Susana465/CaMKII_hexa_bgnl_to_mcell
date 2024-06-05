@@ -123,7 +123,7 @@ begin reaction rules
 # If T286~P, a subunit may remain active even upon unbding of CaM
 	CaMKII(T286~P,cam!2,active~1).CaM(ca~4,camkii!2) -> CaMKII(T286~P,active~1) + CaM(ca~4,camkii) k_TBD
 
-# Added this reaction in discussion with Melanie but now can't see it make sense?
+# If two neighbouring subunits are active, one may autoP the other at T286
 	CaMKII(l!1,T286~0,active~1).CaMKII(r!1,active~1) -> CaMKII(l!1,T286~P,active~1).CaMKII(r!1,active~1) k_pCaM4 # what is the reaction rate?
 
 # CaMKII dephosphorylation. The presence of CaM would structurally impede PP action, so cam binding site needs to be free for PP desphosphorylation.
