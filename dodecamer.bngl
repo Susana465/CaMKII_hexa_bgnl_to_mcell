@@ -35,7 +35,7 @@ begin parameters
 	kon_cam_ca4_camkii 4.2e+6/NA_um3  
 	koff_cam_ca4_camkii 2.5e-4
 
-    # CaMKII flicker active/inactive
+    # CaMKII flicker active/inactive (from pharris?)
     kon_camkii_act 2e+4
 	koff_camkii_inact 1e+7
 
@@ -105,7 +105,7 @@ begin reaction rules
 #4  Ca + CaM_Ca3 < - > CaM_Ca4
 	CaM(ca~3,camkii) + Ca() <-> CaM(ca~4,camkii) kon_CaCaM, koff_4Ca
 
-# Saturated CaM_Ca4 binds to CaMKII ring, no phosphorylation
+# Saturated CaM_Ca4 binds to CaMKII ring, T306 needs to be unphosphorylated
 # 5.1 CaMKII + CaM_Ca4 < - > CaMKII_CaM 
 # This reaction will only start happening after flickering of CaMKII to active state (next reaction) happens. This is because CaMKII released into the system is initially active~0.
 # ## DOCKED NEEDS TO BE ADDED OR NOT?
@@ -116,10 +116,14 @@ begin reaction rules
 
 # CaMKII phosphorylation
 # When CaMKII_CaM, neighbouring subunit, if bound to CaM, can P
-	#CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) k_pCaM4
+	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) k_pCaM4
 # When CaMKII_CaM_P, can phosphorylate neighbouring subunit
-  	#CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) k_pCaM4_P	
+  	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) k_pCaM4_P	
 
+# If T286~P, a subunit may remain active even upon unbding of CaM
+	CaMKII(T286~P,cam!2,active~1).CaM(ca~4,camkii!2) -> CaMKII(T286~P,active~1) + CaM(ca~4,camkii) k_TBD
+
+# Added this reaction in discussion with Melanie but now can't see it make sense?
 	CaMKII(l!1,T286~0,active~1).CaMKII(r!1,active~1) -> CaMKII(l!1,T286~P,active~1).CaMKII(r!1,active~1) k_pCaM4 # what is the reaction rate?
 
 # CaMKII dephosphorylation
