@@ -40,8 +40,8 @@ begin parameters
 	koff_camkii_inact 1e+7
 
 	# CaMKII phosphorylation
-	k_pCaM4 = 5.7e8/NA_um3 #0.96 #1/s #ref ordyan (1e5 in monomer model for susana's diss)
-	k_pCaM4_P = 1e6/NA_um3 # added different phosphorylation rxn rate to avoid duplication warning when running bngl
+	k_pCaM4 = 1e1/NA_um3 #0.96 #1/s #ref ordyan (1e5 in monomer model for susana's diss)
+	k_pCaM4_P = 1e1/NA_um3 # added different phosphorylation rxn rate to avoid duplication warning when running bngl
 
 	# Dephosphorylation ordyan
 	# k_cat = (31/1.25)/60 # where do these numbers come from?
