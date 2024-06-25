@@ -109,6 +109,8 @@ begin reaction rules
 
 # CaM rxn rate binding to phosphorylated CaMKII would be different than binding to CaMKII_P~0, do we need to specify this?
 
+# Right now CaM binding does not induce phosphorylation of CaMKII?
+
 # CaM unbinding from either P or unP CaMKII, above CaM can bind to CaMKII no matter the T286 P state, requirement is that it's active and unP at T306.
 # If T286~P, a subunit may remain active and phosphorylated even upon unbding of CaM
 # Specification of active~1 is not necessary, because if bound to CaM is active anyway.
