@@ -109,11 +109,8 @@ begin reaction rules
 
 # CaMKII T286 phosphorylation 
 # Initial enzyme activity of purified CaMKII requires the binding of both calcium and calmodulin.
-# When CaMKII_CaM, neighbouring subunit, if bound to CaM, can P
-	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) k_pCaM4
-
-# When CaMKII_CaM_P, can phosphorylate neighbouring subunit
-  	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,T286~P) k_pCaM4_P	
+# For the way this model is written, what is needed for T286 P is that CaMKII subunit and its eighbour are both active 
+# (no matter if bound to cam or nmdar in terms of writing down reaction - rule based dcdw)
 
 # If T286~P, a subunit may remain active and phosphorylated even upon unbding of CaM
 	CaMKII(T286~P,cam!2,active~1).CaM(ca~4,camkii!2) -> CaMKII(T286~P,active~1) + CaM(ca~4,camkii) k_TBD
