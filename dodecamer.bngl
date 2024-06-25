@@ -107,6 +107,8 @@ begin reaction rules
 
 	CaM(ca~4,camkii) + CaMKII(cam,T306~0,active~1) -> CaM(ca~4,camkii!1).CaMKII(cam!1,T306~0,active~1) kon_cam_ca4_camkii
 
+# CaM rxn rate binding to phosphorylated CaMKII would be different than binding to CaMKII_P~0, do we need to specify this?
+
 # CaM unbinding from either P or unP CaMKII, above CaM can bind to CaMKII no matter the T286 P state, requirement is that it's active and unP at T306.
 # If T286~P, a subunit may remain active and phosphorylated even upon unbding of CaM
 # Specification of active~1 is not necessary, because if bound to CaM is active anyway.
@@ -116,7 +118,7 @@ begin reaction rules
 	CaMKII(T286~0,cam!2).CaM(ca~4,camkii!2) -> CaMKII(T286~0) + CaM(ca~4,camkii) koff_cam_camkiiP0_TBD
 
 # CaMKII T286 phosphorylation 
-# For the way this model is written, what is needed for T286 P is that CaMKII subunit and its eighbour are both active 
+# For the way this model is written, what is needed for T286 P is that CaMKII subunit and its neighbour are both active 
 # (no matter if bound to cam or nmdar in terms of writing down reaction - rule based dcdw)
 # If two neighbouring subunits are active, one may autoP the other at T286
 	CaMKII(l!1,T286~0,active~1).CaMKII(r!1,active~1) -> CaMKII(l!1,T286~P,active~1).CaMKII(r!1,active~1) k_pCaM4 # what is the reaction rate?
