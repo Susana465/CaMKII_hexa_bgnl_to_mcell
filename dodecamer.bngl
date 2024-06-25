@@ -104,7 +104,7 @@ begin reaction rules
 # 5.1 CaMKII + CaM_Ca4 < - > CaMKII_CaM 
 # Saturated CaM_Ca4 binds to CaMKII ring, T306 needs to be unphosphorylated
 # This reaction will only start happening after flickering of CaMKII to active state (next reaction) happens. This is because CaMKII released into the system is initially active~0.
-# ## DOCKED NEEDS TO BE ADDED OR NOT?
+
 	CaM(ca~4,camkii) + CaMKII(cam,T306~0,active~1) <-> CaM(ca~4,camkii!1).CaMKII(cam!1,T306~0,active~1) kon_cam_ca4_camkii, koff_cam_ca4_camkii
 
 # CaMKII T286 phosphorylation 
