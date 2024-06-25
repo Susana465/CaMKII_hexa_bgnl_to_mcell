@@ -116,6 +116,7 @@ begin reaction rules
 	CaM(ca~4,camkii) + CaMKII(cam,T306~0,active~1) <-> CaM(ca~4,camkii!1).CaMKII(cam!1,T306~0,active~1) kon_cam_ca4_camkii, koff_cam_ca4_camkii
 
 # CaMKII T286 phosphorylation 
+# Initial enzyme activity of purified CaMKII requires the binding of both calcium and calmodulin.
 # When CaMKII_CaM, neighbouring subunit, if bound to CaM, can P
 	CaMKII(l!1,T286~0,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) -> CaMKII(l!1,T286~P,cam!2).CaM(ca~4,camkii!2).CaMKII(r!1,cam!+) k_pCaM4
 
@@ -139,6 +140,7 @@ begin reaction rules
 # This means that CaM binding protects CaMKII_P stateas PP1 cannot access it and dephospho otherwise.
 	CaMKII(T286~P,cam) + PP1 -> CaMKII(T286~0,cam) + PP1 k_dephos_camkii_p 
 
+# NMDAR/CaMKII binding
 # CaMKII active can bind and unbind to NMDAR - calmodulin and nmdar receptor binding sites overlap? so binding of cam to camkii would prevent camkii binding to nmdars
 	CaMKII(active~1,cam,nmdar) + NMDAR(camkii) <-> CaMKII(active~1,cam,nmdar!1).NMDAR(camkii!1) kon_CaMKII_NMDAR, koff_CaMKII_NMDAR
 
