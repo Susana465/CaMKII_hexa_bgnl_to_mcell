@@ -7,3 +7,6 @@ CaMKII subunits active/inactive flicker,kon_CaMKII_act,,,koff_CaMKII_inact,,
 "CaM binds to CaMKII. Saturated CaM_Ca4 binds to CaMKII(T306~0, active~1)",kon_CaM_Ca4_CaMKII,,,n/a,n/a,n/a
 CaM unbinds from CaMKII. Wether CaMKII(T286~P) or CaMKII(T286~0),n/a,n/a,n/a,koff_CaM_Ca4_CaMKII286_P,,
 ,n/a,n/a,n/a,koff_CaM_Ca4_CaMKII286_0,,
+CaMKII T286 phosphorylation,K_P_CaMKII286,,,,,
+CaMKII T306 phosphorylation,K_P_CaMKII306,,,,,
+CaMKII dephosphorylation by PP1,Kcat,,,,,
