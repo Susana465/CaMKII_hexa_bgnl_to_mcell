@@ -105,30 +105,39 @@ begin reaction rules
 # Saturated CaM_Ca4 binds to CaMKII ring, T306 needs to be unphosphorylated
 # This reaction will only start happening after flickering of CaMKII to active state (next reaction) happens. This is because CaMKII released into the system is initially active~0.
 
-	CaM(ca~4,camkii) + CaMKII(cam,T306~0,active~1) <-> CaM(ca~4,camkii!1).CaMKII(cam!1,T306~0,active~1) kon_cam_ca4_camkii, koff_cam_ca4_camkii
+	CaM(ca~4,camkii) + CaMKII(cam,T306~0,active~1) -> CaM(ca~4,camkii!1).CaMKII(cam!1,T306~0,active~1) kon_cam_ca4_camkii
+
+# CaM unbinding from either P or unP CaMKII, above CaM can bind to CaMKII no matter the T286 P state, requirement is that it's active and unP at T306.
+# If T286~P, a subunit may remain active and phosphorylated even upon unbding of CaM
+# Specification of active~1 is not necessary, because if bound to CaM is active anyway.
+	CaMKII(T286~P,cam!2).CaM(ca~4,camkii!2) -> CaMKII(T286~P) + CaM(ca~4,camkii) koff_cam_camkiiP_TBD
+
+# If T286~0, a subunit may remain active and unphosphorylated even upon unbding of CaM
+	CaMKII(T286~0,cam!2).CaM(ca~4,camkii!2) -> CaMKII(T286~0) + CaM(ca~4,camkii) koff_cam_camkiiP0_TBD
 
 # CaMKII T286 phosphorylation 
-# Initial enzyme activity of purified CaMKII requires the binding of both calcium and calmodulin.
 # For the way this model is written, what is needed for T286 P is that CaMKII subunit and its eighbour are both active 
 # (no matter if bound to cam or nmdar in terms of writing down reaction - rule based dcdw)
-
-# If T286~P, a subunit may remain active and phosphorylated even upon unbding of CaM
-	CaMKII(T286~P,cam!2,active~1).CaM(ca~4,camkii!2) -> CaMKII(T286~P,active~1) + CaM(ca~4,camkii) k_TBD
-
 # If two neighbouring subunits are active, one may autoP the other at T286
 	CaMKII(l!1,T286~0,active~1).CaMKII(r!1,active~1) -> CaMKII(l!1,T286~P,active~1).CaMKII(r!1,active~1) k_pCaM4 # what is the reaction rate?
 
 # CaMKII T306 phosphorylation
+# Note for future: not necessary but leaving for clarification.
 # If CaMKII_P (at T286) and unbound to CaM, it may auto_phosphorylate at T306, blocking subsequent rebinding of CaM
-	CaMKII(cam,T286~P,T306~0,active~1) -> CaMKII(cam,T286~P,T306~P,active~1) kon_T306_p
+#	CaMKII(cam,T286~P,T306~0,active~1) -> CaMKII(cam,T286~P,T306~P,active~1) kon_T306_p
+
+# If CaMKII active (whether due to T286P or bound to NMDAR) and unbound to CaM, it may auto_phosphorylate at T306, blocking subsequent rebinding of CaM
+	CaMKII(cam,T306~0,active~1) -> CaMKII(cam,T306~P,active~1) kon_T306_p
+
 # CaM binding to CaMKII with unphosphorylated T306 prevents phosphorylation of this residue
 # In other words, if CaMKII bound to CaM with t306~0, t306~p cannot happen. 
 
 # CaMKII dephosphorylation. 
 # The presence of CaM would structurally impede PP action, so cam binding site needs to be free for PP desphosphorylation.
-# This means that CaM binding protects CaMKII_P stateas PP1 cannot access it and dephospho otherwise.
-	CaMKII(T286~P,cam) + PP1 -> CaMKII(T286~0,cam) + PP1 k_dephos_camkii_p 
-
+# This means that CaM binding protects CaMKII_P state as PP1 cannot access it and dephospho otherwise.
+	CaMKII(T286~P,cam) + PP1 -> CaMKII(T286~0,cam) + PP1 k_dephos_camkii_p_T286 
+# CaMKII(T306~P, cam) not necessary to state cam unbound because cam will not be bound to camkii if T306P as stated in line 130
+	CaMKII(T306~P) + PP1 -> CaMKII(T306~0) + PP1 k_dephos_camkii_p_T306 
 # NMDAR/CaMKII binding
 # CaMKII active can bind and unbind to NMDAR - calmodulin and nmdar receptor binding sites overlap? so binding of cam to camkii would prevent camkii binding to nmdars
 	CaMKII(active~1,cam,nmdar) + NMDAR(camkii) <-> CaMKII(active~1,cam,nmdar!1).NMDAR(camkii!1) kon_CaMKII_NMDAR, koff_CaMKII_NMDAR
