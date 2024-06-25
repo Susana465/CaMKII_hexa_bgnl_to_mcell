@@ -30,7 +30,7 @@ def plot_data(target_filepath):
     with open(target_filepath, 'r') as f:
         header = f.readline().strip().split()[2:]
     
-    plt.xlabel("Time")
+    plt.xlabel("Time(s)")
     plt.ylabel("Molecule Count")
     plt.title("Molecules interacting throughout time")
     
