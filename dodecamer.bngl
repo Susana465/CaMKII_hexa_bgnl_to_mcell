@@ -139,8 +139,8 @@ begin reaction rules
 # CaMKII(T306~P, cam) not necessary to state cam unbound because cam will not be bound to camkii if T306P as stated in line 130
 	CaMKII(T306~P) + PP1 -> CaMKII(T306~0) + PP1 k_dephos_camkii_p_T306 
 # NMDAR/CaMKII binding
-# CaMKII active can bind and unbind to NMDAR - calmodulin and nmdar receptor binding sites overlap? so binding of cam to camkii would prevent camkii binding to nmdars
-	CaMKII(active~1,cam,nmdar) + NMDAR(camkii) <-> CaMKII(active~1,cam,nmdar!1).NMDAR(camkii!1) kon_CaMKII_NMDAR, koff_CaMKII_NMDAR
+# CaMKII active can bind and unbind to NMDAR - cam binding site and nmdar binding site don't overlap so cam can be bound to camkii
+	CaMKII(active~1,nmdar) + NMDAR(camkii) <-> CaMKII(active~1,nmdar!1).NMDAR(camkii!1) kon_CaMKII_NMDAR, koff_CaMKII_NMDAR
 
 # what is needed is CaMKII to be active (not phosphorylated), only one subunit will be the requirement for this reaction. 
 # CaMKII_P can bind and unbind to NMDAR ** q. does it matter if only one subunit is P, or should all subunits be P? how about active and P? look at notes from literature
