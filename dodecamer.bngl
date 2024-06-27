@@ -31,8 +31,8 @@ begin parameters
 	koff_3Ca 7.476
 	koff_4Ca 25.783
 
-	# 5.1 CaMKII + CaM_Ca4 < - > CaMKII_CaM_Ca4 (neeed to double check?)
-	kon_cam_ca4_camkii 4.2e6/NA_um3  
+	# 5.1 CaMKII + CaM_Ca4  -> CaMKII_CaM_Ca4 (neeed to double check?)
+	kon_cam_ca4_camkii 4.2e6 
 	koff_cam_ca4_camkii 2.5e-4
 
     # CaMKII flicker active/inactive (from pharris et al.,)
