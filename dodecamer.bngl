@@ -132,8 +132,7 @@ begin reaction rules
 #	CaMKII(cam,T286~P,T306~0,open~1) -> CaMKII(cam,T286~P,T306~P,open~1) kon_T306_p
 
 # If CaMKII open, and T286~P, then t306 can become P, rendering subunit into an closed state. Once T306~P, t286 may or may not remain P, it is not a necessary condition so we leave it unspecified. 
-	CaMKII(cam,T306~0,T286~P,open~1) -> CaMKII(cam,T306~P,T286~P,open~0) kon_T306_p
-	CaMKII(cam,T306~0,T286~P,open~1) -> CaMKII(cam,T306~P,T286~0,open~0) kon_T306_p
+	CaMKII(cam,T306~0,T286~P,open~1) -> CaMKII(cam,T306~P,open~0) kon_T306_pp
 
 # CaM binding to CaMKII with unphosphorylated T306 prevents phosphorylation of this residue
 # In other words, if CaMKII bound to CaM with t306~0, t306~p cannot happen. 
