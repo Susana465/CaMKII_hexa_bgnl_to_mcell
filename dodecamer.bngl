@@ -35,7 +35,7 @@ begin parameters
 	kon_cam_ca4_camkii 4.2e6/NA_um3 
 	koff_cam_ca4_camkii 2.5e-4
 
-    # CaMKII flicker active/inactive (from pharris et al.,)
+    # CaMKII flicker open/closed (from pharris et al.,)
     kon_camkii_act 2e4
 	koff_camkii_inact 1e7
 
@@ -50,7 +50,7 @@ begin parameters
 
 	k_dephos_camkii_p 2e1/NA_um3  # Pharris et al., number
 
-	# CaMKII_active (and unbound to CaM) binding to NMDARs
+	# CaMKII_open (and unbound to CaM) binding to NMDARs
 	kon_CaMKII_NMDAR 3e5/NA_um3 #taken from 2nd_year PhD report
 	koff_CaMKII_NMDAR 0.284
 
@@ -73,7 +73,7 @@ begin molecule types
   Ca()
   PP1()
   CaM(ca~0~1~2~3~4,camkii)
-  CaMKII(active~0~1,T286~0~P,T306~0~P,cam,nmdar,l,r,c)
+  CaMKII(open~0~1,T286~0~P,T306~0~P,cam,nmdar,l,r,c)
   NMDAR(camkii)
 end molecule types
 
@@ -81,7 +81,7 @@ begin species
 @CP:Ca() Ca_i
 @CP:CaM(ca~0,camkii) CaM_i
 # CaMKII dodecamer: CaMKII_i
-@CP:CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!6,r!1,c!13).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!1,r!2,c!14).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!2,r!3,c!15).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!3,r!4,c!16).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!4,r!5,c!17).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!5,r!6,c!18).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!12,r!7,c!13).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!7,r!8,c!14).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!8,r!9,c!15).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!9,r!10,c!16).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!10,r!11,c!17).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!11,r!12,c!18) CaMKII_i
+@CP:CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!6,r!1,c!13).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!1,r!2,c!14).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!2,r!3,c!15).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!3,r!4,c!16).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!4,r!5,c!17).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!5,r!6,c!18).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!12,r!7,c!13).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!7,r!8,c!14).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!8,r!9,c!15).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!9,r!10,c!16).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!10,r!11,c!17).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!11,r!12,c!18) CaMKII_i
 
 @CP:PP1() PP1_i
 @PM:NMDAR(camkii) NMDAR_i
@@ -98,41 +98,41 @@ begin reaction rules
 #4  Ca + CaM_Ca3 < - > CaM_Ca4
 	CaM(ca~3,camkii) + Ca() <-> CaM(ca~4,camkii) kon_CaCaM, koff_4Ca
 
-# CaMKII subunits can flicker between active or inactive. (CaM binds to active CaMKII only, "once arm and hand are open")
- 	CaMKII(cam,T286~0,nmdar,active~0) <-> CaMKII(cam,T286~0,nmdar,active~1) kon_camkii_act, koff_camkii_inact
+# CaMKII subunits can flicker between open or closed. (CaM binds to open CaMKII only, "once arm and hand are open")
+ 	CaMKII(cam,T286~0,nmdar,open~0) <-> CaMKII(cam,T286~0,nmdar,open~1) kon_camkii_act, koff_camkii_inact
 
 # 5.1 CaMKII + CaM_Ca4 < - > CaMKII_CaM 
 # Saturated CaM_Ca4 binds to CaMKII ring, T306 needs to be unphosphorylated
-# This reaction will only start happening after flickering of CaMKII to active state (next reaction) happens. 
-# This is because CaMKII released into the system is initially active~0.
+# This reaction will only start happening after flickering of CaMKII to open state (next reaction) happens. 
+# This is because CaMKII released into the system is initially open~0.
 
-	CaM(ca~4,camkii) + CaMKII(cam,T306~0,active~1) -> CaM(ca~4,camkii!1).CaMKII(cam!1,T306~0,active~1) kon_cam_ca4_camkii
+	CaM(ca~4,camkii) + CaMKII(cam,T306~0,open~1) -> CaM(ca~4,camkii!1).CaMKII(cam!1,T306~0,open~1) kon_cam_ca4_camkii
 
 # CaM rxn rate binding to phosphorylated CaMKII would be different than binding to CaMKII_P~0, do we need to specify this?
 
 # Right now CaM binding does not induce phosphorylation of CaMKII?
 
-# CaM unbinding from either P or unP CaMKII, above CaM can bind to CaMKII no matter the T286 P state, requirement is that it's active and unP at T306.
-# If T286~P, a subunit may remain active and phosphorylated even upon unbding of CaM
-# Specification of active~1 is not necessary, because if bound to CaM is active anyway.
+# CaM unbinding from either P or unP CaMKII, above CaM can bind to CaMKII no matter the T286 P state, requirement is that it's open and unP at T306.
+# If T286~P, a subunit may remain open and phosphorylated even upon unbding of CaM
+# Specification of open~1 is not necessary, because if bound to CaM is open anyway.
 	CaMKII(T286~P,cam!2).CaM(ca~4,camkii!2) -> CaMKII(T286~P) + CaM(ca~4,camkii) koff_cam_camkiiP_TBD
 
-# If T286~0, a subunit may remain active and unphosphorylated even upon unbding of CaM (i predict there wont be much of this? depening on rxn rate, but once camkii active, it prefers to be P?)
+# If T286~0, a subunit may remain open and unphosphorylated even upon unbding of CaM (i predict there wont be much of this? depening on rxn rate, but once camkii open, it prefers to be P?)
 	CaMKII(T286~0,cam!2).CaM(ca~4,camkii!2) -> CaMKII(T286~0) + CaM(ca~4,camkii) koff_cam_camkiiP0_TBD
 
 # CaMKII T286 phosphorylation 
-# For the way this model is written, what is needed for T286 P is that CaMKII subunit and its neighbour are both active 
+# For the way this model is written, what is needed for T286 P is that CaMKII subunit and its neighbour are both open 
 # (no matter if bound to cam or nmdar in terms of writing down reaction - rule based dcdw)
-# If two neighbouring subunits are active, one may autoP the other at T286
-	CaMKII(l!1,T286~0,active~1).CaMKII(r!1,active~1) -> CaMKII(l!1,T286~P,active~1).CaMKII(r!1,active~1) k_pCaM4 # what is the reaction rate?
+# If two neighbouring subunits are open, one may autoP the other at T286
+	CaMKII(l!1,T286~0,open~1).CaMKII(r!1,open~1) -> CaMKII(l!1,T286~P,open~1).CaMKII(r!1,open~1) k_pCaM4 # what is the reaction rate?
 
 # CaMKII T306 phosphorylation
 # Note for future: this rxn is not necessary to have in the model as it's included in next reaction, but leaving for clarification.
 # If CaMKII_P (at T286) and unbound to CaM, it may auto_phosphorylate at T306, blocking subsequent rebinding of CaM
-#	CaMKII(cam,T286~P,T306~0,active~1) -> CaMKII(cam,T286~P,T306~P,active~1) kon_T306_p
+#	CaMKII(cam,T286~P,T306~0,open~1) -> CaMKII(cam,T286~P,T306~P,open~1) kon_T306_p
 
-# If CaMKII active, and T286~P, then t306 can become P, rendering subunit into an inactive state. Once T306~P, t286 may or may not remain P, it is not a necessary condition so we leave it unspecified. 
-	CaMKII(cam,T306~0,T286~P,active~1) -> CaMKII(cam,T306~P,T286~P,active~0) kon_T306_p
+# If CaMKII open, and T286~P, then t306 can become P, rendering subunit into an closed state. Once T306~P, t286 may or may not remain P, it is not a necessary condition so we leave it unspecified. 
+	CaMKII(cam,T306~0,T286~P,open~1) -> CaMKII(cam,T306~P,T286~P,open~0) kon_T306_p
 
 # CaM binding to CaMKII with unphosphorylated T306 prevents phosphorylation of this residue
 # In other words, if CaMKII bound to CaM with t306~0, t306~p cannot happen. 
@@ -144,11 +144,11 @@ begin reaction rules
 # CaMKII(T306~P, cam) not necessary to state cam unbound because cam will not be bound to camkii if T306P as stated in line 130
 	CaMKII(T306~P) + PP1 -> CaMKII(T306~0) + PP1 k_dephos_camkii_p_T306 
 # NMDAR/CaMKII binding
-# CaMKII active can bind and unbind to NMDAR - cam binding site and nmdar binding site don't overlap so cam can be bound to camkii
-	CaMKII(active~1,nmdar) + NMDAR(camkii) <-> CaMKII(active~1,nmdar!1).NMDAR(camkii!1) kon_CaMKII_NMDAR, koff_CaMKII_NMDAR
+# CaMKII open can bind and unbind to NMDAR - cam binding site and nmdar binding site don't overlap so cam can be bound to camkii
+	CaMKII(open~1,nmdar) + NMDAR(camkii) <-> CaMKII(open~1,nmdar!1).NMDAR(camkii!1) kon_CaMKII_NMDAR, koff_CaMKII_NMDAR
 
-# what is needed is CaMKII to be active (not phosphorylated), only one subunit will be the requirement for this reaction. 
-# CaMKII_P can bind and unbind to NMDAR ** q. does it matter if only one subunit is P, or should all subunits be P? how about active and P? look at notes from literature
+# what is needed is CaMKII to be open (not phosphorylated), only one subunit will be the requirement for this reaction. 
+# CaMKII_P can bind and unbind to NMDAR ** q. does it matter if only one subunit is P, or should all subunits be P? how about open and P? look at notes from literature
 	#CaMKII(T286~P,cam,nmdar) + NMDAR(camkii) <-> CaMKII(T286~P,cam,nmdar!1).NMDAR(camkii!1) kon_CaMKII_NMDAR, koff_CaMKII_NMDAR
 	
 end reaction rules
@@ -159,18 +159,18 @@ begin observables
 	Molecules CaM_Ca2 CaM(ca~2,camkii)
 	Molecules CaM_Ca3 CaM(ca~3,camkii)
 	Molecules CaM_Ca4 CaM(ca~4,camkii)
-	Molecules CaMKII_CaM_Ca4 CaM(ca~4,camkii!1).CaMKII(cam!1,T286~0,nmdar,active~1)
-	Species CaMKII CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!6,r!1,c!13).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!1,r!2,c!14).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!2,r!3,c!15).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!3,r!4,c!16).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!4,r!5,c!17).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!5,r!6,c!18).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!12,r!7,c!13).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!7,r!8,c!14).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!8,r!9,c!15).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!9,r!10,c!16).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!10,r!11,c!17).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!11,r!12,c!18)
+	Molecules CaMKII_CaM_Ca4 CaM(ca~4,camkii!1).CaMKII(cam!1,T286~0,nmdar,open~1)
+	Species CaMKII CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!6,r!1,c!13).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!1,r!2,c!14).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!2,r!3,c!15).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!3,r!4,c!16).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!4,r!5,c!17).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!5,r!6,c!18).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!12,r!7,c!13).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!7,r!8,c!14).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!8,r!9,c!15).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!9,r!10,c!16).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!10,r!11,c!17).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!11,r!12,c!18)
 
-	# Molecules CaMKII_inactive CaMKII(cam,T286~0,active~0)
-	#Molecules CaMKII_ring_inactive CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!6,r!1,c).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!1,r!2,c).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!2,r!3,c).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!3,r!4,c).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!4,r!5,c).CaMKII(cam,nmdar,T286~0,T306~0,active~0,l!5,r!6,c)
-    Molecules CaMKII_active CaMKII(T286~0,active~1)
-	#Molecules CaMKII_ring_active CaMKII(active~1,l!6,r!1,c).CaMKII(active~1,l!1,r!2,c).CaMKII(active~1,l!2,r!3,c).CaMKII(active~1,l!3,r!4,c).CaMKII(active~1,l!4,r!5,c).CaMKII(active~1,l!5,r!6,c)
-	#Molecules CaMKII_active_pairs CaMKII(T286~0,active~1).CaMKII(T286~0,active~1)
+	# Molecules CaMKII_closed CaMKII(cam,T286~0,open~0)
+	#Molecules CaMKII_ring_closed CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!6,r!1,c).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!1,r!2,c).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!2,r!3,c).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!3,r!4,c).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!4,r!5,c).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!5,r!6,c)
+    Molecules CaMKII_open CaMKII(T286~0,open~1)
+	#Molecules CaMKII_ring_open CaMKII(open~1,l!6,r!1,c).CaMKII(open~1,l!1,r!2,c).CaMKII(open~1,l!2,r!3,c).CaMKII(open~1,l!3,r!4,c).CaMKII(open~1,l!4,r!5,c).CaMKII(open~1,l!5,r!6,c)
+	#Molecules CaMKII_open_pairs CaMKII(T286~0,open~1).CaMKII(T286~0,open~1)
 	Molecules CaMKII_P CaMKII(T286~P)
 
 	Molecules NMDAR NMDAR(camkii)
-	Molecules NMDAR_CaMKII CaMKII(active~1,cam,nmdar!1).NMDAR(camkii!1)
+	Molecules NMDAR_CaMKII CaMKII(open~1,cam,nmdar!1).NMDAR(camkii!1)
 	Molecules NMDAR_CaMKII_P CaMKII(T286~P,cam,nmdar!1).NMDAR(camkii!1)
 end observables
 
