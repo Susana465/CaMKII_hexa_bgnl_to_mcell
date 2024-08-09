@@ -133,7 +133,8 @@ begin reaction rules
 #	CaMKII(cam,T286~P,T306~0,open~1) -> CaMKII(cam,T286~P,T306~P,open~1) k_P_CaMKII306
 
 # If CaMKII open, and T286~P, then t306 can become P, rendering subunit into an closed state. Once T306~P, t286 may or may not remain P, it is not a necessary condition so we leave it unspecified. 
-	CaMKII(cam,T306~0,T286~P,open~1) -> CaMKII(cam,T306~P,open~0) k_P_CaMKII306
+# CaMKII T306 P cannot happen if bound to NMDAR, so there is the condition that for camkii t306 p to happen, nmdar site needs to be unbound. 
+	CaMKII(cam,nmdar,T306~0,T286~P,open~1) -> CaMKII(cam,nmdar,T306~P,open~0) k_P_CaMKII306
 
 # CaM binding to CaMKII with unphosphorylated T306 prevents phosphorylation of this residue
 # In other words, if CaMKII bound to CaM with t306~0, t306~p cannot happen. 
@@ -144,6 +145,7 @@ begin reaction rules
 	CaMKII(T286~P,cam) + PP1 -> CaMKII(T286~0,cam) + PP1 k_cat 
 # CaMKII(T306~P, cam) not necessary to state cam unbound because cam will not be bound to camkii if T306P as stated in line 130
 	CaMKII(T306~P) + PP1 -> CaMKII(T306~0) + PP1 k_cat 
+
 # NMDAR/CaMKII binding
 # CaMKII open can bind and unbind to NMDAR - cam binding site and nmdar binding site don't overlap so cam can be bound to camkii
 	CaMKII(open~1,nmdar) + NMDAR(camkii) <-> CaMKII(open~1,nmdar!1).NMDAR(camkii!1) kon_CaMKII_NMDAR, koff_CaMKII_NMDAR
