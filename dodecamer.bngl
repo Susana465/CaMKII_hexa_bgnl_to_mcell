@@ -106,6 +106,8 @@ begin reaction rules
 # This reaction will only start happening after flickering of CaMKII to open state (next reaction) happens. 
 # This is because CaMKII released into the system is initially open~0.
 
+# CaM binding affinity will be different depending on whether camkii is phosphorylated or not, should specify this for the forward reaction as well as for dissociation
+
 	CaM(ca~4,camkii) + CaMKII(cam,T306~0,open~1) -> CaM(ca~4,camkii!1).CaMKII(cam!1,T306~0,open~1) kon_cam_ca4_camkii
 
 # CaM rxn rate binding to phosphorylated CaMKII would be different than binding to CaMKII_P~0, do we need to specify this?
@@ -132,7 +134,7 @@ begin reaction rules
 #	CaMKII(cam,T286~P,T306~0,open~1) -> CaMKII(cam,T286~P,T306~P,open~1) kon_T306_p
 
 # If CaMKII open, and T286~P, then t306 can become P, rendering subunit into an closed state. Once T306~P, t286 may or may not remain P, it is not a necessary condition so we leave it unspecified. 
-	CaMKII(cam,T306~0,T286~P,open~1) -> CaMKII(cam,T306~P,open~0) kon_T306_pp
+	CaMKII(cam,T306~0,T286~P,open~1) -> CaMKII(cam,T306~P,open~0) kon_T306_p
 
 # CaM binding to CaMKII with unphosphorylated T306 prevents phosphorylation of this residue
 # In other words, if CaMKII bound to CaM with t306~0, t306~p cannot happen. 
