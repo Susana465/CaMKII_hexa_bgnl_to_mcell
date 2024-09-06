@@ -88,7 +88,7 @@ if 'ITERATIONS' not in globals():
 
 # Total_Iterations if not defined explicitly default to 1e6
 model.config.total_iterations = ITERATIONS
-model.config.time_step = 1e-5
+model.config.time_step = 1e-3
 
 model.config.partition_dimension = 1.5 # 1.5 was before
 model.config.subpartition_dimension = 0.05
