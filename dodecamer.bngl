@@ -15,7 +15,7 @@ begin parameters
 	MCELL_REDEFINE_NA_um3 VOL_RXN # In MCell the units get multiplied by V_RXN so they stay the same
 
 	# number of iterations for MCell
-    ITERATIONS 5e3
+    ITERATIONS 1.5e4
 
 	# Initial number of Ca molecules/cell
   	Ca_i 10000 
@@ -104,6 +104,7 @@ begin reaction rules
 	CaM(ca~3,camkii) + Ca() <-> CaM(ca~4,camkii) kon_4_CaCaM, koff_4CaCaM
 
 # CaMKII subunits can flicker between open or closed. (CaM binds to open CaMKII only, "once arm and hand are open")
+# Is T286~0 a requirement, why? can it not flicker if its P?
  	CaMKII(cam,T286~0,nmdar,open~0) <-> CaMKII(cam,T286~0,nmdar,open~1) kon_camkii_act, koff_camkii_inact
 
 # 5.1 CaMKII + CaM_Ca4 < - > CaMKII_CaM 
