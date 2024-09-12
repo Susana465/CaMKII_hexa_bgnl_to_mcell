@@ -15,7 +15,7 @@ begin parameters
 	MCELL_REDEFINE_NA_um3 VOL_RXN # In MCell the units get multiplied by V_RXN so they stay the same
 
 	# number of iterations for MCell
-    ITERATIONS 1.5e4
+    ITERATIONS 1e5
 
 	# Initial number of Ca molecules/cell
   	Ca_i 10000 
@@ -30,7 +30,7 @@ begin parameters
 	kon_3_CaCaM 2.14e7/NA_um3
 	kon_4_CaCaM 1.10e8/NA_um3
 
-	koff_1CaCaM 1.04e3   # Unimolecular rate constant for CaM_Ca unbinding (1/s)
+	koff_1CaCaM 2.04e3   # Unimolecular rate constant for CaM_Ca unbinding (1/s)
 	koff_2CaCaM 3.9e-1
 	koff_3CaCaM 7.42e2
 	koff_4CaCaM 9.8e2
