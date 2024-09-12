@@ -35,15 +35,15 @@ begin parameters
 	koff_3CaCaM 7.42e2
 	koff_4CaCaM 9.8e2
 
-	# 5.1 CaMKII + CaM_Ca4  -> CaMKII_CaM_Ca4 (neeed to double check?)
+    # R5 CaMKII flicker open/closed (from pharris et al.,)
+    kon_camkii_open 2e4
+	koff_camkii_close 1e7
+
+	# R6 CaMKII + CaM_Ca4  -> CaMKII_CaM_Ca4
 	kon_cam_ca4_camkii 0 #4.2e6/NA_um3 
 	koff_cam_ca4_camkii 0 #2.5e-4
 	koff_CaM_Ca4_CaMKII286_P 0 #1.95
 	koff_CaM_Ca4_CaMKII286_0 0 #
-
-    # CaMKII flicker open/closed (from pharris et al.,)
-    kon_camkii_act 0 #2e4
-	koff_camkii_inact 0 #1e7
 
 	# CaMKII phosphorylation
 	k_P_CaMKII286 0 #1e1/NA_um3 #0.96 #1/s #ref ordyan (1e5 in monomer model for susana's diss)
@@ -173,6 +173,8 @@ begin observables
 	Molecules CaM_Ca2 CaM(ca~2,camkii)
 	Molecules CaM_Ca3 CaM(ca~3,camkii)
 	Molecules CaM_Ca4 CaM(ca~4,camkii)
+	Molecules CaMKII_open CaMKII(open~1)
+	Molecules CaMKII_closed CaMKII(open~0)
 
 	#Molecules CaMKII_CaM_Ca4 CaM(ca~4,camkii!1).CaMKII(cam!1) # all of camkii_ca4
 
