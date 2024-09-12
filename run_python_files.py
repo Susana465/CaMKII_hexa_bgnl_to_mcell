@@ -6,7 +6,7 @@ def run_script(script_path):
 
 def main():
     # Specify the path to your Python script
-    script_path = "mcell_dodecamer.py"
+    script_path = "prepare_run_files.py"
     
     # Run the script
     run_script(script_path)
