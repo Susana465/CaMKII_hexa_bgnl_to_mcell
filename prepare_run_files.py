@@ -45,11 +45,11 @@ mcell_param_file = "mcell_params.py"
 run_folder, timestamp = prepare_out_folder("data_output", model.config.seed, [bngl_file, mcell_param_file])
 
 # Save viz_data under timestamped folder
-viz_output = m.VizOutput(
-    os.path.join(run_folder, f"viz_data/Scene_"),
-    every_n_timesteps= 100
-    )
-model.add_viz_output(viz_output)
+# viz_output = m.VizOutput(
+#     os.path.join(run_folder, f"viz_data/Scene_"),
+#     every_n_timesteps= 100
+#     )
+# model.add_viz_output(viz_output)
 
 # Load copied bngl file and save it
 model.load_bngl(
@@ -93,7 +93,7 @@ model.config.total_iterations = ITERATIONS
 # Initialize, export, and run the model
 model.initialize()
 
-model.export_data_model()
+#model.export_data_model()
 
 model.run_iterations(ITERATIONS)
 
