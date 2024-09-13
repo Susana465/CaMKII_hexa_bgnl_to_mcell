@@ -117,9 +117,9 @@ begin reaction rules
 
 # CaM binding affinity will be different depending on whether camkii is phosphorylated or not, should specify this for the forward reaction as well as for dissociation
 
-	CaM(ca~4,camkii) + CaMKII(cam,T286~0, T306~0,open~1) -> CaM(ca~4,camkii!1).CaMKII(cam!1,T286~0,T306~0,open~1) kon_cam_ca4_camkii
+	CaM(ca~4,camkii) + CaMKII(cam,T286~0,T306~0,open~1) -> CaM(ca~4,camkii!1).CaMKII(cam!1,T286~0,T306~0,open~1) kon_CaM_Ca4_CaMKII286_0
 
-	CaM(ca~4,camkii) + CaMKII(cam,T286~P, T306~0,open~1) -> CaM(ca~4,camkii!1).CaMKII(cam!1,T286~P,T306~0,open~1) kon_cam_ca4_camkii
+	CaM(ca~4,camkii) + CaMKII(cam,T286~P,T306~0,open~1) -> CaM(ca~4,camkii!1).CaMKII(cam!1,T286~P,T306~0,open~1) kon_CaM_Ca4_CaMKII286_P
 
 # CaM rxn rate binding to phosphorylated CaMKII would be different than binding to CaMKII_P~0, do we need to specify this? 
 # there isnt much of a difference between rates of kon for camkii p and camkii not p 
@@ -181,9 +181,30 @@ begin observables
 	# Molecules CaMKII_open CaMKII(open~1)
 	# Molecules CaMKII_closed CaMKII(open~0)
 
-	#Molecules CaMKII_CaM_Ca4 CaM(ca~4,camkii!1).CaMKII(cam!1) # all of camkii_ca4
+	# All of camkii_ca4
+	Molecules CaMKII_CaM_Ca4 CaM(ca~4,camkii!1).CaMKII(cam!1)
+	# Of which,
 
-	#Molecules CaMKII_CaM_Ca4_P0 CaM(ca~4,camkii!1).CaMKII(cam!1,T286~0,T306~0,nmdar)
+	# this many are T286~0,T306~0 
+	Molecules CaMKII_CaM_Ca4_00 CaM(ca~4,camkii!1).CaMKII(cam!1,T286~0,T306~0)
+	# this many are T286~1,T306~0
+	Molecules CaMKII_CaM_Ca4_T286P1 CaM(ca~4,camkii!1).CaMKII(cam!1,T286~P,T306~0)
+	# this many are T286~1,T306~1
+	Molecules CaMKII_CaM_Ca4_PP CaM(ca~4,camkii!1).CaMKII(cam!1,T286~P,T306~P)
+	# this many are T286~0,T306~1
+	Molecules CaMKII_CaM_Ca4_T306P1 CaM(ca~4,camkii!1).CaMKII(cam!1,T286~0,T306~P)
+
+	# All of CaMKII_T286P no matter state of T306
+	Molecules CaMKII_T286P CaMKII(T286~P)
+
+	# # The total of these 2 below should equal total of CaMKII_T286P
+	# # Number of CaMKII(T286~P,T306~0)
+	# Molecules CaMKII_T286P1 CaMKII(T286~P,T306~0)
+	# # Number of CaMKII(T286~P,T306~P)
+	# Molecules CaMKII_P2 CaMKII(T286~P,T306~1)
+
+	# All of CaMKII_T306P no matter state of T286
+	Molecules CaMKII_T306P CaMKII(T306~P)
 
 	#Species CaMKII_free_closed_P0 CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!6,r!1,c!13).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!1,r!2,c!14).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!2,r!3,c!15).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!3,r!4,c!16).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!4,r!5,c!17).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!5,r!6,c!18).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!12,r!7,c!13).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!7,r!8,c!14).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!8,r!9,c!15).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!9,r!10,c!16).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!10,r!11,c!17).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!11,r!12,c!18)
 
