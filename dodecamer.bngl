@@ -15,7 +15,7 @@ begin parameters
 	MCELL_REDEFINE_NA_um3 VOL_RXN # In MCell the units get multiplied by V_RXN so they stay the same
 
 	# number of iterations for MCell
-    ITERATIONS 1e5
+    ITERATIONS 1e7
 
 	# Initial number of Ca molecules/cell
   	Ca_i 10000 
@@ -41,12 +41,12 @@ begin parameters
 
 	# R6 CaMKII + CaM_Ca4  -> CaMKII_CaM_Ca4
 	# kon_cam_ca4_camkii 0 #4.2e6/NA_um3 not in use for now as does not differ between P states of camkii.
-	kon_CaM_Ca4_CaMKII286_0 1.5e8 # Meyer et al., 1992
-	kon_CaM_Ca4_CaMKII286_P 5e7 # Meyer et al., 1992
+	kon_CaM_Ca4_CaMKII286_0 1.5e8/0.0002 # Meyer et al., 1992
+	kon_CaM_Ca4_CaMKII286_P 5e7/0.0002 # Meyer et al., 1992
 
-	koff_cam_ca4_camkii 0 #2.5e-4
-	koff_CaM_Ca4_CaMKII286_0 1e3 # Meyer et al., 1992
-	koff_CaM_Ca4_CaMKII286_P 0.46 # Meyer et al., 1992
+	# koff_cam_ca4_camkii 0 #2.5e-4
+	koff_CaM_Ca4_CaMKII286_0 1e3/0.0002 # Meyer et al., 1992
+	koff_CaM_Ca4_CaMKII286_P 0.46/0.0002 # Meyer et al., 1992
 
 	# CaMKII phosphorylation
 	k_P_CaMKII286 0.96 # Ordyan et al., 2020
