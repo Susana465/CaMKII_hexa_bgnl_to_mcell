@@ -19,9 +19,9 @@ begin parameters
 
 	# Initial number of Ca molecules/cell
   	Ca_i 1000 
-	CaM_i 200
-	CaMKII_i 200
-	PP1_i 100
+	CaM_i 290
+	CaMKII_i 60
+	PP1_i 12
 	NMDAR_i 30
 
     # R1 to R4:  
@@ -89,8 +89,8 @@ begin species
 @CP:Ca() Ca_i
 @CP:CaM(ca~0,camkii) CaM_i
 # CaMKII dodecamer: CaMKII_i
-@CP:CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!6,r!1,c!13).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!1,r!2,c!14).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!2,r!3,c!15).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!3,r!4,c!16).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!4,r!5,c!17).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!5,r!6,c!18).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!12,r!7,c!13).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!7,r!8,c!14).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!8,r!9,c!15).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!9,r!10,c!16).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!10,r!11,c!17).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!11,r!12,c!18) CaMKII_i
-
+# @CP:CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!6,r!1,c!13).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!1,r!2,c!14).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!2,r!3,c!15).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!3,r!4,c!16).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!4,r!5,c!17).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!5,r!6,c!18).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!12,r!7,c!13).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!7,r!8,c!14).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!8,r!9,c!15).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!9,r!10,c!16).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!10,r!11,c!17).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!11,r!12,c!18) CaMKII_i
+@CP:CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!6,r!1,c!13).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!1,r!2,c!14).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!2,r!3,c!15).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!3,r!4,c!16).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!4,r!5,c!17).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!5,r!6,c!18).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!12,r!7,c!13).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!7,r!8,c!14).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!8,r!9,c!15).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!9,r!10,c!16).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!10,r!11,c!17).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!11,r!12,c!18) CaMKII_i
 @CP:PP1() PP1_i
 @PM:NMDAR(camkii) NMDAR_i
 end species
