@@ -1,5 +1,48 @@
-# How to run this repo's files in your own local machine to reproduce results
+# Table of Contents
 
+1. [What is in this repository](#what-is-in-this-repository)
+    - [BioNetGen and MCell model files](#bionetgen-and-mcell-model-files)
+    - [Run-the-model files](#run-the-model-files)
+    - [Output files](#output-files)
+    - [Parameter Sensitivity Analysis files](#parameter-sensitivity-analysis-files)
+2. [Initial Setup Requirements](#initial-setup-requirements)
+    - [Install MCell/CellBlender v4.0.6 bundle with Blender 2.93](#1-install-mcellcellblender-v406-bundle-with-blender-293)
+    - [Setting System Variable MCELL_PATH and adding Python 3.9 to PATH](#2-setting-system-variable-mcell_path-and-adding-python-39-to-path)
+    - [Set up a python environment](#3-set-up-a-python-environment)
+3. [Running the code](#running-the-code)
+    - [Step 1](#step-1)
+    - [Step 2](#step-2)
+    - [Step 3](#step-3)
+    - [Step 4](#step-4)
+    - [Expected Outputs](#expected-outputs)
+
+# What is in this repository
+---
+This is the repository where a model for CaMKII and NMDAR interactions inside a postsynaptic dendrite are tested. 
+
+There might be some files that are saved as tests outside of the main ones, as I try out different things.
+
+The important files to run the simulation are:
+
+## BioNetGen and MCell model files:
+- [`mcell_params.py`](mcell_params.py): is the script where the PATH to mcell is defined, where the mcell model is set up, and where parameters are loaded.
+- [`dodecamer.bngl`](dodecamer.bngl): where the model reactions are created and described using BNGL. 
+
+## Run-the-model files:
+- [`run_model.py`](run_model.py): script that runs the model.
+- [`prepare_run_files.py`](prepare_run_files.py): script that prepares files to be copied, ran, and saved in a timestamped folder.
+
+## Output files
+- `data_output/`: contains timestamped folders that are created with scripts mentioned above. Each timestamped folder contains the outputs from running the python scripts, which should include a record of the parameters used (in a .csv file), the mcell_params.py file used, and the .bngl file used for that specific run.
+- [`extracted_statsparams.csv`](extracted_statsparams.csv): this file is created during a sensitivity analysis run to store the required parameters and statistics. 
+
+## Parameter Sensitivity Analysis files:
+In order to perform sensitivity analysis on the parameters used for this model, the files requires are:
+- [`sensitivity_run.py`](sensitivity_run.py): runs the model iteratively overriding specified parameters (for example, 'kon').
+- [`sensitivity_store_analysis.py`](sensitivity_store_analysis.py): extracts required statistics from output data and stores it in a specified [`extracted_statsparams.csv`](extracted_statsparams.csv) file. This script also plots the stat vs parameter in a scatter plot.
+
+# Initial Setup Requirements
+---
 In order to run the files in this repo, you will need a few requirements first:
 
 ## 1. Install  MCell/CellBlender v4.0.6 bundle with Blender 2.93
