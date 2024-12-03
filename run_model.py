@@ -3,7 +3,7 @@ from prepare_run_files import prepare_out_folder
 # Call the function "set_up_model" that runs mcell model with params specs from mcell_params.py
 from mcell_params import set_up_model, process_parameters
 
-def run_model(parameter_overrides=None, bngl_file="test_ABC.bngl"):
+def run_model(parameter_overrides=None, bngl_file="dodecamer.bngl"):
     """
     Runs the MCell model with optional parameter overrides.
 
