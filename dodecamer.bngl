@@ -15,7 +15,7 @@ begin parameters
 	MCELL_REDEFINE_NA_um3 VOL_RXN # In MCell the units get multiplied by V_RXN so they stay the same
 
 	# number of iterations for MCell
-    ITERATIONS 1e7
+    ITERATIONS 1e2
 
 	# Initial number of Ca molecules/cell
   	Ca_i 1000 
