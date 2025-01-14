@@ -99,7 +99,7 @@ begin species
 end species
 
 begin reaction rules
-# Ca binds to CaM progresively
+# Ca binds to CaM progressively
 #1  Ca + CaM < - > CaM_Ca1
 	CaM(ca~0,camkii) + Ca() <-> CaM(ca~1,camkii) kon_1_CaCaM, koff_1CaCaM
 #2  Ca + CaM_Ca1 < - > CaM_Ca2
@@ -151,7 +151,7 @@ begin reaction rules
 
 # If CaMKII open, and T286~P, then t306 can become P, rendering subunit into an closed state. Once T306~P, t286 may or may not remain P, it is not a necessary condition so we leave it unspecified. 
 # CaMKII T306 P cannot happen if bound to NMDAR, so there is the condition that for camkii t306 p to happen, nmdar site needs to be unbound. 
-	CaMKII(cam,nmdar,T306~0,open~1) -> CaMKII(cam,nmdar,T306~P,open~1) k_P_CaMKII306
+	CaMKII(cam,T306~0,open~1) -> CaMKII(cam,T306~P,open~1) k_P_CaMKII306
 # It's more likely camkii will be open when T286P~1, so more likely to find camkii_t286P_open and therefore morelikely this will be also P in 306 but it is not a condition.
 # it prevents cam from binding, and when cam is not binding, camkii can close, so more likley to become closed/inactive.
 # camkii can then close or open according to flickering reaction above.
