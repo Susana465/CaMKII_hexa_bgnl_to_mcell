@@ -3,3 +3,9 @@ data_output/*
 *.dat
 .conda
 __pycache__/
+run_model_*
+run_model.o*
+run_model.e*
+conda_envs/
+data_output_structuralfit/
+
