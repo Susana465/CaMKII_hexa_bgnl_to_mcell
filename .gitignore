@@ -1,5 +1,5 @@
 reports/*
-data_output/
+data_output/*
 *.dat
 .conda
 __pycache__/
