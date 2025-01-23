@@ -94,7 +94,7 @@ def StatsAndParams_to_csv(base_dir, output_file, extract_statistic_func, molecul
         pd.DataFrame: param_stats is a dataframe containing the extracted parameters and statistics.
     """
     # Create an empty dataframe to store params and stats
-    params_stats = pd.DataFrame(columns=['parameter_value', 'statistic'])
+    params_stats = pd.DataFrame(columns=[param_name, 'statistic'])
 
     # Iterate through each folder in the base directory
     for run_folder in [os.path.join(base_dir, dir) for dir in os.listdir(base_dir)]:
@@ -124,7 +124,7 @@ def StatsAndParams_to_csv(base_dir, output_file, extract_statistic_func, molecul
             param_value = extract_parameter(params, param_name)
 
             # Append extracted values to the dataframe
-            params_stats = pd.concat([params_stats, pd.DataFrame({'parameter_value': [param_value], 'statistic': [statistic]})], ignore_index=True)
+            params_stats = pd.concat([params_stats, pd.DataFrame({param_name: [param_value], 'statistic': [statistic]})], ignore_index=True)
             print(f"Updated params_stats dataframe: {params_stats}")
 
         except Exception as e:
@@ -151,7 +151,7 @@ extract_statistic_func = extract_statistic
 params_stats_df = StatsAndParams_to_csv(base_directory, output_csv, extract_statistic_func, molecule, stat_type, param_name)
 
 plt.figure(figsize=(8, 5))
-plt.scatter(params_stats_df['parameter_value'], params_stats_df['statistic'], color='blue', alpha=0.7)
+plt.scatter(params_stats_df[param_name], params_stats_df['statistic'], color='blue', alpha=0.7)
 plt.xscale('log')  # Logarithmic scale for 'kon'
 plt.title('Scatter Plot of kon vs. statistic (Log Scale)')
 plt.xlabel('kon (log scale)')
