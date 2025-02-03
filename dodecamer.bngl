@@ -237,3 +237,4 @@ generate_network({overwrite=>1}) #this command overwrites network everytime
 #writeSBML()  
 # Running for mcell:
 simulate({method=>"ssa",t_start=>0,t_end=>"ITERATIONS",n_steps=>1000})
+

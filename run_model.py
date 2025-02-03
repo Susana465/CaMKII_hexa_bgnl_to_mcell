@@ -61,4 +61,5 @@ def run_model(parameter_overrides=None, bngl_file="dodecamer.bngl"):
 
     return run_folder, timestamp, df
 
-run_model()
+if __name__ == "__main__":
+    run_model()  # This will only run if run_model.py is executed directly, not when importing the script into other files.
