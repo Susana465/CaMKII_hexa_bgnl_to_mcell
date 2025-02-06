@@ -26,10 +26,6 @@ def set_up_model():
     cp.surface_compartment_name = 'PM'
     model.add_geometry_object(cp)
 
-    # Specifies periodicity of visualization output
-    for count in model.counts:
-        count.every_n_timesteps = 1
-
     #Do not use bng units:
     model.config.use_bng_units = False
 

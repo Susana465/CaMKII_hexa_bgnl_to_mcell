@@ -44,6 +44,10 @@ def run_model(parameter_overrides=None, bngl_file="dodecamer.bngl"):
         parameter_overrides=parameter_overrides
     )
 
+    # Specifies periodicity of visualization output
+    for count in model.counts:
+        count.every_n_timesteps = 5000
+
     # Process the parameters and save them to CSV
     ITERATIONS, df = process_parameters(bngl_file, run_folder, timestamp, parameter_overrides)
 
