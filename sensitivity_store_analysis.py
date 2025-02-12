@@ -77,42 +77,6 @@ def extract_parameters(params_dict, param_names):
     print(f"Extracted parameters: {extracted_values}")
     return extracted_values
 
-# # Global variable for param_value
-# parameter_value = None  # Placeholder for extracted parameter value
-    
-# def extract_parameter(params_dict, param_name):
-#     """
-#     This function extracts the value of a specific parameter from a pandas DataFrame.
-    
-#     what arguments it takes:
-#     - params_dict (pd.DataFrame): a DataFrame containing parameter names and values.
-#     - param_name (str): name of the parameter whose value needs to be extracted.
-
-#     what it returns:
-#     - parameter_value (float or None): value of the parameter if found, else None.
-#     """
-
-#     # Locate the parameter in the DataFrame based on its name given by the argument (`param_name`)
-#     # Use .loc[] to filter rows where 'Parameter' column matches `param_name`
-#     # compare and select the corresponding value from the 'Value' column.
-#     parameter = params_dict.loc[params_dict['Parameter'] == param_name, 'Value']
-
-#     print(f"Columns in params_dict: {params_dict.columns}")
-    
-#     # If paremeter not found:
-#     if parameter.empty:
-#         print(f"Parameter {param_name} not found.")
-
-#     # If the parameter is found,
-#     # get the first value (iloc[0]) from the filtered result (there should only be one 'kon'); otherwise, return None.
-#     global parameter_value
-#     parameter_value = parameter.iloc[0] if not parameter.empty else None
-    
-#     print(f"Extracted value for {param_name}: {parameter_value}")
-
-#     return parameter_value
-
-
 def StatsAndParams_to_csv(base_dir, output_file, extract_statistic_func, molecule, stat_type, param_names):
     """
     Iterates through all run folders within a specified base directory, extracts parameters and statistics, 
@@ -207,11 +171,11 @@ def compute_kd_and_save(df, output_csv, param_names):
 
 
 # Define variables:
-base_directory = 'data_output'
+base_directory = 'plot_gdat'
 output_csv = 'extracted_statsparams.csv' 
-molecule = 'C'
+molecule = 'CaMKII_CaM_Ca4_PP'
 stat_type ='last'
-param_names = ['kon222', 'koff']
+param_names = ['kon_camkii_open', 'koff_camkii_close']
 
 # Having extract_statistic as an argument means 
 # I can then call a function that extracts a statistic in a different way to the current one
