@@ -46,56 +46,93 @@ def extract_statistic(data, molecule, stat_type="last", start=None, end=None):
         print(f"An unexpected error occurred while extracting '{stat_type}' from molecule '{molecule}': {e}")
         return None
 
-# Global variable for param_value
-parameter_value = None  # Placeholder for extracted parameter value
-    
-def extract_parameter(params_dict, param_name):
+
+def extract_parameters(params_dict, param_names):
     """
-    This function extracts the value of a specific parameter from a pandas DataFrame.
-    
-    what arguments it takes:
-    - params_dict (pd.DataFrame): a DataFrame containing parameter names and values.
-    - param_name (str): name of the parameter whose value needs to be extracted.
+    Extracts multiple parameters and their values from a pandas DataFrame.
 
-    what it returns:
-    - parameter_value (float or None): value of the parameter if found, else None.
+    Arguments:
+    - params_dict (pd.DataFrame): DataFrame containing parameter names and values.
+    - param_names (list of str): List of parameter names to extract.
+
+    Returns:
+    - dict: Dictionary where keys are parameter names and values are extracted values.
     """
+    extracted_values = {}
+    for param_name in param_names:
+        # Locate the parameter in the DataFrame based on its name given by the argument (`param_name`)
+        # Use .loc[] to filter rows where 'Parameter' column matches `param_name`
+        # compare and select the corresponding value from the 'Value' column.
+        parameter = params_dict.loc[params_dict['Parameter'] == param_name, 'Value']
+        print(f"Columns in params_dict: {params_dict.columns}")
+        # If paremeter not found, print a warning.
+        # If the parameter is found,
+        # get the first value (iloc[0]) from the filtered result (there should only be one 'kon'); otherwise, return None.
+        if parameter.empty:
+            print(f"Warning: Parameter '{param_name}' not found.")
+            extracted_values[param_name] = None  # Assign None if parameter is missing
+        else:
+            extracted_values[param_name] = parameter.iloc[0]
 
-    # Locate the parameter in the DataFrame based on its name given by the argument (`param_name`)
-    # Use .loc[] to filter rows where 'Parameter' column matches `param_name`
-    # compare and select the corresponding value from the 'Value' column.
-    parameter = params_dict.loc[params_dict['Parameter'] == param_name, 'Value']
+    print(f"Extracted parameters: {extracted_values}")
+    return extracted_values
 
-    print(f"Columns in params_dict: {params_dict.columns}")
+# # Global variable for param_value
+# parameter_value = None  # Placeholder for extracted parameter value
     
-    # If paremeter not found:
-    if parameter.empty:
-        print(f"Parameter {param_name} not found.")
-
-    # If the parameter is found,
-    # get the first value (iloc[0]) from the filtered result (there should only be one 'kon'); otherwise, return None.
-    global parameter_value
-    parameter_value = parameter.iloc[0] if not parameter.empty else None
+# def extract_parameter(params_dict, param_name):
+#     """
+#     This function extracts the value of a specific parameter from a pandas DataFrame.
     
-    print(f"Extracted value for {param_name}: {parameter_value}")
+#     what arguments it takes:
+#     - params_dict (pd.DataFrame): a DataFrame containing parameter names and values.
+#     - param_name (str): name of the parameter whose value needs to be extracted.
 
-    return parameter_value
+#     what it returns:
+#     - parameter_value (float or None): value of the parameter if found, else None.
+#     """
+
+#     # Locate the parameter in the DataFrame based on its name given by the argument (`param_name`)
+#     # Use .loc[] to filter rows where 'Parameter' column matches `param_name`
+#     # compare and select the corresponding value from the 'Value' column.
+#     parameter = params_dict.loc[params_dict['Parameter'] == param_name, 'Value']
+
+#     print(f"Columns in params_dict: {params_dict.columns}")
+    
+#     # If paremeter not found:
+#     if parameter.empty:
+#         print(f"Parameter {param_name} not found.")
+
+#     # If the parameter is found,
+#     # get the first value (iloc[0]) from the filtered result (there should only be one 'kon'); otherwise, return None.
+#     global parameter_value
+#     parameter_value = parameter.iloc[0] if not parameter.empty else None
+    
+#     print(f"Extracted value for {param_name}: {parameter_value}")
+
+#     return parameter_value
 
 
-def StatsAndParams_to_csv(base_dir, output_file, extract_statistic_func, molecule, stat_type, param_name):
+def StatsAndParams_to_csv(base_dir, output_file, extract_statistic_func, molecule, stat_type, param_names):
     """
-    This function iterates through all run folders within a specified base directory (data_output/) to save parameters and statistics to a CSV file.
+    Iterates through all run folders within a specified base directory, extracts parameters and statistics, 
+    and saves them to a CSV file.
 
-    arguments:
+    Arguments:
         base_dir (str): The base directory containing the run folders.
-        output_file (str): the output CSV file where stats and params will be saved.
+        output_file (str): The output CSV file where stats and params will be saved.
+        extract_statistic_func (function): Function to extract the statistic from the data.
+        molecule (str): The molecule for which statistics are extracted.
+        stat_type (str): The type of statistic to extract.
+        param_names (list of str): List of parameter names to extract.
 
-    returns:
-        pd.DataFrame: param_stats is a dataframe containing the extracted parameters and statistics.
+    Returns:
+        pd.DataFrame: DataFrame containing the extracted parameters and statistics.
     """
+    
     # Create an empty dataframe to store params and stats
-    params_stats = pd.DataFrame(columns=[param_name, 'statistic'])
-
+    #params_stats = pd.DataFrame(columns=param_names + ['statistic'])
+    param_stats_list = []
     # Iterate through each folder in the base directory
     for run_folder in [os.path.join(base_dir, dir) for dir in os.listdir(base_dir)]:
         try:
@@ -121,51 +158,69 @@ def StatsAndParams_to_csv(base_dir, output_file, extract_statistic_func, molecul
 
             # Extract parameters using function defined previously 
             params = pd.read_csv(param_files[0])
-            param_value = extract_parameter(params, param_name)
+            extracted_params = extract_parameters(params, param_names)
+            print(f"Successfully extracted_params: {extracted_params}")
 
-            # Append extracted values to the dataframe
-            params_stats = pd.concat([params_stats, pd.DataFrame({param_name: [param_value], 'statistic': [statistic]})], ignore_index=True)
-            print(f"Updated params_stats dataframe: {params_stats}")
+            # Add the extracted statistic to the dictionary of extracted parameters
+            extracted_params['statistic'] = statistic  # Add statistic to dictionary
+            
+            param_stats_list.append(extracted_params)
+
+            # Print the extracted parameters as a DataFrame (for debugging purposes).
+            print("Extracted parameters for current run:\n", pd.DataFrame([extracted_params]), "\n")
 
         except Exception as e:
             print(f"Error in folder {run_folder}: {e}")
             continue
 
-    # Save the results to a CSV file
+    # Convert list of dictionaries to DataFrame
+    params_stats = pd.DataFrame.from_records(param_stats_list)
+    print(f"This is the params_stats df {params_stats}")
+    
+    # Save results to CSV
     params_stats.to_csv(output_file, index=False)
     print(f"Results saved to {output_file}")
     return params_stats
+
+
+def calculate_kd(kon, koff):
+    return koff / kon
+
+def compute_kd_and_save(df, output_csv, param_names):
+    if not isinstance(param_names, (list, tuple)):  # Ensure param_names is a list or tuple
+        raise TypeError("param_names must be a list or tuple of column names.")
+
+    if len(param_names) < 2:
+        raise ValueError("param_names must contain at least two elements for kon and koff.")
+    
+    kon_col, koff_col = param_names[:2]  # Get the first two elements
+
+    # Filter out rows where either kon or koff is NaN or missing
+    df_cleaned = df.dropna(subset=[kon_col, koff_col])
+
+    # Calculate 'kd' only for rows without missing values in kon and koff
+    df_cleaned["kd"] = calculate_kd(df_cleaned[kon_col], df_cleaned[koff_col])
+
+    # Save the cleaned DataFrame (with kd column) to CSV
+    df_cleaned.to_csv(output_csv, index=False)
+    print(f"New CSV saved: {output_csv}")
+
 
 # Define variables:
 base_directory = 'data_output'
 output_csv = 'extracted_statsparams.csv' 
 molecule = 'C'
 stat_type ='last'
-param_name ='kon'
+param_names = ['kon222', 'koff']
 
 # Having extract_statistic as an argument means 
 # I can then call a function that extracts a statistic in a different way to the current one
 extract_statistic_func = extract_statistic
 
 # Call and save params and stats in a df:
-params_stats_df = StatsAndParams_to_csv(base_directory, output_csv, extract_statistic_func, molecule, stat_type, param_name)
+params_stats_df = StatsAndParams_to_csv(base_directory, output_csv, extract_statistic_func, molecule, stat_type, param_names)
 
-plt.figure(figsize=(8, 5))
-plt.scatter(params_stats_df[param_name], params_stats_df['statistic'], color='blue', alpha=0.7)
-plt.xscale('log')  # Logarithmic scale for 'kon'
-plt.title('Scatter Plot of kon vs. statistic (Log Scale)')
-plt.xlabel('kon (log scale)')
-plt.ylabel('Final [C]')
-plt.grid(True, which='both', linestyle='--', linewidth=0.5)
-
-# Save the plot to a file
-plot_filename = "scatter_plot_kon_vs_statistic.png"  
-plt.savefig(plot_filename, dpi=300, bbox_inches='tight')  
-print(f"Plot saved as {plot_filename}")
-
-# Show the plot
-plt.show()
-input("Press Enter to exit...")
+compute_kd_and_save(params_stats_df, "kd_stats.csv", param_names)
 
 # # Create an empty dataframe to store params and stats
 # params_stats = pd.DataFrame(columns=['kon', 'statistic'])
