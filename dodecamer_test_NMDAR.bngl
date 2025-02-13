@@ -2,7 +2,7 @@ begin parameters
     D_VOL 1e-6 # cm^2/s
 	D_SURF 1e-8 # cm^2/s
 
-    MCELL_DIFFUSION_CONSTANT_3D_CAMKII D_VOL
+    MCELL_DIFFUSION_CONSTANT_3D_CaMKII D_VOL
     MCELL_DIFFUSION_CONSTANT_2D_NMDAR D_SURF
     #MCELL_DIFFUSION_CONSTANT_3D_C D_SURF
 
@@ -15,7 +15,7 @@ begin parameters
 
     kon_CaMKII_NMDAR 3e5/NA_um3 #taken from 2nd_year PhD report
 	koff_CaMKII_NMDAR 0.284
-    
+
     ITERATIONS 10e2
 
     VolCP 0.50588 
@@ -28,21 +28,21 @@ begin compartments
 end compartments
 
 begin seed species
-    CAMKII(b)@CP 600
+    @CP:CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!6,r!1,c!13).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!1,r!2,c!14).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!2,r!3,c!15).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!3,r!4,c!16).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!4,r!5,c!17).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!5,r!6,c!18).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!12,r!7,c!13).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!7,r!8,c!14).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!8,r!9,c!15).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!9,r!10,c!16).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!10,r!11,c!17).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!11,r!12,c!18) 600
     NMDAR(a)@PM 30
-    #CAMKII(b!1).NMDAR(a!1)@PM 0
+    #CaMKII(b!1).NMDAR(a!1)@PM 0
 end seed species  
 
 begin observables
-    Molecules camkii CAMKII(b)
+    #Molecules CaMKII CaMKII(b)
     Molecules nmdar NMDAR(a)
-    Molecules C CAMKII(b!1).NMDAR(a!1)
+    Molecules CaMKII_NMDAR CaMKII(nmdar!1).NMDAR(a!1)
     #Molecules C C()
 end observables
 
 begin reaction rules
-    CAMKII(b)@IN + NMDAR(a) -> CAMKII(b!1).NMDAR(a!1) kon_CaMKII_NMDAR
-    CAMKII(b!1).NMDAR(a!1) -> CAMKII(b)@IN + NMDAR(a) koff_CaMKII_NMDAR
+    CaMKII(nmdar)@IN + NMDAR(a) -> CaMKII(nmdar!1).NMDAR(a!1) kon_CaMKII_NMDAR
+    CaMKII(nmdar!1).NMDAR(a!1) -> CaMKII(nmdar)@IN + NMDAR(a) koff_CaMKII_NMDAR
     #A(b)@IN + B(a) -> C()@IN kon222
 end reaction rules  
 
