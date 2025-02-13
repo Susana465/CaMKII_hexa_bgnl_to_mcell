@@ -35,6 +35,14 @@ def set_up_model():
     model.config.partition_dimension = 1.5 # 1.5 was before
     model.config.subpartition_dimension = 0.05
 
+    # This wont run now, will run if set to True. Save viz_data under timestamped folder
+    if False:
+        viz_output = m.VizOutput(
+            os.path.join(f"viz_data/Scene_"),
+            every_n_timesteps=100
+        )
+        model.add_viz_output(viz_output)
+
     return model
 
 def process_parameters(file, folder, timestamp, parameter_overrides=None):
