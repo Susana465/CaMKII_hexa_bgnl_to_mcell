@@ -20,6 +20,9 @@ begin parameters
 
     VolCP 0.50588 
     VolPM 0.0307 # from volume of 0.505 r = 0.494 and area = 3.07um2 * 0.01um thickness. Assuming a thickness of 0.01 microns for the PM
+
+    CaMKII_i 600
+
 end parameters
 
 begin compartments
@@ -27,22 +30,29 @@ begin compartments
  	CP 3 VolCP PM #3Dimensions and 1 microcubic in volume, volume compartment
 end compartments
 
+begin molecule types
+    CaMKII(open~0~1,T286~0~P,T306~0~P,cam,nmdar,l,r,c)
+    NMDAR(camkii)
+end molecule types
+
 begin seed species
-    @CP:CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!6,r!1,c!13).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!1,r!2,c!14).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!2,r!3,c!15).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!3,r!4,c!16).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!4,r!5,c!17).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!5,r!6,c!18).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!12,r!7,c!13).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!7,r!8,c!14).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!8,r!9,c!15).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!9,r!10,c!16).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!10,r!11,c!17).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!11,r!12,c!18) 600
-    NMDAR(a)@PM 30
-    #CaMKII(b!1).NMDAR(a!1)@PM 0
+    @CP:CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!6,r!1,c!13).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!1,r!2,c!14).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!2,r!3,c!15).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!3,r!4,c!16).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!4,r!5,c!17).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!5,r!6,c!18).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!12,r!7,c!13).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!7,r!8,c!14).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!8,r!9,c!15).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!9,r!10,c!16).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!10,r!11,c!17).CaMKII(cam,nmdar,T286~0,T306~0,open~1,l!11,r!12,c!18) CaMKII_i
+
+    NMDAR(camkii)@PM 30
+    #CaMKII(b!1).NMDAR(camkii!1)@PM 0
 end seed species  
 
 begin observables
     #Molecules CaMKII CaMKII(b)
-    Molecules nmdar NMDAR(a)
-    Molecules CaMKII_NMDAR CaMKII(nmdar!1).NMDAR(a!1)
+    Molecules nmdar NMDAR(camkii)
+    Molecules CaMKII_NMDAR CaMKII(nmdar!1).NMDAR(camkii!1)
     #Molecules C C()
 end observables
 
 begin reaction rules
-    CaMKII(nmdar)@IN + NMDAR(a) -> CaMKII(nmdar!1).NMDAR(a!1) kon_CaMKII_NMDAR
-    CaMKII(nmdar!1).NMDAR(a!1) -> CaMKII(nmdar)@IN + NMDAR(a) koff_CaMKII_NMDAR
+    #CaMKII(nmdar)@IN + NMDAR(camkii) <-> CaMKII(nmdar!1).NMDAR(camkii!1) kon_CaMKII_NMDAR, koff_CaMKII_NMDAR
+
+    CaMKII(open~1,nmdar)@IN + NMDAR(camkii) <-> CaMKII(open~1,nmdar!1).NMDAR(camkii!1) kon_CaMKII_NMDAR, koff_CaMKII_NMDAR
     #A(b)@IN + B(a) -> C()@IN kon222
 end reaction rules  
 
