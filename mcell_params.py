@@ -30,18 +30,10 @@ def set_up_model():
     model.config.use_bng_units = False
 
     # Variable parameters
-    model.config.time_step = 1e-2 # time steps taken by individual molecules. but this time step is still used by all output statements.
+    model.config.time_step = 10e-5 # time steps taken by individual molecules. but this time step is still used by all output statements.
     model.config.seed = seed
     model.config.partition_dimension = 1.5 # 1.5 was before
     model.config.subpartition_dimension = 0.05
-
-    # This wont run now, will run if set to True. Save viz_data under timestamped folder
-    if False:
-        viz_output = m.VizOutput(
-            os.path.join(f"viz_data/Scene_"),
-            every_n_timesteps=100
-        )
-        model.add_viz_output(viz_output)
 
     return model
 

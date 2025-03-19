@@ -3,15 +3,11 @@ import itertools # is a module in Python that provides a set of fast, memory-eff
 
 import numpy as np
 
-factors_1 = np.array([0.01])
-
-factors_2 = np.array([0.01])
+factors = np.array([0.01])
 
 # These are the values set in the bngl:
-kon_values_open = 2e4*factors_1
-koff_values_close = 1e7*factors_1
-
-kcat = (2e1/6.022e8)*factors_2
+kon_values = 2e4*factors
+koff_values = 1e7*factors
 
 # Kd = [500]
 # Kd = koff/kon
@@ -62,9 +58,8 @@ def parameter_sweep(parameters_dict):
 
 # Define the parameters and their possible values
 parameters = {
-    'kon_camkii_open': kon_values_open,  # Replace with the actual parameter name in the model
-    'koff_camkii_close': koff_values_close,  # Replace with the actual parameter name in the model
-    'kcat': kcat,  # Replace with the actual parameter name in the model  # Replace with the actual parameter name in the model
+    'kon_camkii_open': kon_values,  # Replace with the actual parameter name in the model
+    'koff_camkii_close': koff_values  # Replace with the actual parameter name in the model
 }
 
 # Run the parameter sweep for kon and koff
