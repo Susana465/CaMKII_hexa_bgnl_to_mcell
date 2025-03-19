@@ -3,7 +3,7 @@ from prepare_run_files import prepare_out_folder
 # Call the function "set_up_model" that runs mcell model with params specs from mcell_params.py
 from mcell_params import set_up_model, process_parameters
 
-def run_model(parameter_overrides=None, bngl_file="dodecamer_test_NMDAR.bngl"):
+def run_model(parameter_overrides=None, bngl_file="dodecamer_NMDAR.bngl"):
     """
     Runs the MCell model with optional parameter overrides.
 
@@ -24,6 +24,14 @@ def run_model(parameter_overrides=None, bngl_file="dodecamer_test_NMDAR.bngl"):
     # Call the function and capture the path to the run folder and timestamp
     run_folder, timestamp = prepare_out_folder("data_output", model.config.seed, files_to_copy=[bngl_file, mcell_param_file])
 
+    # This wont run now, will run if set to True. Save viz_data under timestamped folder
+    if False:
+        viz_output = m.VizOutput(
+            os.path.join(run_folder, f"viz_data/Scene_"),
+            every_n_timesteps=100
+        )
+        model.add_viz_output(viz_output)
+
     #  If no overrides are provided, 
     #  passing an empty dictionary ensures the model behaves as it would without any overrides.
     if parameter_overrides is None:
@@ -35,10 +43,10 @@ def run_model(parameter_overrides=None, bngl_file="dodecamer_test_NMDAR.bngl"):
         observables_path_or_file=os.path.join(run_folder, f"{timestamp}_out.gdat"),
         parameter_overrides=parameter_overrides
     )
-
+    
     # Specifies periodicity of visualization output
     for count in model.counts:
-        count.every_n_timesteps = 5
+        count.every_n_timesteps = 50000
 
     # Process the parameters and save them to CSV
     ITERATIONS, df = process_parameters(bngl_file, run_folder, timestamp, parameter_overrides)
