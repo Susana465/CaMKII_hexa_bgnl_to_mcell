@@ -201,17 +201,17 @@ begin observables
 	Molecules CaMKII_CaM_unbound_closed CaMKII(cam, open~0)
 
 	# CaMKII open and closed, free from CaM binding, unphosphorylated vs phosphorylated
-	Molecules CaMKII_CaM_unbound_open_T286P0 CaMKII(cam, open~1, T286~0)
-	Molecules CaMKII_CaM_unbound_open_T286P1 CaMKII(cam, open~1, T286~P)
+	Molecules CaMKII_CaM_unbound_open CaMKII(cam, open~1, T286~0)
+	Molecules CaMKII_CaM_unbound_open CaMKII(cam, open~1, T286~P)
 
-	Molecules CaMKII_CaM_unbound_closed_T286P0 CaMKII(cam, open~0, T286~0)
-	Molecules CaMKII_CaM_unbound_closed_T286P1 CaMKII(cam, open~0, T286~P)
+	Molecules CaMKII_CaM_unbound_closed CaMKII(cam, open~0, T286~0)
+	Molecules CaMKII_CaM_unbound_closed CaMKII(cam, open~0, T286~P)
 
-	Molecules CaMKII_CaM_unbound_open_T306P0 CaMKII(cam, open~1, T306~0)
-	Molecules CaMKII_CaM_unbound_open_T306P1 CaMKII(cam, open~1, T306~P)
+	Molecules CaMKII_CaM_unbound_open CaMKII(cam, open~1, T306~0)
+	Molecules CaMKII_CaM_unbound_open CaMKII(cam, open~1, T306~P)
 
-	Molecules CaMKII_CaM_unbound_closed_T306P0 CaMKII(cam, open~0, T306~0)
-	Molecules CaMKII_CaM_unbound_closed_T306P1 CaMKII(cam, open~0, T306~P)
+	Molecules CaMKII_CaM_unbound_closed CaMKII(cam, open~0, T306~0)
+	Molecules CaMKII_CaM_unbound_closed CaMKII(cam, open~0, T306~P)
 
 	# All of CaMKII_T286P no matter state of T306
 	Molecules CaMKII_T286P CaMKII(T286~P)
