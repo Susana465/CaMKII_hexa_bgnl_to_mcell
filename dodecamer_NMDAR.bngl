@@ -65,10 +65,6 @@ begin parameters
 	kon_CaMKII_NMDAR 3e5/NA_um3 #taken from 2nd_year PhD report
 	koff_CaMKII_NMDAR 0.284
 
-	# CaMKII_P (and unbound to CaM) binding to NMDARs
-	kon_CaMKII_P_NMDAR 0 #2e6/NA_um3 #taken from 2nd_year PhD report
-	koff_CaMKII_P_NMDAR 0 #0.03
-
 	# Units: volumes in um3
 	VolCP 0.50588 
 	VolPM 0.0307 # from volume of 0.505 r = 0.494 and area = 3.07um2 * 0.01um thickness. Assuming a thickness of 0.01 microns for the PM
