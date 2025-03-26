@@ -282,15 +282,8 @@ begin observables
 	Molecules CaMKII_CaM_unbound_T306P1_bound_NMDAR CaMKII(nmdar!1,T306~P,cam).NMDAR(camkii!1)
 
 	# Bound to NMDAR, specifically bound to CaM
-	# CaM and T306P cannot happen at the same time, this should be zero (sanity check)
 	Molecules CaMKII_CaM_Ca4_PP_bound_NMDAR CaM(ca~4,camkii!1).CaMKII(cam!1,T286~P,T306~P,nmdar!2).NMDAR(camkii!2)
-
-	# So these two states can happen, as T306~P0
 	Molecules CaMKII_CaM_Ca4_00_bound_NMDAR CaM(ca~4,camkii!1).CaMKII(cam!1,T286~0,T306~0,nmdar!2).NMDAR(camkii!2)
-	Molecules CaMKII_CaM_Ca4_T286P1_bound_NMDAR CaM(ca~4,camkii!1).CaMKII(cam!1,T286~P,T306~0,nmdar!2).NMDAR(camkii!2)
-
-	# CaM and T306P cannot happen at the same time, this should be zero (sanity check)
-	Molecules CaMKII_CaM_Ca4_T306P1_bound_NMDAR CaM(ca~4,camkii!1).CaMKII(cam!1,T286~0,T306~P,nmdar!2).NMDAR(camkii!2)
 
 	# In order to see amount of subtypes of CaMKII P at different sites we can substract molecule counts as per example below:
 	# Molecules CaMKII_T286_P1_bound_NMDAR CaMKII(nmdar!1,T286~P).NMDAR(camkii!1) - Molecules CaMKII_PP_bound_NMDAR CaMKII(nmdar!1,T286~P,T306~P).NMDAR(camkii!1)
