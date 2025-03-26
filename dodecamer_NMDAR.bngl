@@ -151,14 +151,14 @@ begin reaction rules
 # CaM binding to CaMKII with unphosphorylated T306 prevents phosphorylation of this residue
 # In other words, if CaMKII bound to CaM with t306~0, t306~p cannot happen. 
 
-# CaMKII dephosphorylation. 
+#10 CaMKII dephosphorylation. 
 # The presence of CaM would structurally impede PP action, so cam binding site needs to be free for PP desphosphorylation.
 # This means that CaM binding protects CaMKII_P state as PP1 cannot access it and dephospho otherwise.
 	CaMKII(T286~P,cam) + PP1 -> CaMKII(T286~0,cam) + PP1 k_cat 
-# CaMKII(T306~P, cam) not necessary to state cam unbound because cam will not be bound to camkii if T306P as stated in line 130
+#11 CaMKII(T306~P, cam) not necessary to state cam unbound because cam will not be bound to camkii if T306P as stated in line 130
 	CaMKII(T306~P) + PP1 -> CaMKII(T306~0) + PP1 k_cat 
 
-# NMDAR/CaMKII binding
+#12 NMDAR/CaMKII binding
 # CaMKII open can bind and unbind to NMDAR - cam binding site and nmdar binding site don't overlap so cam can be bound to camkii
 	CaMKII(open~1,nmdar)@IN + NMDAR(camkii) <-> CaMKII(open~1,nmdar!1).NMDAR(camkii!1) kon_CaMKII_NMDAR, koff_CaMKII_NMDAR
 
@@ -169,34 +169,36 @@ begin reaction rules
 end reaction rules
 
 begin observables
+	# Calcium binding to Calmodulin
   	Molecules CaM_free CaM(ca~0,camkii)
 	Molecules CaM_Ca1 CaM(ca~1,camkii)
 	Molecules CaM_Ca2 CaM(ca~2,camkii)
 	Molecules CaM_Ca3 CaM(ca~3,camkii)
 	Molecules CaM_Ca4 CaM(ca~4,camkii)
-	# Molecules CaMKII_open CaMKII(open~1)
-	# Molecules CaMKII_closed CaMKII(open~0)
 
-	# All of camkii_ca4
+	# All of CaMKII bound to saturated CaM (CaMKII_CaM_Ca4)
 	Molecules CaMKII_CaM_Ca4 CaM(ca~4,camkii!1).CaMKII(cam!1)
 	# Of which,
 
 	# this many are T286~0,T306~0 
 	Molecules CaMKII_CaM_Ca4_00 CaM(ca~4,camkii!1).CaMKII(cam!1,T286~0,T306~0)
+
 	# this many are T286~1,T306~0
 	Molecules CaMKII_CaM_Ca4_T286P1 CaM(ca~4,camkii!1).CaMKII(cam!1,T286~P,T306~0)
-	# this many are T286~1,T306~1
+
+	# this many are T286~1,T306~1, there should be none, see rxn 6 for conditions (sanity check)
 	Molecules CaMKII_CaM_Ca4_PP CaM(ca~4,camkii!1).CaMKII(cam!1,T286~P,T306~P)
 	
-	# this many are T286~0,T306~1
+	# this many are T286~0,T306~1, there should be none, see rxn 6 for conditions (sanity check)
 	Molecules CaMKII_CaM_Ca4_T306P1 CaM(ca~4,camkii!1).CaMKII(cam!1,T286~0,T306~P)
 
 	# CaMKII open and bound to CaM
 	Molecules CaMKII_CaM_open CaM(ca~4,camkii!1).CaMKII(cam!1, open~1)
-	# CaMKII closed and bound to CaM, there should be zero because CaM cannot bind if closed
+
+	# CaMKII closed and bound to CaM, there should be zero because CaM cannot bind if closed (sanity check)
 	Molecules CaMKII_CaM_closed CaM(ca~4,camkii!1).CaMKII(cam!1, open~0)
 
-	# Cam_free CaMKII open and closed, no matter other states
+	# CaM_free CaMKII open and closed, no matter other states
 	Molecules CaMKII_CaM_unbound_open CaMKII(cam, open~1)
 	Molecules CaMKII_CaM_unbound_closed CaMKII(cam, open~0)
 
@@ -205,6 +207,7 @@ begin observables
 	Molecules CaMKII_CaM_unbound_open_T286P1 CaMKII(cam, open~1, T286~P)
 
 	Molecules CaMKII_CaM_unbound_closed_T286P0 CaMKII(cam, open~0, T286~0)
+	# CaMKII cannot P if closed, as per rxn condition #5, so there should be zero of this (sanity check)
 	Molecules CaMKII_CaM_unbound_closed_T286P1 CaMKII(cam, open~0, T286~P)
 
 	Molecules CaMKII_CaM_unbound_open_T306P0 CaMKII(cam, open~1, T306~0)
@@ -226,12 +229,10 @@ begin observables
 	Molecules CaMKII_T306P CaMKII(T306~P)
 
 	#Species CaMKII_free_closed_P0 CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!6,r!1,c!13).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!1,r!2,c!14).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!2,r!3,c!15).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!3,r!4,c!16).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!4,r!5,c!17).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!5,r!6,c!18).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!12,r!7,c!13).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!7,r!8,c!14).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!8,r!9,c!15).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!9,r!10,c!16).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!10,r!11,c!17).CaMKII(cam,nmdar,T286~0,T306~0,open~0,l!11,r!12,c!18)
+	
 	# All open and all closed, regardless of other states
 	Molecules CaMKII_open CaMKII(open~1)
 	Molecules CaMKII_closed CaMKII(open~0)
-
-	# All of CaMKII_nmdar_free, no matter any other state
-	Molecules CaMKII_nmdar_free CaMKII(nmdar)
 
 	# Open, T286~0
     Molecules CaMKII_open_T286P0 CaMKII(T286~0,open~1)
@@ -242,30 +243,58 @@ begin observables
 	# Closed, T306~0
 	Molecules CaMKII_closed_T306P0 CaMKII(T306~0,open~0)
 	
-	## In relation to NMDARs:
+	## In relation to NMDARs
+
+	# All of CaMKII_nmdar_free, no matter any other state
+	Molecules CaMKII_nmdar_free CaMKII(nmdar)
+	# Free NMDAR
 	Molecules NMDAR_free NMDAR(camkii)
+	# CaMKII_NMDAR complex
 	Molecules NMDAR_CaMKII_complex CaMKII(nmdar!1).NMDAR(camkii!1)
 
-	# CaMKII_NMDAR_bound T286_P:
+	# This should match the total of CaMKII_nmdar_complex, as only open CaMKII can bind to NMDARs, so if CaMKII is bound to NMDAR it should be open only (sanity check)
+	Molecules CaMKII_open_complex CaMKII(nmdar!1, open~1).NMDAR(camkii!1)
+	# CaMKII closed should not bind to NMDARs, see rxn #12 (sanity check)
+	Molecules CaMKII_closed_complex CaMKII(nmdar!1, open~0).NMDAR(camkii!1)
+
+	# Bound to NMDAR, regardless of CaM
+	# CaMKII_NMDAR_bound T286_P
 	Molecules CaMKII_T286_P1_bound_NMDAR CaMKII(nmdar!1,T286~P).NMDAR(camkii!1)
 	Molecules CaMKII_T286_P0_bound_NMDAR CaMKII(nmdar!1,T286~0).NMDAR(camkii!1)
 
-	# CaMKII_NMDAR_bound T306_P:
+	# CaMKII_NMDAR_bound T306_P
 	Molecules CaMKII_T306_P1_bound_NMDAR CaMKII(nmdar!1,T306~P).NMDAR(camkii!1)
 	Molecules CaMKII_T306_P0_bound_NMDAR CaMKII(nmdar!1,T306~0).NMDAR(camkii!1)
 
-	# CaMKII_NMDAR_bound T286 and T306_P:
+	# CaMKII_NMDAR_bound T286 and T306_P
 	Molecules CaMKII_PP_bound_NMDAR CaMKII(nmdar!1,T286~P,T306~P).NMDAR(camkii!1)
+	Molecules CaMKII_00_bound_NMDAR CaMKII(nmdar!1,T286~0,T306~0).NMDAR(camkii!1)
 
+	# Bound to NMDAR, specifically unbound from CaM
+	# CaMKII_NMDAR_bound, phosphorylated at T286 and T306, and free from CaM binding
+	Molecules CaMKII_CaM_unbound_PP_bound_NMDAR CaMKII(nmdar!1,T286~P,T306~P,cam).NMDAR(camkii!1)
+	# Subcategories of phosphorylation (these can also be calculated by substracting total CaMKII P minus subtypes of CaMKII P at either t286 or t306)
+	# CaMKII_NMDAR_bound, phosphorylated at T286 regardless of T306, and free from CaM binding
+	Molecules CaMKII_CaM_unbound_T286P0_bound_NMDAR CaMKII(nmdar!1,T286~0,cam).NMDAR(camkii!1)
+	Molecules CaMKII_CaM_unbound_T286P1_bound_NMDAR CaMKII(nmdar!1,T286~P,cam).NMDAR(camkii!1)
+	# CaMKII_NMDAR_bound, phosphorylated at T306 regardless of T286, and free from CaM binding
+	Molecules CaMKII_CaM_unbound_T306P0_bound_NMDAR CaMKII(nmdar!1,T306~0,cam).NMDAR(camkii!1)
+	Molecules CaMKII_CaM_unbound_T306P1_bound_NMDAR CaMKII(nmdar!1,T306~P,cam).NMDAR(camkii!1)
+
+	# In order to see amount of subtypes of CaMKII P at different sites we can substract molecule counts as per example below:
+	# Molecules CaMKII_T286_P1_bound_NMDAR CaMKII(nmdar!1,T286~P).NMDAR(camkii!1) - Molecules CaMKII_PP_bound_NMDAR CaMKII(nmdar!1,T286~P,T306~P).NMDAR(camkii!1)
+	# All of CaMKII that is T286~P minus CaMKII that is CaMKII T286~P AND T306~P, gives the remaining CaMKII T306~0
+	# This gives remaining CaMKII that is T286~P and T306P~0
+
+	# CaMKII specifically free from NMDAR, bound to CaM
 	# CaM_Ca4_CaMKII_NMDAR_free, phosphorylated at T286 and T306
 	Molecules CaMKII_CaM_Ca4_PP_nmdar_free CaM(ca~4,camkii!1).CaMKII(cam!1,T286~P,T306~P,nmdar)
 	# CaM_Ca4_CaMKII_NMDAR_free, unphosphorylated at T286 and T306
 	Molecules CaMKII_CaM_Ca4_00_nmdar_free CaM(ca~4,camkii!1).CaMKII(cam!1,T286~0,T306~0,nmdar)
-
-	# CaMKII_NMDAR_bound and free from CaM binding
-	Molecules CaMKII_CaM_unbound_PP_bound_NMDAR CaMKII(nmdar!1,T286~P,T306~P,cam).NMDAR(camkii!1)
-
-
+	
+	Molecules CaMKII_CaM_Ca4_T286_P1_nmdar_free CaM(ca~4,camkii!1).CaMKII(cam!1,T286~P,nmdar)
+	# CaM binding and T306~P cannot coexist, see rxn #9 (sanity check)
+	Molecules CaMKII_CaM_Ca4_T306_P1_nmdar_free CaM(ca~4,camkii!1).CaMKII(cam!1,T306~P,nmdar)
 
 	#Molecules CaMKII_CaM_Ca4_T286P1_nmdar_free CaM(ca~4,camkii!1).CaMKII(cam!1,T286~P,T306~0,nmdar)
     #Molecules CaMKII_CaM_Ca4_T306P1_nmdar_free CaM(ca~4,camkii!1).CaMKII(cam!1,T286~0,T306~P,nmdar)
