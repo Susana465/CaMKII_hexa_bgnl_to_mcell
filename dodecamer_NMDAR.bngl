@@ -62,8 +62,8 @@ begin parameters
 	k_cat 2e1/NA_um3  # Pharris et al., number
 
 	# CaMKII_open (and unbound to CaM) binding to NMDARs
-	kon_CaMKII_NMDAR 0 #2e6/NA_um3 #taken from 2nd_year PhD report
-	koff_CaMKII_NMDAR 0 #0.03
+	kon_CaMKII_NMDAR 2e6/NA_um3 #taken from 2nd_year PhD report
+	koff_CaMKII_NMDAR 0.03
 
 	# Units: volumes in um3
 	VolCP 0.50588 
@@ -175,6 +175,9 @@ begin observables
 	Molecules CaM_Ca2 CaM(ca~2,camkii)
 	Molecules CaM_Ca3 CaM(ca~3,camkii)
 	Molecules CaM_Ca4 CaM(ca~4,camkii)
+
+	# PP1
+	Molecules PP1 PP1()
 
 	# All of CaMKII bound to saturated CaM (CaMKII_CaM_Ca4)
 	Molecules CaMKII_CaM_Ca4 CaM(ca~4,camkii!1).CaMKII(cam!1)

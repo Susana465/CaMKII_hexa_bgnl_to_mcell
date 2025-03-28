@@ -12,3 +12,15 @@ should not be any of: CaMKII_CaM_Ca4_PP as if cambounnd then t306 not p.
 NMDAR_free, NMDAR_CaMKII_complex
 
 CaMKII_T286_P1_bound_NMDAR, CaMKII_T286_P0_bound_NMDAR, CaMKII_T306_P1_bound_NMDAR, CaMKII_T306_P0_bound_NMDAR, CaMKII_PP_bound_NMDAR, CaMKII_CaM_Ca4_PP_nmdar_free, CaMKII_CaM_Ca4_00_nmdar_free
+
+
+CaM_free         CaM_Ca1         CaM_Ca2         CaM_Ca3         CaM_Ca4 
+CaMKII_CaM_Ca4 CaMKII_CaM_Ca4_00 CaMKII_CaM_Ca4_T286P1 CaMKII_CaM_Ca4_PP CaMKII_CaM_Ca4_T306P1 CaMKII_CaM_open CaMKII_CaM_closed 
+
+CaMKII_CaM_unbound_open CaMKII_CaM_unbound_closed CaMKII_CaM_unbound_open_T286P0 CaMKII_CaM_unbound_open_T286P1 CaMKII_CaM_unbound_closed_T286P0 
+
+CaMKII_CaM_unbound_closed_T286P1 CaMKII_CaM_unbound_open_T306P0 CaMKII_CaM_unbound_open_T306P1 CaMKII_CaM_unbound_closed_T306P0 CaMKII_CaM_unbound_closed_T306P1    
+
+CaMKII_T286P    CaMKII_T306P     CaMKII_open   CaMKII_closed CaMKII_nmdar_free CaMKII_open_T286P0 CaMKII_closed_T286P0 CaMKII_open_T306P0 CaMKII_closed_T306P0
+
+CaMKII_T286P, CaMKII_CaM_Ca4_PP, CaMKII_CaM_Ca4_T286P1, CaMKII_CaM_unbound_closed_T286P1
