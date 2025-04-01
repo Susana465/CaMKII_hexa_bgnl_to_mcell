@@ -6,8 +6,8 @@ import numpy as np
 factors = np.array([0.01])
 
 # These are the values set in the bngl:
-kon_values = 2e4*factors
-koff_values = 1e7*factors
+kon_values = 2e6*factors
+koff_values = 0.03*factors
 
 # Kd = [500]
 # Kd = koff/kon
@@ -58,8 +58,8 @@ def parameter_sweep(parameters_dict):
 
 # Define the parameters and their possible values
 parameters = {
-    'kon_camkii_open': kon_values,  # Replace with the actual parameter name in the model
-    'koff_camkii_close': koff_values  # Replace with the actual parameter name in the model
+    'kon_CaMKII_NMDAR': kon_values,  # Replace with the actual parameter name in the model
+    'koff_CaMKII_NMDAR': koff_values  # Replace with the actual parameter name in the model
 }
 
 # Run the parameter sweep for kon and koff
