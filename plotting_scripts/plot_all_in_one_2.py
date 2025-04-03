@@ -3,6 +3,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def plot_multiple_gdat(target_folder, selected_variables=None):
+    """
+    Reads and plots data from .gdat files in the specified folder, 
+    can iteratively go through multiple subfolders.
+    
+    Parameters:
+    target_folder (str): Path to the folder containing .gdat files.
+    selected_variables (list of str, optional): Variables to plot. If None, all variables are plotted.
+    """
     for root, dirs, files in os.walk(target_folder):
         for file in files:
             if file.endswith(".gdat"):
@@ -57,6 +65,9 @@ def plot_multiple_gdat(target_folder, selected_variables=None):
 
 
 if __name__ == "__main__":
+    """
+    Main execution block that prompts user for input and calls the plot function.
+    """
     target_folder = input("Enter the path to the folder containing .gdat files: ")
     selected_variables = input("Enter variables to plot, separated by commas (or press Enter to plot all): ").split(",")
     selected_variables = [var.strip() for var in selected_variables if var.strip()]  # Clean whitespace
