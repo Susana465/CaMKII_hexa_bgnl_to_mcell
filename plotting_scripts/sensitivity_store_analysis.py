@@ -176,7 +176,6 @@ output_csv = 'extracted_statsparams.csv'
 molecule = 'CaMKII_CaM_Ca4_00'
 stat_type ='last'
 param_names = ['kon_camkii_open', 'koff_camkii_close']
-
 # Having extract_statistic as an argument means 
 # I can then call a function that extracts a statistic in a different way to the current one
 extract_statistic_func = extract_statistic

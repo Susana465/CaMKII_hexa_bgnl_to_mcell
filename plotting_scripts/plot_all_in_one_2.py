@@ -11,6 +11,8 @@ def plot_multiple_gdat(target_folder, selected_variables=None):
     target_folder (str): Path to the folder containing .gdat files.
     selected_variables (list of str, optional): Variables to plot. If None, all variables are plotted.
     """
+    plt.figure(figsize=(8, 5))  # Adjust figure size
+    
     for root, dirs, files in os.walk(target_folder):
         for file in files:
             if file.endswith(".gdat"):
@@ -54,7 +56,9 @@ def plot_multiple_gdat(target_folder, selected_variables=None):
     plt.xlabel("Time (s)")
     plt.ylabel("Molecule Count")
     plt.title("Molecules Interacting Throughout Time")
-    plt.legend()
+    plt.legend(loc="upper left", bbox_to_anchor=(1, 1))
+    # Adjust layout to make space for the legend
+    plt.tight_layout()
 
     # Save as PNG
     output_png_filepath = os.path.join(target_folder, "all_variables_plot.png")
