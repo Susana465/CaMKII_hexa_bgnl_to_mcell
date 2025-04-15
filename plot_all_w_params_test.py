@@ -29,14 +29,18 @@ def plot_multiple_gdat(target_folder, selected_variables=None, param_names=None)
     plt.figure(figsize=(10, 6))  # Adjust figure size
     fmt = LogFormatterSciNotation()
 
-    # Normalize `kon` values for colormap
-    cmap = cm.get_cmap("Blues")  # Use the "Blues" colormap
-    norm = mcolors.Normalize(vmin=0, vmax=1)  # Normalize to range [0, 1] for the colormap
-    
+    # Initialize lists to store data for sorting
     all_lines = []  # Store line objects for sorting by color
     all_labels = []  # Store the corresponding labels
     all_kon = []  # Store `kon` values for sorting
     
+    # Create a colormap for `kon` values
+    cmap = cm.get_cmap("Blues")  # Use the "Blues" colormap
+    norm = mcolors.Normalize(vmin=0, vmax=1)  # Normalize to range [0, 1] for the colormap
+    
+    # First pass: collect all `kon` values to normalize the colormap
+    kon_values = []
+
     for root, dirs, files in os.walk(target_folder):
         csv_filepath = None
 
@@ -87,18 +91,35 @@ def plot_multiple_gdat(target_folder, selected_variables=None, param_names=None)
 
                 # Get `kon` value for color mapping (assuming `kon` is in extracted_params)
                 kon_value = extracted_params.get("kon_camkii_open", 1)  # Default to 1 if not found
-                
-                # Map `kon` to a color
-                color = cmap(norm(kon_value))
+                kon_values.append(kon_value)  # Collect all `kon` values
+
+                print(f"kon_value extracted: {kon_value}")  # Debugging
 
                 # Plot each selected variable and store the line, label, and `kon`
                 for var_name in selected_variables:
                     if var_name in header_dict:
                         idx = header_dict[var_name]
-                        line, = plt.plot(data[:, 0], data[:, idx], label=legend_label, color=color)
-                        all_lines.append(line)
                         all_labels.append(legend_label)
                         all_kon.append(kon_value)  # Store `kon` value for sorting
+                        line, = plt.plot(data[:, 0], data[:, idx], label=legend_label)
+                        all_lines.append(line)
+                    else:
+                        print(f"Variable '{var_name}' not found in {file}. Skipping.")
+
+    # Ensure we have valid kon_values and lines
+    print(f"All kon values: {kon_values}")  # Debugging
+    if not kon_values:
+        print("Error: No kon values were extracted. Plotting cannot proceed.")
+        return
+
+    # Normalize the `kon` values to the range [0, 1] for the colormap
+    norm = mcolors.Normalize(vmin=min(kon_values), vmax=max(kon_values))
+    print(f"Normalized kon range: {min(kon_values)} to {max(kon_values)}")  # Debugging
+
+    # Apply color based on `kon` values
+    for line, kon_value in zip(all_lines, all_kon):
+        color = cmap(norm(kon_value))  # Map `kon` value to color
+        line.set_color(color)
 
     # Sort lines by `kon` (darker color = higher `kon`)
     sorted_indices = np.argsort(all_kon)[::-1]  # Sort in descending order
@@ -106,7 +127,7 @@ def plot_multiple_gdat(target_folder, selected_variables=None, param_names=None)
     sorted_labels = [all_labels[i] for i in sorted_indices]
 
     # Adjust the legend to match the sorted lines
-    plt.legend(sorted_lines, sorted_labels, title="Simulation Runs ($k_{D}$ = 500 M)", loc="upper left")
+    plt.legend(sorted_lines, sorted_labels, title="Simulation Runs (sorted by $k_{on}$)", loc="upper left")
     
     # Customize plot
     plt.xlabel("Time (s)")
