@@ -33,13 +33,21 @@ def plot_multiple_gdat(target_folder, selected_variables=None, param_names=None)
     all_lines = []  # Store line objects for sorting by color
     all_labels = []  # Store the corresponding labels
     all_kon = []  # Store `kon` values for sorting
-    
-    # Create a colormap for `kon` values
-    cmap = cm.get_cmap("Blues")  # Use the "Blues" colormap
-    norm = mcolors.Normalize(vmin=0, vmax=1)  # Normalize to range [0, 1] for the colormap
-    
-    # First pass: collect all `kon` values to normalize the colormap
-    kon_values = []
+
+    # **Custom Color Mapping Based on `kon` Values**
+    # Manually define color thresholds for kon values
+    def get_color_for_kon(kon_value):
+        """
+        Returns a color based on the `kon` value.
+        """
+        if kon_value >= 1e4:  
+            return "mediumorchid"  
+        elif kon_value >= 1e3:  
+            return "orchid"  
+        elif kon_value >= 1e2:  
+            return "plum"  
+        else:  
+            return "lightsteelblue"  
 
     for root, dirs, files in os.walk(target_folder):
         csv_filepath = None
@@ -91,7 +99,7 @@ def plot_multiple_gdat(target_folder, selected_variables=None, param_names=None)
 
                 # Get `kon` value for color mapping (assuming `kon` is in extracted_params)
                 kon_value = extracted_params.get("kon_camkii_open", 1)  # Default to 1 if not found
-                kon_values.append(kon_value)  # Collect all `kon` values
+                all_kon.append(kon_value)  # Store `kon` value for sorting
 
                 print(f"kon_value extracted: {kon_value}")  # Debugging
 
@@ -99,42 +107,33 @@ def plot_multiple_gdat(target_folder, selected_variables=None, param_names=None)
                 for var_name in selected_variables:
                     if var_name in header_dict:
                         idx = header_dict[var_name]
-                        all_labels.append(legend_label)
-                        all_kon.append(kon_value)  # Store `kon` value for sorting
                         line, = plt.plot(data[:, 0], data[:, idx], label=legend_label)
+
+                        # Get the color for the line based on `kon` value**
+                        line.set_color(get_color_for_kon(kon_value))  # Set the color manually based on `kon`
                         all_lines.append(line)
+                        all_labels.append(legend_label)
                     else:
                         print(f"Variable '{var_name}' not found in {file}. Skipping.")
 
-    # Ensure we have valid kon_values and lines
-    print(f"All kon values: {kon_values}")  # Debugging
-    if not kon_values:
-        print("Error: No kon values were extracted. Plotting cannot proceed.")
-        return
+    # Sort lines by `kon` values
+    sorted_indices = np.argsort(all_kon)  # Get sorted indices based on `kon` values
+    all_lines_sorted = [all_lines[i] for i in sorted_indices]  # Sort lines
+    all_labels_sorted = [all_labels[i] for i in sorted_indices]  # Sort corresponding labels
 
-    # Normalize the `kon` values to the range [0, 1] for the colormap
-    norm = mcolors.Normalize(vmin=min(kon_values), vmax=max(kon_values))
-    print(f"Normalized kon range: {min(kon_values)} to {max(kon_values)}")  # Debugging
-
-    # Apply color based on `kon` values
-    for line, kon_value in zip(all_lines, all_kon):
-        color = cmap(norm(kon_value))  # Map `kon` value to color
-        line.set_color(color)
-
-    # Sort lines by `kon` (darker color = higher `kon`)
-    sorted_indices = np.argsort(all_kon)[::-1]  # Sort in descending order
-    sorted_lines = [all_lines[i] for i in sorted_indices]
-    sorted_labels = [all_labels[i] for i in sorted_indices]
-
-    # Adjust the legend to match the sorted lines
-    plt.legend(sorted_lines, sorted_labels, title="Simulation Runs (sorted by $k_{on}$)", loc="upper left")
-    
     # Customize plot
     plt.xlabel("Time (s)")
     plt.ylabel("Molecule Count")
     plt.title("Molecules Interacting Throughout Time")
+
+    # Set background color to grey
+    plt.gca().set_facecolor('lightgrey')
+    
     plt.grid(True)
     plt.tight_layout()
+
+    # Adjust legend and its position
+    plt.legend(all_lines_sorted, all_labels_sorted, title="Simulation Runs ($k_{D}$ = 500 M)", loc="upper left")
     
     # Save as PNG
     output_png_filepath = os.path.join(target_folder, "all_variables_plot.png")
