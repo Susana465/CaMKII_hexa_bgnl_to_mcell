@@ -2,6 +2,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import LogFormatterSciNotation
+import matplotlib.ticker as mticker
 import pandas as pd
 
 def extract_parameters(params_dict, param_names):
@@ -29,7 +30,10 @@ def extract_parameters(params_dict, param_names):
             print(f"Warning: Parameter '{param_name}' not found.")
             extracted_values[param_name] = None  # Assign None if parameter is missing
         else:
-            extracted_values[param_name] = parameter.iloc[0]
+            try:
+                extracted_values[param_name] = float(parameter.iloc[0])
+            except ValueError:
+                extracted_values[param_name] = parameter.iloc[0]
 
     print(f"Extracted parameters: {extracted_values}")
     return extracted_values
@@ -118,12 +122,16 @@ def plot_multiple_gdat(target_folder, selected_variables=None, param_names=None)
                 # Build legend using extracted parameters, if available
                 if extracted_params:
                      #legend_label = " - ".join(["{param}: {value_10}".format(value_10=fmt(value),param=param) for param, value in extracted_params.items() if value is not None])
-                     legend_label = " - ".join([f"{param}: $10^{{{int(np.log10(value))}}}$" # format value as 10^x inside LaTeX-style math mode
-                           if isinstance(value, (int, float)) and value > 0 # only do this if the value is numeric and positive
-                           else f"{param}: {value}" # otherwise just include the raw value (e.g., string or zero/negative)
-                           for param, value in extracted_params.items() if value is not None])# loop through all extracted parameter key-value pairs
-                     
-                     key = " - ".join([f"{param}: {value}" for param, value in extracted_params.items() if value is not None])
+                     legend_label = " - ".join([
+                        f"{param}: {fmt.format_data(value)}"
+                        if isinstance(value, (int, float)) and value > 0
+                        else f"{param}: {value}"
+                        for param, value in extracted_params.items() if value is not None
+                    ])
+
+                     key = " - ".join([
+                         f"{param}: {value}" 
+                         for param, value in extracted_params.items() if value is not None])
                 else:
                     legend_label = file  # If no CSV was found, use the filename as the legend label
 
