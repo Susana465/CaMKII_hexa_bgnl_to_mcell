@@ -17,10 +17,10 @@ begin parameters
 	# number of iterations for MCell
     ITERATIONS 1e7
 
-	# Initial number of Ca molecules/cell
+	# Initial number of molecules/cell
   	Ca_i 1000 
 	CaM_i 290
-	CaMKII_i 60
+	CaMKII_i 60 #60 molecules of 12 subunits is 60x12 = 720 subunits
 	PP1_i 12
 	NMDAR_i 30
 
@@ -142,7 +142,6 @@ begin reaction rules
 
 #9 CaMKII T306 phosphorylation
 # If CaMKII open, and T286~P, then t306 can become P, rendering subunit into an closed state. Once T306~P, t286 may or may not remain P, it is not a necessary condition so we leave it unspecified. 
-# CaMKII T306 P cannot happen if bound to NMDAR, so there is the condition that for camkii t306 p to happen, nmdar site needs to be unbound. 
 	CaMKII(cam,T306~0,open~1) -> CaMKII(cam,T306~P,open~1) k_P_CaMKII306
 # It's more likely camkii will be open when T286P~1, so more likely to find camkii_t286P_open and therefore morelikely this will be also P in 306 but it is not a condition.
 # it prevents cam from binding, and when cam is not binding, camkii can close, so more likley to become closed/inactive.
@@ -210,6 +209,7 @@ begin observables
 	Molecules CaMKII_CaM_unbound_open_T286P1 CaMKII(cam, open~1, T286~P)
 
 	Molecules CaMKII_CaM_unbound_closed_T286P0 CaMKII(cam, open~0, T286~0)
+	
 	# CaMKII cannot P if closed, as per rxn condition #5, so there should be zero of this (sanity check)
 	Molecules CaMKII_CaM_unbound_closed_T286P1 CaMKII(cam, open~0, T286~P)
 

@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.ticker import LogFormatterSciNotation
 import pandas as pd
 
 def extract_parameters(params_dict, param_names):
@@ -33,6 +34,9 @@ def extract_parameters(params_dict, param_names):
     print(f"Extracted parameters: {extracted_values}")
     return extracted_values
 
+color_dict={"kon_camkii_open: 2.00e+04 - koff_camkii_close: 1.00e+07":"blue", 
+            "kon_camkii_open: 2.00e+02 - koff_camkii_close: 1.00e+05":"green",
+            "kon_camkii_open: 2.00e+03 - koff_camkii_close: 1.00e+06":"red"}
 
 def plot_multiple_gdat(target_folder, selected_variables=None, param_names=None):
     """
@@ -45,8 +49,16 @@ def plot_multiple_gdat(target_folder, selected_variables=None, param_names=None)
     param_names (list of str, optional): List of parameter names to extract for the legend.
     """
 
-    plt.figure(figsize=(8, 5))  # Adjust figure size
+    plt.figure(figsize=(10, 6))  # Adjust figure size
+
+    # Tranforming numbers to power of 10 scientific notation
+    #f = mticker.ScalarFormatter(useOffset=False, useMathText=True)
+    #g = lambda x,pos : "${}$".format(f._formatSciNotation('%1.10e' % x))
     
+    #fmt = mticker.FuncFormatter(g)
+
+    fmt = LogFormatterSciNotation()
+
     for root, dirs, files in os.walk(target_folder):
         csv_filepath = None
 
@@ -61,6 +73,15 @@ def plot_multiple_gdat(target_folder, selected_variables=None, param_names=None)
             params_dict = pd.read_csv(csv_filepath)
             extracted_params = extract_parameters(params_dict, param_names)
             print(f"Extracted parameters from {csv_filepath}: {extracted_params}")
+
+            #if kon = 2, give it the blue colour
+
+            # Convert extracted parameter values to scientific notation (1x10^6)
+            #for param, value in extracted_params.items():
+            #    if isinstance(value, (int, float)):  # Only format numeric values
+            #        # Format each value into scientific notation
+            #        extracted_params[param] = f"{value:.2e}"
+                    
         else:
             extracted_params = {} 
             print("Warning: No CSV file found. Skipping parameter extraction.")     
@@ -96,7 +117,11 @@ def plot_multiple_gdat(target_folder, selected_variables=None, param_names=None)
                 
                 # Build legend using extracted parameters, if available
                 if extracted_params:
-                     legend_label = " - ".join([f"{param}: {value}" for param, value in extracted_params.items() if value is not None])
+                     #legend_label = " - ".join(["{param}: {value_10}".format(value_10=fmt(value),param=param) for param, value in extracted_params.items() if value is not None])
+                     legend_label = " - ".join([f"{param}: {fmt.format_data(value)}" for param, value in extracted_params.items() 
+                                                if value is not None])
+                                
+                     key = " - ".join([f"{param}: {value}" for param, value in extracted_params.items() if value is not None])
                 else:
                     legend_label = file  # If no CSV was found, use the filename as the legend label
 
@@ -104,7 +129,11 @@ def plot_multiple_gdat(target_folder, selected_variables=None, param_names=None)
                 for var_name in selected_variables:
                     if var_name in header_dict:
                         idx = header_dict[var_name]
-                        plt.plot(data[:, 0], data[:, idx], label=legend_label)
+                        plt.plot(data[:, 0], data[:, idx], 
+                                 label=legend_label)
+                        print(legend_label)
+                        print(key) #color=color_dict[key])
+                        
                     else:
                         print(f"Variable '{var_name}' not found in {file}. Skipping.")
 
@@ -112,7 +141,7 @@ def plot_multiple_gdat(target_folder, selected_variables=None, param_names=None)
     plt.xlabel("Time (s)")
     plt.ylabel("Molecule Count")
     plt.title("Molecules Interacting Throughout Time")
-    plt.legend(loc="upper left", bbox_to_anchor=(1, 1))
+    plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.1))
     # Adjust layout to make space for the legend
     plt.tight_layout()
 
