@@ -26,3 +26,7 @@ CaMKII_T286P    CaMKII_T306P     CaMKII_open   CaMKII_closed CaMKII_nmdar_free C
 CaMKII_T286P, CaMKII_CaM_Ca4_PP, CaMKII_CaM_Ca4_T286P1, CaMKII_CaM_unbound_closed_T286P1
 
 kon_camkii_open, koff_camkii_close
+
+NMDAR_free, NMDAR_CaMKII_complex
+
+kon_CaMKII_NMDAR, koff_CaMKII_NMDAR
