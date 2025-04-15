@@ -3,8 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import LogFormatterSciNotation
 import pandas as pd
-import matplotlib.cm as cm
-import matplotlib.colors as mcolors
 
 def extract_parameters(params_dict, param_names):
     """
@@ -41,11 +39,11 @@ def plot_multiple_gdat(target_folder, selected_variables=None, param_names=None)
         Returns a color based on the `kon` value.
         """
         if kon_value >= 1e4:  
-            return "mediumorchid"  
+            return "rebeccapurple"  
         elif kon_value >= 1e3:  
-            return "orchid"  
+            return "mediumslateblue"  
         elif kon_value >= 1e2:  
-            return "plum"  
+            return "lavender"  
         else:  
             return "lightsteelblue"  
 
