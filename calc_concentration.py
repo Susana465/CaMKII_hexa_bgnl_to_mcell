@@ -10,7 +10,7 @@ def calculate_concentration(num_molecules):
 
     return concentration_uM
 
-num_molecules = 28
+num_molecules = 55
 
 concentration = calculate_concentration(num_molecules)
 print(f"Concentration: {concentration:.3e} μM")
