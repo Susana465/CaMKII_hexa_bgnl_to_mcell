@@ -8,6 +8,8 @@ def plot_multiple_gdat(target_folder, selected_variables=None, variable_colors=N
     """
     plt.figure(figsize=(10, 6))
 
+    already_plotted_vars = set()
+
     for root, dirs, files in os.walk(target_folder):
         for file in files:
             if file.endswith(".gdat"):
@@ -33,22 +35,27 @@ def plot_multiple_gdat(target_folder, selected_variables=None, variable_colors=N
                 for var_name in selected_variables:
                     if var_name in header_dict:
                         idx = header_dict[var_name]
-                        label = f"{file} - {var_name}"
                         color = variable_colors.get(var_name, None) if variable_colors else None
+                        label = var_name if var_name not in already_plotted_vars else "_nolegend_"
                         line, = plt.plot(data[:, 0], data[:, idx], label=label)
                         if color:
                             line.set_color(color)
+                        already_plotted_vars.add(var_name)
                     else:
                         print(f"Variable '{var_name}' not found in {file}. Skipping.")
 
     plt.xlabel("Time (s)")
     plt.ylabel("Molecule Count")
     plt.title("Simulation Output")
-    plt.gca().set_facecolor('lightgrey')
+    plt.gca().set_facecolor('whitesmoke')
     plt.grid(True)
     plt.tight_layout()
-    plt.legend(loc="upper right")
+    legend = plt.legend(loc="upper right")
 
+    # Make legend lines thicker
+    for line in legend.get_lines():
+        line.set_linewidth(4)  # Thicker lines in legend for visibility
+    
     output_png_filepath = os.path.join(target_folder, "all_variables_plot.png")
     plt.savefig(output_png_filepath, dpi=500)
     plt.show()
@@ -59,15 +66,15 @@ if __name__ == "__main__":
     selected_variables = input("Enter variables to plot, separated by commas (or press Enter to plot all): ").split(",")
     selected_variables = [var.strip() for var in selected_variables if var.strip()]
 
-    # Set your color preferences here!
+    # Define consistent colors here:
     variable_colors = {
-        "CaM_free": "gold",
-        "CaM_Ca1": "lightgreen",
-        "CaM_Ca2": "yellowgreen",
-        "CaM_Ca3": "olivedrab",
-        "CaM_Ca4": "darkolivegreen",
-        "CaMKII_CaM_Ca4": "violet",
-        # Add more here...
+        "cam_free": "gold",
+        "cam_ca1": "darkkhaki",
+        "cam_ca2": "olive",
+        "cam_ca3": "olivedrab",
+        "cam_ca4": "darkgreen",
+        "camkii_cam_ca4": "violet",
+        # Add more as needed...
     }
 
     plot_multiple_gdat(target_folder, selected_variables, variable_colors)
