@@ -46,7 +46,7 @@ def plot_multiple_gdat(target_folder, selected_variables=None, variable_colors=N
 
     plt.xlabel("Time (s)")
     plt.ylabel("Molecule Count")
-    plt.title("Simulation Output")
+    # plt.title("Simulation Output")
     plt.gca().set_facecolor('whitesmoke')
     plt.grid(True)
     plt.tight_layout()
