@@ -49,4 +49,12 @@ CaMKII_CaM_unbound_open, CaMKII_open, NMDAR_free, NMDAR_CaMKII_complex
 
 CaMKII_CaM_Ca4, CaMKII_CaM_unbound_open, CaMKII_open, NMDAR_free, NMDAR_CaMKII_complex, CaMKII_T286P, CaMKII_T286P1_bound_NMDAR, CaMKII_CaM_unbound_open_T286P1, CaMKII_CaM_Ca4_T286P1_bound_NMDAR
 
-camkii_t286p1_bound_nmdar
+
+CaMKII_T286P, CaMKII_T286P1_bound_NMDAR, CaMKII_CaM_Ca4_T286P1_bound_NMDAR
+
+CaMKII_CaM_Ca4_T286P1, CaMKII_CaM_unbound_open_T286P1, CaMKII_T286P
+
+CaMKII_CaM_unbound_open_T286P0, NMDAR_CaMKII_complex, CaMKII_T286P0_bound_NMDAR, CaMKII_CaM_unbound_T286P0_bound_NMDAR
+
+NMDAR_CaMKII_complex, CaMKII_T286P0_bound_NMDAR, CaMKII_T286P1_bound_NMDAR
+
