@@ -64,18 +64,48 @@ def plot_mean_from_gdat(target_folder, selected_variables=None, variable_colors=
             alpha=0.3
         )
 
-        # Final value marker and label
+                # Final value marker
         x_end = time_values[-1]
         y_end = mean_values[-1]
         plt.plot(x_end, y_end, 'o', color=color or line.get_color())
+
+        # Track existing end label positions
+        if "used_y_positions" not in locals():
+            used_y_positions = []
+
+        # Smart bidirectional spacing
+        label_y = y_end
+        min_sep = 5  # Minimum separation
+
+        # Check for collisions and adjust up/down as needed
+        def is_free(y_val):
+            return all(abs(y_val - used) >= min_sep for used in used_y_positions)
+
+        if not is_free(label_y):
+            # Try small steps up and down until a free spot is found
+            offset = min_sep
+            while True:
+                up = label_y + offset
+                down = label_y - offset
+                if is_free(up):
+                    label_y = up
+                    break
+                elif is_free(down):
+                    label_y = down
+                    break
+                offset += min_sep
+
+        used_y_positions.append(label_y)
+
+        # Draw label
         plt.text(
-            x_end + 0.5, y_end,
+            x_end + 0.5, label_y,
             f"{y_end:.1f}",
             fontsize=9.5,
             color=color or line.get_color(),
             verticalalignment='center'
         )
-
+        
     plt.xlabel("Time (s)")
     plt.ylabel("Molecule Count")
     plt.gca().set_facecolor('whitesmoke')
@@ -106,11 +136,16 @@ if __name__ == "__main__":
         "camkii_cam_ca4": "violet",
         "camkii_cam_unbound_open": "dodgerblue",
         "camkii_open": "saddlebrown",
+        "camkii_open_t286p0": "gray",
         "nmdar_free": "deepskyblue",
         "nmdar_camkii_complex": "mediumblue",
         "camkii_t286p": "orangered",
         "camkii_t286p1_bound_nmdar": "hotpink",
+        "camkii_t286p0_bound_nmdar": "dimgray",
         "camkii_cam_unbound_open_t286p1": "lightsalmon",
+        "camkii_cam_unbound_open_t286p0": "slategray",
+        "camkii_cam_unbound_t286p0_bound_nmdar": "darkcyan",
+        "camkii_cam_ca4_t286p1": "chocolate",
         "camkii_cam_ca4_t286p1_bound_nmdar": "mediumorchid",
         # Add more as needed...
     }

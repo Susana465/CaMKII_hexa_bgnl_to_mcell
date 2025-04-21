@@ -61,7 +61,7 @@ def plot_multiple_gdat(target_folder, selected_variables=None, variable_colors=N
     plt.gca().set_facecolor('whitesmoke')
     plt.grid(True)
     plt.tight_layout()
-    legend = plt.legend(loc="upper left")
+    legend = plt.legend(loc="center right")
 
     # Make legend lines thicker
     for line in legend.get_lines():
@@ -87,11 +87,16 @@ if __name__ == "__main__":
         "camkii_cam_ca4": "violet",
         "camkii_cam_unbound_open": "dodgerblue",
         "camkii_open": "saddlebrown",
+        "camkii_open_t286p0": "gray",
         "nmdar_free": "deepskyblue",
         "nmdar_camkii_complex": "mediumblue",
         "camkii_t286p": "orangered",
         "camkii_t286p1_bound_nmdar": "hotpink",
+        "camkii_t286p0_bound_nmdar": "dimgray",
         "camkii_cam_unbound_open_t286p1": "lightsalmon",
+        "camkii_cam_unbound_open_t286p0": "slategray",
+        "camkii_cam_unbound_t286p0_bound_nmdar": "darkcyan",
+        "camkii_cam_ca4_t286p1": "chocolate",
         "camkii_cam_ca4_t286p1_bound_nmdar": "mediumorchid",
         # Add more as needed...
     }
