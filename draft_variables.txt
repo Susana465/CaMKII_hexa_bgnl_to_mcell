@@ -70,3 +70,10 @@ camkii_open_t286p0, camkii_t286p, camkii_open
 camkii_t306p, CaMKII_PP_bound_NMDAR, camkii_cam_unbound_t306p1_bound_nmdar
 
 camkii_t306p, CaMKII_T306P0_bound_NMDAR, CaMKII_T306P1_bound_NMDAR, NMDAR_CaMKII_complex, camkii_00_bound_NMDAR
+
+
+D:\CaMKII_hexa_bgnl_to_mcellcop2\data_output\wetransfer_runs_wt-zip_2025-04-23_0856\WT
+
+D:\CaMKII_hexa_bgnl_to_mcellcop2\data_output\runs_T286
+
+D:\CaMKII_hexa_bgnl_to_mcellcop2\data_output\wetransfer_outputs_no_nmdar_bind-zip_2025-04-18_1352

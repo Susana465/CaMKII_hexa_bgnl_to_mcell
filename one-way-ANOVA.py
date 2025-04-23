@@ -49,12 +49,32 @@ def run_anova_analysis(group_paths: dict, variable_name: str):
     f_stat, p_val = stats.f_oneway(*grouped_data)
     print(f"\nANOVA F-statistic: {f_stat:.3f}, p-value: {p_val:.3e}")
 
+    # font size for plotting
+    plt.rcParams.update({'font.size': 12})
+
     # Boxplot
     plt.figure(figsize=(8, 6))
-    sns.boxplot(data=df, x='group', y=variable_name, palette="Set2")
-    plt.title(f"{variable_name} Across Groups")
-    plt.ylabel(variable_name)
-    plt.xlabel("Group")
+    ax = sns.boxplot(data=df, x='group', y=variable_name, palette="Set2")
+    
+    # Add the individual data points
+    sns.stripplot(data=df, x='group', y=variable_name, color='black', jitter=True, alpha=0.6, size=6)
+
+    # Add grid lines with more frequency (minor and major)
+    plt.grid(True, which='both', linestyle='--', alpha=0.6)
+    plt.minorticks_on()  # Enable minor ticks
+    plt.grid(True, which='minor', linestyle=':', alpha=0.5)  # Minor grid lines
+
+    # Display mean values as grey dashed lines across the entire width of each box
+    means = df.groupby('group')[variable_name].mean()
+    for i, group in enumerate(group_paths.keys()):
+        # Get the x position of the group (to align with the boxplot)
+        x_pos = i
+        # Draw a grey dashed line for the mean across the full width of the boxplot
+        ax.plot([x_pos - 0.4, x_pos + 0.4], [means[group], means[group]], color='grey', linestyle='--', linewidth=2)
+
+    plt.title(variable_name)
+    plt.ylabel("Final Molecule Count")
+    plt.xlabel("")
     plt.tight_layout()
     plt.show()
 
