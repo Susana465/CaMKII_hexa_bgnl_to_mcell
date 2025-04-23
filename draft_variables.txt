@@ -34,6 +34,7 @@ kon_CaMKII_NMDAR, koff_CaMKII_NMDAR
 colours chosen for plotting:
 
 CaM_free, CaM_Ca1, CaM_Ca2, CaM_Ca3 , CaM_Ca4, CaMKII_CaM_Ca4
+
  "cam_free": "gold",
         "cam_ca1": "darkkhaki",
         "cam_ca2": "olive",
@@ -61,3 +62,7 @@ NMDAR_CaMKII_complex, CaMKII_T286P0_bound_NMDAR, CaMKII_T286P1_bound_NMDAR
 CaMKII_CaM_unbound_open, NMDAR_CaMKII_complex, CaMKII_T286P1_bound_NMDAR, CaMKII_CaM_unbound_open_T286P1, CaMKII_CaM_unbound_T286P1_bound_NMDAR
 
 camkii_open_t286p0, camkii_t286p, camkii_open 
+
+camkii_t306p, CaMKII_PP_bound_NMDAR, camkii_cam_unbound_t306p1_bound_nmdar
+
+camkii_t306p, CaMKII_T306P0_bound_NMDAR, CaMKII_T306P1_bound_NMDAR, NMDAR_CaMKII_complex, camkii_00_bound_NMDAR
