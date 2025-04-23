@@ -1,9 +1,12 @@
+import sys
 import os
 import numpy as np
 import pandas as pd
-import scipy.stats as stats
 import seaborn as sns
 import matplotlib.pyplot as plt
+from scipy import stats
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
+from statannotations.Annotator import Annotator
 
 def load_final_values(folder_path, variable_name):
     final_values = []
@@ -59,18 +62,38 @@ def run_anova_analysis(group_paths: dict, variable_name: str):
     # Add the individual data points
     sns.stripplot(data=df, x='group', y=variable_name, color='black', jitter=True, alpha=0.6, size=6)
 
-    # Add grid lines with more frequency (minor and major)
+    # Grid lines
     plt.grid(True, which='both', linestyle='--', alpha=0.6)
-    plt.minorticks_on()  # Enable minor ticks
-    plt.grid(True, which='minor', linestyle=':', alpha=0.5)  # Minor grid lines
+    plt.minorticks_on()
+    plt.grid(True, which='minor', linestyle=':', alpha=0.5)
 
-    # Display mean values as grey dashed lines across the entire width of each box
+    # Display mean lines
     means = df.groupby('group')[variable_name].mean()
     for i, group in enumerate(group_paths.keys()):
-        # Get the x position of the group (to align with the boxplot)
         x_pos = i
-        # Draw a grey dashed line for the mean across the full width of the boxplot
         ax.plot([x_pos - 0.4, x_pos + 0.4], [means[group], means[group]], color='grey', linestyle='--', linewidth=2)
+
+    # Tukey's post hoc if significant
+    if p_val < 0.05:
+        print("\nTukey's HSD Post Hoc Test:")
+    
+        tukey_res = pairwise_tukeyhsd(df[variable_name], df['group'])
+        print(tukey_res.summary())  # Shows the summary of Tukey's HSD test
+
+        # Extract pairs and p-values from Tukey's HSD result
+        tukey_data = tukey_res._results_table.data[1:]  # Skip header row
+        pairs = []
+        pvals = []
+
+        for row in tukey_data:
+            group1, group2, meandiff, p_adj, lower, upper, reject = row
+            pairs.append((group1, group2))
+            pvals.append(p_adj)
+
+        # Prepare Annotator for plotting the significance annotations
+        annotator = Annotator(ax, pairs, data=df, x='group', y=variable_name)
+        annotator.configure(test=None, text_format='star', loc='inside', verbose=0)
+        annotator.set_pvalues_and_annotate(pvals)
 
     plt.title(variable_name)
     plt.ylabel("Final Molecule Count")
