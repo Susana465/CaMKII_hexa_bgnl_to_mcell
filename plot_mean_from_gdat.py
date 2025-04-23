@@ -49,13 +49,18 @@ def plot_mean_from_gdat(target_folder, selected_variables=None, variable_colors=
         mean_values = np.mean(stacked, axis=0)
         std_values = np.std(stacked, axis=0)
 
+        # Print final mean and std for figure legend
+        final_mean = mean_values[-1] 
+        final_std = std_values[-1]  
+        print(f"{var_name} - Final Value: {final_mean:.2f} ± {final_std:.2f}")
+
         color = variable_colors.get(var_name, None)
         label = var_name
         line = plt.plot(time_values, mean_values, label=label)[0]
         if color:
             line.set_color(color)
 
-        # Optional: shaded area for ±1 std
+        # shaded area for ±1 std
         plt.fill_between(
             time_values,
             mean_values - std_values,
@@ -111,7 +116,7 @@ def plot_mean_from_gdat(target_folder, selected_variables=None, variable_colors=
     plt.gca().set_facecolor('whitesmoke')
     plt.grid(True)
     plt.tight_layout()
-    legend = plt.legend(loc="upper left")
+    legend = plt.legend(loc="upper right")
 
     for line in legend.get_lines():
         line.set_linewidth(4)

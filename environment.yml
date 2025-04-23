@@ -4,3 +4,7 @@ dependencies:
   - python=3.9
   - numpy==1.24.3
   - pandas==1.3.0
+  - matplotlib
+  - seaborn
+  - scipy
+  - statsmodels

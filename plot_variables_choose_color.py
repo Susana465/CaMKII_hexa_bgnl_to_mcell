@@ -61,7 +61,7 @@ def plot_multiple_gdat(target_folder, selected_variables=None, variable_colors=N
     plt.gca().set_facecolor('whitesmoke')
     plt.grid(True)
     plt.tight_layout()
-    legend = plt.legend(loc="upper left")
+    legend = plt.legend(loc="upper right")
 
     # Make legend lines thicker
     for line in legend.get_lines():
