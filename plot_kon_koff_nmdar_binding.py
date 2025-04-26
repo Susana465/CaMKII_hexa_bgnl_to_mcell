@@ -74,17 +74,18 @@ def plot_multiple_gdat(target_folder, selected_variables=None, param_names=None)
                 else:
                     selected_variables = [var.lower() for var in selected_variables]
 
-                # Compute KD = koff / kon and build legend
+                # Build the legend label
                 kon = extracted_params.get("kon_CaMKII_NMDAR")
                 koff = extracted_params.get("koff_CaMKII_NMDAR")
-                if kon and koff and kon > 0:
+                if kon is not None and koff is not None and kon > 0:
                     kd = koff / kon
-                    exponent = int(np.floor(np.log10(kd)))
-                    base = kd / 10**exponent
-                    legend_label = f"$K_D$ = {base:.1f} \\times 10^{{{exponent}}}$"
-                else:
-                    legend_label = file
-
+                    if kd > 0:
+                        mantissa = kd / (10 ** np.floor(np.log10(kd)))
+                        exponent = int(np.floor(np.log10(kd)))
+                        legend_label = fr"$K_D = {mantissa:.2f} \times 10^{{{exponent}}}$"
+                    else:
+                        legend_label = file
+                        
                 kon_value = kon if kon else 1
                 all_kon.append(kon_value)
 
@@ -106,11 +107,12 @@ def plot_multiple_gdat(target_folder, selected_variables=None, param_names=None)
 
     plt.xlabel("Time (s)")
     plt.ylabel("Molecule Count")
-    plt.title("CaMKII/NMDAR binding")
+    plt.title("CaMKII_open")
     plt.gca().set_facecolor('lightgrey')
     plt.grid(True)
     plt.tight_layout()
-    plt.legend(all_lines_sorted, all_labels_sorted, title="Simulation Runs ($K_D$)", loc="upper right")
+
+    plt.legend(all_lines_sorted, all_labels_sorted, title="Simulation runs with varying ($K_D$)", loc="lower right")
 
     output_png_filepath = os.path.join(target_folder, "all_variables_plot.png")
     plt.savefig(output_png_filepath, dpi=500)
