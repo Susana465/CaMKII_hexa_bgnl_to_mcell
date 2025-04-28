@@ -46,12 +46,19 @@ def run_analysis(group_paths: dict, variable_name: str):
         print("❌ Cannot proceed. Each group must have at least 3 values.")
         return
 
+    # Custom color palette
+    custom_palette = {
+        'WT': '#66c2a5',             # Greenish
+        'T286_MT': '#fc8d62',         # Reddish
+        'NMDAR_CaMKII_MT': '#8da0cb'  # Bluish
+    }
+
     # font size for plotting
     plt.rcParams.update({'font.size': 12})
 
     # Create the figure
     plt.figure(figsize=(8, 6))
-    ax = sns.boxplot(data=df, x='group', y=variable_name, palette="Set2", showmeans=False)
+    ax = sns.boxplot(data=df, x='group', y=variable_name, palette=custom_palette, showmeans=False)
 
     # Add individual data points
     sns.stripplot(data=df, x='group', y=variable_name, color='black', jitter=True, alpha=0.6, size=6)
