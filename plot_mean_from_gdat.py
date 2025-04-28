@@ -116,7 +116,7 @@ def plot_mean_from_gdat(target_folder, selected_variables=None, variable_colors=
     plt.gca().set_facecolor('whitesmoke')
     plt.grid(True)
     plt.tight_layout()
-    legend = plt.legend(loc="upper right")
+    legend = plt.legend(loc="upper left")
 
     for line in legend.get_lines():
         line.set_linewidth(4)
