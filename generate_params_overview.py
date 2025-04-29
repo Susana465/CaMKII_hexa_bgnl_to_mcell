@@ -6,8 +6,8 @@ from sensitivity_store_analysis import read_gdat
 from sensitivity_store_analysis import extract_statistic
 
 # Define the base directory and the output CSV path
-base_dir = r'D:/CaMKII_hexa_bgnl_to_mcellcop2/data_output/wetransfer_runs_wt-zip_2025-04-23_0856/WT'
-output_csv = r'D:/CaMKII_hexa_bgnl_to_mcellcop2/data_output/wetransfer_runs_wt-zip_2025-04-23_0856/WT/Parameters_Overview.csv'
+base_dir = r'D:/CaMKII_hexa_bgnl_to_mcellcop2/data_output/thesis_results/NMDAR_MT_open_and_close_release'
+output_csv = r'D:/CaMKII_hexa_bgnl_to_mcellcop2/data_output/thesis_results/NMDAR_MT_open_and_close_release/Parameters_Overview.csv'
 
 # Initialize a list to store the data from all runs
 data = []

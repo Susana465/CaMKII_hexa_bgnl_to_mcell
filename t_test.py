@@ -50,38 +50,45 @@ def run_analysis(group_paths: dict, variable_name: str):
     custom_palette = {
         'WT': '#66c2a5',             # Greenish
         'T286_MT': '#fc8d62',         # Reddish
-        'NMDAR_CaMKII_MT': '#8da0cb'  # Bluish
     }
 
-    # font size for plotting
     plt.rcParams.update({'font.size': 12})
-
-    # Create the figure
     plt.figure(figsize=(8, 6))
     ax = sns.boxplot(data=df, x='group', y=variable_name, palette=custom_palette, showmeans=False)
-
-    # Add individual data points
     sns.stripplot(data=df, x='group', y=variable_name, color='black', jitter=True, alpha=0.6, size=6)
 
-    # Grid lines
     plt.grid(True, which='both', linestyle='--', alpha=0.6)
     plt.minorticks_on()
     plt.grid(True, which='minor', linestyle=':', alpha=0.5)
 
-    # Add dashed line for the means
     means = df.groupby('group')[variable_name].mean()
     for i, group in enumerate(group_paths.keys()):
         x_pos = i
         ax.plot([x_pos - 0.4, x_pos + 0.4], [means[group], means[group]], color='grey', linestyle='--', linewidth=2)
 
-    # Statistical testing
     group_names = list(group_paths.keys())
     if len(group_names) == 2:
-        # T-test
         group1_vals = df[df['group'] == group_names[0]][variable_name]
         group2_vals = df[df['group'] == group_names[1]][variable_name]
-        stat, p_val = stats.ttest_ind(group1_vals, group2_vals)
-        print(f"\nT-test between {group_names[0]} and {group_names[1]}: t={stat:.3f}, p={p_val:.3e}")
+        
+        print(f"\n{group_names[0]} values: {group1_vals.tolist()}")
+        print(f"{group_names[1]} values: {group2_vals.tolist()}")
+
+        # Check for problems before t-test
+        if len(group1_vals) < 2 or len(group2_vals) < 2:
+            print("❌ Not enough valid data points for t-test.")
+            return
+
+        if np.std(group1_vals) == 0 or np.std(group2_vals) == 0:
+            print("⚠️ One of the groups has zero variance. Using Mann-Whitney U test instead.")
+
+            stat, p_val = stats.mannwhitneyu(group1_vals, group2_vals, alternative='two-sided')
+            test_used = "Mann-Whitney U"
+        else:
+            stat, p_val = stats.ttest_ind(group1_vals, group2_vals)
+            test_used = "T-test"
+
+        print(f"\n{test_used} between {group_names[0]} and {group_names[1]}: stat={stat:.3f}, p={p_val:.3e}")
 
         pairs = [(group_names[0], group_names[1])]
         pvalues = [p_val]
@@ -90,8 +97,18 @@ def run_analysis(group_paths: dict, variable_name: str):
         annotator.configure(test=None, text_format='star', loc='inside', verbose=0)
         annotator.set_pvalues_and_annotate(pvalues)
 
+        # --- Show stat and p value on the plot ---
+        if p_val < 0.0001:
+            p_display = "<0.0001"
+        else:
+            p_display = f"{p_val:.4f}"
+
+        textstr = f"{test_used}\nstat = {stat:.2f}\np = {p_display}"
+        props = dict(boxstyle='round', facecolor='white', alpha=0.8)
+        ax.text(0.95, 0.95, textstr, transform=ax.transAxes, fontsize=12,
+                verticalalignment='top', horizontalalignment='right', bbox=props)
+
     else:
-        # ANOVA
         grouped_data = [df[df['group'] == g][variable_name] for g in group_names]
         f_stat, p_val = stats.f_oneway(*grouped_data)
         print(f"\nANOVA F-statistic: {f_stat:.3f}, p-value: {p_val:.3e}")
@@ -101,7 +118,6 @@ def run_analysis(group_paths: dict, variable_name: str):
             tukey_res = pairwise_tukeyhsd(df[variable_name], df['group'])
             print(tukey_res.summary())
 
-            # Extract pairs and p-values
             tukey_data = tukey_res._results_table.data[1:]
             pairs = []
             pvals = []
@@ -114,6 +130,17 @@ def run_analysis(group_paths: dict, variable_name: str):
             annotator.configure(test=None, text_format='star', loc='inside', verbose=0)
             annotator.set_pvalues_and_annotate(pvals)
 
+        # --- Show F and p value on the plot ---
+        if p_val < 0.0001:
+            p_display = "<0.0001"
+        else:
+            p_display = f"{p_val:.4f}"
+
+        textstr = f"ANOVA\nF = {f_stat:.2f}\np = {p_display}"
+        props = dict(boxstyle='round', facecolor='white', alpha=0.8)
+        ax.text(0.95, 0.95, textstr, transform=ax.transAxes, fontsize=12,
+                verticalalignment='top', horizontalalignment='right', bbox=props)
+
     plt.title(variable_name)
     plt.ylabel("Final Molecule Count")
     plt.xlabel("")
@@ -124,13 +151,13 @@ if __name__ == "__main__":
     print("=== T-test or ANOVA on .gdat final values ===")
     variable_name = input("Enter the variable name (e.g., camkii_open): ").strip()
 
-    # Ask user for number of groups
-    n_groups = int(input("Enter the number of groups (2 for T-test, 3+ for ANOVA): ").strip())
+    # === Hardcode the WT and T286_MT paths ===
+    WT_path = "D:/CaMKII_hexa_bgnl_to_mcellcop2/data_output/wetransfer_runs_wt-zip_2025-04-23_0856/WT"        # <-- change this to your real WT path
+    T286_MT_path = "D:/CaMKII_hexa_bgnl_to_mcellcop2/data_output/runs_T286"  # <-- change this to your real MT path
 
-    group_paths = {}
-    for i in range(n_groups):
-        group_name = input(f"Enter the name for group {i+1}: ").strip()
-        folder_path = input(f"Enter the folder path for {group_name}: ").strip()
-        group_paths[group_name] = folder_path
+    group_paths = {
+        "WT": WT_path,
+        "T286_MT": T286_MT_path
+    }
 
     run_analysis(group_paths, variable_name)
