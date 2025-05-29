@@ -50,6 +50,7 @@ def run_analysis(group_paths: dict, variable_name: str):
     custom_palette = {
         'WT': '#66c2a5',             # Greenish
         'T286_MT': '#fc8d62',         # Reddish
+        'NMDAR_CaMKII_MT': '#8da0cb'  # Bluish
     }
 
     plt.rcParams.update({'font.size': 12})
@@ -154,10 +155,12 @@ if __name__ == "__main__":
     # === Hardcode the WT and T286_MT paths ===
     WT_path = "D:/CaMKII_hexa_bgnl_to_mcellcop2/data_output/wetransfer_runs_wt-zip_2025-04-23_0856/WT"        # <-- change this to your real WT path
     T286_MT_path = "D:/CaMKII_hexa_bgnl_to_mcellcop2/data_output/runs_T286"  # <-- change this to your real MT path
+    #NMDAR_CaMKII_MT_path = "D:/CaMKII_hexa_bgnl_to_mcellcop2/data_output/thesis_results/NMDAR_MT_open_and_close_release"  # <-- change this to your real MT path
 
     group_paths = {
         "WT": WT_path,
         "T286_MT": T286_MT_path
+        #"NMDAR_CaMKII_MT": NMDAR_CaMKII_MT_path
     }
 
     run_analysis(group_paths, variable_name)

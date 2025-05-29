@@ -105,9 +105,9 @@ if __name__ == "__main__":
     print("=== One-Way ANOVA on .gdat final values ===")
     variable_name = input("Enter the variable name (e.g., camkii_open): ").strip()
 
-    wt_folder = input("Enter the WT folder path: ").strip()
-    t286_folder = input("Enter the T286_mutant folder path: ").strip()
-    nmdar_folder = input("Enter the NMDAR_CaMKII_MT folder path: ").strip()
+    wt_folder = "D:/CaMKII_hexa_bgnl_to_mcellcop2/data_output/wetransfer_runs_wt-zip_2025-04-23_0856/WT"        # <-- change this to your real WT path
+    t286_folder = "D:/CaMKII_hexa_bgnl_to_mcellcop2/data_output/runs_T286"  # <-- change this to your real MT path
+    nmdar_folder = "D:/CaMKII_hexa_bgnl_to_mcellcop2/data_output/thesis_results/NMDAR_MT_open_and_close_release"  # <-- change this to your real MT path
 
     group_paths = {
         "WT": wt_folder,
