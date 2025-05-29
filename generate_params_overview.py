@@ -5,6 +5,26 @@ import numpy as np
 from sensitivity_store_analysis import read_gdat
 from sensitivity_store_analysis import extract_statistic
 
+"""
+This script processes simulation output data for multiple experimental runs, extracting both input parameters
+and output statistics, and compiles them into a single CSV summary file for further analysis.
+
+Key steps performed by the script:
+1. Iterates over all run folders located in the specified `base_dir`.
+2. For each run:
+   - Extracts metadata such as run ID, date, and random seed from the folder name.
+   - Reads the associated parameters CSV file (if present), storing parameter-value pairs.
+   - Locates and processes the corresponding `.gdat` file to extract a specific statistical value
+     (e.g., the last value of the `CaMKII_open` molecule time series).
+   - Adds all collected information to a dictionary representing one run.
+3. Aggregates all run data into a pandas DataFrame.
+4. Writes the aggregated data to a CSV file defined by `output_csv`.
+
+This output file provides an overview of simulation settings and results, useful for sensitivity analysis
+or comparison across different conditions.
+"""
+
+
 # Define the base directory and the output CSV path
 base_dir = r'D:/CaMKII_hexa_bgnl_to_mcellcop2/data_output/thesis_results/NMDAR_MT_open_and_close_release'
 output_csv = r'D:/CaMKII_hexa_bgnl_to_mcellcop2/data_output/thesis_results/NMDAR_MT_open_and_close_release/Parameters_Overview.csv'

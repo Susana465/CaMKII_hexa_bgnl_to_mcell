@@ -9,19 +9,7 @@ factors = np.array([0.01])
 kon_values = 2e6*factors
 koff_values = 0.03*factors
 
-# Kd = [500]
-# Kd = koff/kon
-# kon = koff/Kd
-# koff= Kd x kon
-
-# # Note that if parameter_value does not match, this code currently will not throw an error and will just run with the preset value stated in the .bngl file. 
-# # Check the .csv of values to see which 'kon' was used
-# def parameter_sweep(constant, param_values):
-#     # Create a list of parameter names (keys from the dictionary)
-#     param_names = list(parameters_dict.keys())
-
-#     for value in param_values:
-        
+# Note that if parameter_value does not match, this code currently will not throw an error and will just run with the preset value stated in the .bngl file. 
 
 def parameter_sweep(parameters_dict):
     """

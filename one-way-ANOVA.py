@@ -8,6 +8,32 @@ from scipy import stats
 from statsmodels.stats.multicomp import pairwise_tukeyhsd
 from statannotations.Annotator import Annotator
 
+"""
+This script performs statistical analysis on the final values of a specified molecule extracted from `.gdat` files
+across multiple experimental groups. It uses one-way ANOVA to assess whether there are significant differences
+between the groups, and generates a visualization with optional post-hoc significance annotations.
+
+1. Prompts the user for a molecule name (e.g., "camkii_open", found in .gdat) to analyze.
+2. Defines paths to directories containing `.gdat` simulation output files for multiple groups (e.g., WT, mutants).
+3. For each group:
+   - Recursively scans for `.gdat` files.
+   - Loads the final value of the specified variable from each file.
+4. Aggregates the final values and runs a one-way ANOVA test to compare group means.
+5. If the ANOVA is significant (p < 0.05), performs Tukey’s HSD post hoc test to determine which group pairs differ.
+6. Visualizes the data using a boxplot with:
+   - Jittered data points.
+   - Mean indicators.
+   - Statistical significance stars (if applicable).
+
+Output:
+- Console output of ANOVA results and Tukey's HSD table (if applicable).
+- A matplotlib plot displaying group comparisons with statistical annotations.
+
+Dependencies:
+- numpy, pandas, seaborn, matplotlib, scipy, statsmodels, statannotations
+"""
+
+
 def load_final_values(folder_path, variable_name):
     final_values = []
     for root, dirs, files in os.walk(folder_path):
