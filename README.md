@@ -119,7 +119,11 @@ python run_python_files.py
 ```
 ### 4.3. Running the code iteratively
 
-In order to run the model iteratively, with changing parameters, I used [`global_sensitivity_run.py`](global_sensitivity_run.py)
+In order to run the model iteratively, with changing parameters, I used [`global_sensitivity_run.py`](global_sensitivity_run.py). This file can be run in the terminal command line:
+
+```python
+python global_sensitivity_run.py
+```
 
 ### 4.2. Behind the scenes, what different files are used for:
 
@@ -136,8 +140,22 @@ The important files to run the simulation are:
 ## 5. Expected output
 
 ### Output files
+
 - `data_output/`: contains timestamped folders that are created with scripts mentioned above. Each timestamped folder contains the outputs from running the python scripts.
 
+/dated_directory_seed_number
+├ dated_out.gdat
+
+├dated_parameters.csv
+
+├ dodecamer_NMDAR.bngl
+
+├ mcell_params.py
+
+### Visual Summary
+![Visual Summary](visual_summary.PNG)
+
+### Terminal Output
 It takes about 10min to run in my machine.
 
 (specs: Processor 11th Gen Intel(R) Core(TM) i5-1145G7 @ 2.60GHz   1.50 GHz, System type 64-bit operating system, x64-based processor, 16GB RAM)
