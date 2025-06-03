@@ -5,16 +5,22 @@
     - [Run-the-model files](#run-the-model-files)
     - [Output files](#output-files)
     - [Parameter Sensitivity Analysis files](#parameter-sensitivity-analysis-files)
+    
 2. [Initial Setup Requirements](#initial-setup-requirements)
     - [Install MCell/CellBlender v4.0.6 bundle with Blender 2.93](#1-install-mcellcellblender-v406-bundle-with-blender-293)
     - [Setting System Variable MCELL_PATH and adding Python 3.9 to PATH](#2-setting-system-variable-mcell_path-and-adding-python-39-to-path)
     - [Set up a python environment](#3-set-up-a-python-environment)
-3. [Running the code](#running-the-code)
-    - [Step 1](#step-1)
-    - [Step 2](#step-2)
-    - [Step 3](#step-3)
-    - [Step 4](#step-4)
-    - [Expected Outputs](#expected-outputs)
+
+3. [Running the code](#running-the-code)  
+   - [4. Running the code](#4-running-the-code)  
+     - [4.1. Basic Run](#once-you-are-set-up-with-the-above-requirements-you-can-run-the-python-script-run_python_filespy-in-your-terminal)  
+     - [4.2. Behind the scenes – which files are used](#42-behind-the-scenes--what-different-files-are-used-for)  
+     - [4.3. Running iteratively for parameter sweeps](#43-running-the-code-iteratively)  
+
+4. [Expected Outputs](#5-expected-output)  
+   - [Output files](#output-files-1)  
+   - [Visual Summary](#visual-summary)  
+   - [Terminal Output](#terminal-output)  
 
 # What is in this repository
 ---
@@ -125,7 +131,7 @@ In order to run the model iteratively, with changing parameters, I used [`global
 python global_sensitivity_run.py
 ```
 
-### 4.2. Behind the scenes, what different files are used for:
+### 4.4. Behind the scenes, what different files are used for:
 
 The important files to run the simulation are:
 
@@ -205,9 +211,7 @@ Simulation CPU time without iteration 0 = 741.672 (user) and 3.45312 (system)
 ```
 Running this code will create a timestamped [out.gdat](./out.gdat) file in the data_output/ folder. You should get an output that looks similar to this:
 
-![alt text](./out_gdat.png)
-
-Image: [out_gdat.png](./out_gdat.png)
+![out_dodecamer_gdat.png](out_dodecamer_gdat.png)
 
 Note: This output is obtained from running the model with:
 
