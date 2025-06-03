@@ -40,19 +40,19 @@ def process_folder(folder_path, selected_variables=None):
 
                 if time_values is None:
                     time_values = data[:, 0]
-                    print(f"⏰ Time values detected, shape: {time_values.shape}")
+                    print(f" Time values detected, shape: {time_values.shape}")
 
                 for var_name in selected_variables:
                     if var_name in header_dict:
                         idx = header_dict[var_name]
                         variable_data.setdefault(var_name, []).append(data[:, idx])
                     else:
-                        print(f"⚠️ Variable '{var_name}' not found in {file}. Skipping.")
+                        print(f" Variable '{var_name}' not found in {file}. Skipping.")
 
     if not variable_data:
-        print("❌ No variables were collected! Please check your selected variables and files.")
+        print(" No variables were collected! Please check your selected variables and files.")
     else:
-        print(f"✅ Variable data collected: {list(variable_data.keys())}")
+        print(f" Variable data collected: {list(variable_data.keys())}")
 
     return variable_data, time_values
 
@@ -61,7 +61,7 @@ def plot_mean_from_gdat(wt_folder, mt_folder, selected_variables=None):
     mt_data, _ = process_folder(mt_folder, selected_variables)
 
     if not wt_data or not mt_data:
-        print("❌ No data to plot. Please check your inputs.")
+        print(" No data to plot. Please check your inputs.")
         return
 
     if selected_variables is None:
@@ -109,7 +109,7 @@ def plot_mean_from_gdat(wt_folder, mt_folder, selected_variables=None):
     print("\n=== Final Mean Values at End of Simulation ===")
 
     for var_name in selected_variables:
-        print(f"\n📊 Variable: {var_name}")
+        print(f"\n Variable: {var_name}")
 
         # WT
         if var_name in wt_data:
@@ -118,7 +118,7 @@ def plot_mean_from_gdat(wt_folder, mt_folder, selected_variables=None):
             wt_std = np.std(wt_arrays, axis=0)
 
             print(f"    WT mean first 5 points: {wt_mean[:5]}")
-            print(f"    ➡️ Final WT mean: {wt_mean[-1]:.3f}")
+            print(f"    Final WT mean: {wt_mean[-1]:.3f}")
 
             color = color_palette["WT"]
             plt.plot(time_values, wt_mean, color=color, label=f"WT - {var_name}")
@@ -136,7 +136,7 @@ def plot_mean_from_gdat(wt_folder, mt_folder, selected_variables=None):
             mt_std = np.std(mt_arrays, axis=0)
 
             print(f"    MT mean first 5 points: {mt_mean[:5]}")
-            print(f"    ➡️ Final MT mean: {mt_mean[-1]:.3f}")
+            print(f"    Final MT mean: {mt_mean[-1]:.3f}")
 
             color = color_palette["MT"]
             plt.plot(time_values, mt_mean, color=color, label=f"MT - {var_name}")
@@ -157,7 +157,7 @@ def plot_mean_from_gdat(wt_folder, mt_folder, selected_variables=None):
     output_png_filepath = os.path.join(wt_folder, "mean_variables_comparison.png")
     plt.savefig(output_png_filepath, dpi=500)
     plt.show()
-    print(f"\n✅ Plot saved at {output_png_filepath}")
+    print(f"\n Plot saved at {output_png_filepath}")
 
 if __name__ == "__main__":
     print("=== Comparing WT and MT data ===")

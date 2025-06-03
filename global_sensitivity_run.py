@@ -3,9 +3,17 @@ import itertools # is a module in Python that provides a set of fast, memory-eff
 
 import numpy as np
 
+"""
+This script performs a parameter sweep by 
+running a simulation multiple times with different combinations 
+of specified parameter values (e.g., kon and koff). 
+It uses these combinations to override default model settings 
+and calls `run_model()` for each set.
+"""
+
 factors = np.array([0.01])
 
-# These are the values set in the bngl:
+# These are the values that will be used when running this script. The paremeters to override, are described below in the "parameters" dictionary.
 kon_values = 2e6*factors
 koff_values = 0.03*factors
 

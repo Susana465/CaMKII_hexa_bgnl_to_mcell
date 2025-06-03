@@ -38,7 +38,7 @@ The important files to run the simulation are:
 
 ## Parameter Sensitivity Analysis files:
 In order to perform sensitivity analysis on the parameters used for this model, the files requires are:
-- [`sensitivity_run.py`](sensitivity_run.py): runs the model iteratively overriding specified parameters (for example, 'kon').
+- [`global_sensitivity_run.py`](global_sensitivity_run.py): runs the model iteratively overriding specified parameters (for example, 'kon' or 'koff').
 - [`sensitivity_store_analysis.py`](sensitivity_store_analysis.py): extracts required statistics from output data and stores it in a specified [`extracted_statsparams.csv`](extracted_statsparams.csv) file. This script also plots the stat vs parameter in a scatter plot.
 
 # Initial Setup Requirements
@@ -112,13 +112,16 @@ The commands to create and activate an environment using virtualenv, pipenv, ven
 
 ## 4. Running the code
 
-Once you are set up with the above requirements, you can run the python script [`run_python_files.py`](run_python_files.py) in your terminal.
+Once you are set up with the above requirements, you can run the python script [`run_python_files.py`](run_python_files.py) in your terminal. This will run one iteration of the model.
 
 ```python
 python run_python_files.py
 ```
+### 4.3. Running the code iteratively
 
-### 4.1. Behind the scenes, what different files are used for:
+In order to run the model iteratively, with changing parameters, I used [`global_sensitivity_run.py`](global_sensitivity_run.py)
+
+### 4.2. Behind the scenes, what different files are used for:
 
 The important files to run the simulation are:
 
