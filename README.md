@@ -5,7 +5,7 @@
     - [Run-the-model files](#run-the-model-files)
     - [Output files](#output-files)
     - [Parameter Sensitivity Analysis files](#parameter-sensitivity-analysis-files)
-    
+
 2. [Initial Setup Requirements](#initial-setup-requirements)
     - [Install MCell/CellBlender v4.0.6 bundle with Blender 2.93](#1-install-mcellcellblender-v406-bundle-with-blender-293)
     - [Setting System Variable MCELL_PATH and adding Python 3.9 to PATH](#2-setting-system-variable-mcell_path-and-adding-python-39-to-path)
@@ -158,7 +158,7 @@ The important files to run the simulation are:
 
 ├ mcell_params.py
 
-### Visual Summary
+### Workflow Visual Summary
 ![Visual Summary](visual_summary.PNG)
 
 ### Terminal Output
